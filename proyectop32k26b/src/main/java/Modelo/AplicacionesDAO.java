@@ -72,41 +72,35 @@ public class AplicacionesDAO {
      */
     public void insert(clsAplicaciones app) {
 
-        String sql = "INSERT INTO aplicaciones (Aplnombre, Aplestado) VALUES (?, ?)";
+    String sql = "INSERT INTO aplicaciones (Aplcodigo, Aplnombre, Aplestado) VALUES (?, ?, ?)";
 
-        try (Connection conn = Conexion.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, app.getAplnombre());
-            ps.setString(2, app.getAplestado());
+        // Inserción manual del código (según cambios en la BD)
+        ps.setInt(1, app.getAplcodigo());
+        ps.setString(2, app.getAplnombre());
+        ps.setString(3, app.getAplestado());
 
-            int rows = ps.executeUpdate();
+        int rows = ps.executeUpdate();
 
-            // Validación de inserción exitosa
-            if (rows > 0) {
-                int idGenerado = 0;
+        // Validación de inserción exitosa
+        if (rows > 0) {
 
-                // Obtención del ID generado automáticamente
-                try (ResultSet rs = ps.getGeneratedKeys()) {
-                    if (rs.next()) {
-                        idGenerado = rs.getInt(1);
-                    }
-                }
-
-                // Registro en bitácora (no crítico)
-                try {
-                    registrarBitacora("INSERT aplicación ID: " + idGenerado +
-                                      " Nombre: " + app.getAplnombre());
-                } catch (Exception ex) {
-                    System.out.println("Error en bitácora (no crítico): " + ex.getMessage());
-                }
+            // Registro en bitácora
+            try {
+                registrarBitacora("INSERT aplicación ID: " + app.getAplcodigo() +
+                                  " Nombre: " + app.getAplnombre());
+            } catch (Exception ex) {
+                System.out.println("Error en bitácora (no crítico): " + ex.getMessage());
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error al insertar aplicación", e);
         }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException("Error al insertar aplicación", e);
     }
+}
 
     /**
      * Actualiza los datos de una aplicación existente.
