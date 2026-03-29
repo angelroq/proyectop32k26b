@@ -19,7 +19,7 @@ import javax.swing.JOptionPane;
  * @author ferito
  */
 public class frmAplicaciones extends javax.swing.JInternalFrame {
-AplicacionesDAO dao = new AplicacionesDAO(); //inicializar llamada al dao
+AplicacionesDAO dao = new AplicacionesDAO(); //inicializar llamada al DAO
     /**
      * Creates new form AplicacionesForm
      */
