@@ -4,12 +4,30 @@
  */
 package Vista;
 
-import javax.swing.JOptionPane;
+
+// 1. Para el manejo de Listas (necesario para traer usuarios y perfiles)
+import java.util.List;
+import java.util.ArrayList;
+
+// 2. Para las Tablas y Mensajes de alerta
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+
+// 3. Los Modelos y Controladores
+import Controlador.clsAsignacionPerfilUsuario; 
+import Modelo.AsignacionPerfilUsuarioDAO;    
+import Controlador.clsUsuario;               
+import Modelo.UsuarioDAO;                  
+import Modelo.BitacoraDAO;                   
+import Controlador.clsUsuarioConectado;       
+
+
+import Controlador.clsPerfil; 
+import Modelo.PerfilDAO;
 
 /**
  *
- * @author 50240
+ * @author JENNIFER BARRIOS 9959-24-10016
  */
 
 
@@ -25,11 +43,37 @@ private static final int Aplcodigo = 10010;
     Controlador.clsAsignacionPerfilUsuario asignacionControlador = new Controlador.clsAsignacionPerfilUsuario();
     Modelo.BitacoraDAO bitacoraDAO = new Modelo.BitacoraDAO();
     
+    
+    public void llenarComboUsuario() {
+    Modelo.UsuarioDAO usuarioDAO = new Modelo.UsuarioDAO();
+
+    List<Controlador.clsUsuario> usuarios = usuarioDAO.consultaUsuarios(); 
+    
+    cboUsuario.removeAllItems();
+    cboUsuarioId.removeAllItems();
+    
+    for (Controlador.clsUsuario usuario : usuarios) {
+        cboUsuario.addItem(usuario.getUsuNombre()); 
+        cboUsuarioId.addItem(String.valueOf(usuario.getUsuId())); 
+    }
+}
+    
+    public void llenarTablas(int idUsuario) {
+        
+        DefaultTableModel modeloDisp = (DefaultTableModel) tablaDisponibles.getModel();
+        DefaultTableModel modeloAsig = (DefaultTableModel) tablaAsignados.getModel();
+        modeloDisp.setRowCount(0); 
+        modeloAsig.setRowCount(0); 
+    
+        //Este metódo lo podré terminar hasta la modificacion de los errores de PerfilDAO
+}
+    
     /**
      * Creates new form MantenimientoAsignacionPerfilUsuario
      */
     public MantenimientoAsignacionPerfilUsuario() {
         initComponents();
+        llenarComboUsuario();
     }
 
     /**
@@ -43,9 +87,9 @@ private static final int Aplcodigo = 10010;
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cboUsuario = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cboUsuarioId = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaDisponibles = new javax.swing.JTable();
@@ -54,8 +98,8 @@ private static final int Aplcodigo = 10010;
         tablaAsignados = new javax.swing.JTable();
         btnAsignarUno = new javax.swing.JButton();
         btnQuitarUno = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnAsignarTodos = new javax.swing.JButton();
+        btnQuitarTodos = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -63,23 +107,33 @@ private static final int Aplcodigo = 10010;
 
         jLabel2.setText("Usuario");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboUsuarioActionPerformed(evt);
+            }
+        });
 
         jLabel3.setText("Codigo Usuario: ");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboUsuarioId.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cboUsuarioId.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboUsuarioIdActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("PERFILES DISPONIBLES:");
 
         tablaDisponibles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "PerNombre", "PerEstado"
+                "Percodigo", "PerNombre", "PerEstado"
             }
         ));
         jScrollPane1.setViewportView(tablaDisponibles);
@@ -88,13 +142,13 @@ private static final int Aplcodigo = 10010;
 
         tablaAsignados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null},
-                {null},
-                {null},
-                {null}
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
             },
             new String [] {
-                "PerNombre"
+                "Percodigo", "PerNombre"
             }
         ));
         jScrollPane2.setViewportView(tablaAsignados);
@@ -115,19 +169,19 @@ private static final int Aplcodigo = 10010;
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton3.setText(">>");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAsignarTodos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnAsignarTodos.setText(">>");
+        btnAsignarTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAsignarTodosActionPerformed(evt);
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton4.setText("<<");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnQuitarTodos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnQuitarTodos.setText("<<");
+        btnQuitarTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnQuitarTodosActionPerformed(evt);
             }
         });
 
@@ -146,16 +200,16 @@ private static final int Aplcodigo = 10010;
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(cboUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(376, 376, 376)
-                                .addComponent(jButton3)))
+                                .addComponent(btnAsignarTodos)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cboUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5)))
                     .addGroup(layout.createSequentialGroup()
@@ -176,7 +230,7 @@ private static final int Aplcodigo = 10010;
                                         .addGap(40, 40, 40))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButton4)
+                                        .addComponent(btnQuitarTodos)
                                         .addGap(25, 25, 25)))))))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
@@ -188,9 +242,9 @@ private static final int Aplcodigo = 10010;
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cboUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cboUsuarioId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -205,11 +259,11 @@ private static final int Aplcodigo = 10010;
                         .addGap(93, 93, 93)
                         .addComponent(btnAsignarUno)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3)
+                        .addComponent(btnAsignarTodos)
                         .addGap(28, 28, 28)
                         .addComponent(btnQuitarUno)
                         .addGap(26, 26, 26)
-                        .addComponent(jButton4)))
+                        .addComponent(btnQuitarTodos)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -217,81 +271,137 @@ private static final int Aplcodigo = 10010;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnQuitarUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarUnoActionPerformed
-
-        nt filaSeleccionada = tablaAsignados.getSelectedRow();
+                                           
+    int filaSeleccionada = tablaAsignados.getSelectedRow();
 
     if (filaSeleccionada != -1) {
         int idPerfil = Integer.parseInt(tablaAsignados.getValueAt(filaSeleccionada, 0).toString());
-        int idUsuarioDestino = Integer.parseInt(txtIdUsuarioElegido.getText());
+        int idUsuarioDestino = Integer.parseInt(cboUsuarioId.getSelectedItem().toString());
 
-        // Ejecutar eliminación en DAO
         int resultado = asignacionDAO.eliminar(idUsuarioDestino, idPerfil);
 
         if (resultado > 0) {
-            // Registro en Bitácora
-            bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "QUITAR");
-
-            // Actualizar tablas visualmente
+            bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "QUITAR UN PERFIL INDIVIDUAL AL USUARIO");
+            
             DefaultTableModel modeloDisponibles = (DefaultTableModel) tablaDisponibles.getModel();
             DefaultTableModel modeloAsignados = (DefaultTableModel) tablaAsignados.getModel();
 
+           
             Object[] fila = {
-                tablaAsignados.getValueAt(filaSeleccionada, 0),
-                tablaAsignados.getValueAt(filaSeleccionada, 1)
+                tablaAsignados.getValueAt(filaSeleccionada, 0), // ID
+                tablaAsignados.getValueAt(filaSeleccionada, 1), // Nombre
+                "Disponible" // 
             };
 
             modeloDisponibles.addRow(fila);
             modeloAsignados.removeRow(filaSeleccionada);
+            
+            JOptionPane.showMessageDialog(null, "Perfil quitado con éxito.");
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "Selecciona un perfil de la tabla de asignados.");
     }
+
         
         // TODO add your handling code here:
     }//GEN-LAST:event_btnQuitarUnoActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnQuitarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarTodosActionPerformed
+                                             
+    if (cboUsuarioId.getSelectedItem() != null) {
+        int idUsuarioDestino = Integer.parseInt(cboUsuarioId.getSelectedItem().toString());
+        DefaultTableModel modeloAsignados = (DefaultTableModel) tablaAsignados.getModel();
+    
+        for (int i = modeloAsignados.getRowCount() - 1; i >= 0; i--) {
+            int idPerfil = Integer.parseInt(modeloAsignados.getValueAt(i, 0).toString());
+            asignacionDAO.eliminar(idUsuarioDestino, idPerfil);
+        }
+        
+        bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "QUITAR TODOS LOS PERFILES");
+        llenarTablas(idUsuarioDestino); // Esto refresca ambas tablas de la Base de Datos
+        JOptionPane.showMessageDialog(null, "Se han quitado todas las asignaciones.");
+    }
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnQuitarTodosActionPerformed
+
+    private void btnAsignarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarTodosActionPerformed
+
+    if (cboUsuarioId.getSelectedItem() != null) {
+        int idUsuarioDestino = Integer.parseInt(cboUsuarioId.getSelectedItem().toString());
+        DefaultTableModel modeloDisponibles = (DefaultTableModel) tablaDisponibles.getModel();
+        
+        // Se recorre de abajo hacia arriba para evitar errores de índice
+        for (int i = modeloDisponibles.getRowCount() - 1; i >= 0; i--) {
+            int idPerfil = Integer.parseInt(modeloDisponibles.getValueAt(i, 0).toString());
+            asignacionDAO.insertar(idUsuarioDestino, idPerfil);
+        }
+        
+        bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "ASIGNAR TODOS LOS PERFILES");
+        llenarTablas(idUsuarioDestino);
+        JOptionPane.showMessageDialog(null, "Todos los perfiles han sido asignados.");
+    }
+
+
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAsignarTodosActionPerformed
 
     private void btnAsignarUnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarUnoActionPerformed
 
-        int filaSeleccionada = tablaDisponibles.getSelectedRow();
+    int filaSeleccionada = tablaDisponibles.getSelectedRow();
     
     if (filaSeleccionada != -1) {
-        // 1. Obtener los IDs (Asumiendo que el ID del perfil está en la columna 0)
+        // 1. Extraer el ID del perfil (está en la columna 0)
         int idPerfil = Integer.parseInt(tablaDisponibles.getValueAt(filaSeleccionada, 0).toString());
-        int idUsuarioDestino = Integer.parseInt(txtIdUsuarioElegido.getText()); // El ID del usuario al que le asignas
-
-        // 2. Ejecutar la inserción en la base de datos
+        // 2. Extraer el ID del usuario del ComboBox
+        int idUsuarioDestino = Integer.parseInt(cboUsuarioId.getSelectedItem().toString());
+        
+        // 3. Ejecutar la inserción usando el DAO
         int resultado = asignacionDAO.insertar(idUsuarioDestino, idPerfil);
 
         if (resultado > 0) {
-            // 3. Registro en Bitácora (Usando el esquema de Astrid)
-            bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "ASIGNAR");
-
-            // 4. Mover visualmente en las tablas
-            DefaultTableModel modeloDisponibles = (DefaultTableModel) tablaDisponibles.getModel();
-            DefaultTableModel modeloAsignados = (DefaultTableModel) tablaAsignados.getModel();
+            bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "ASIGNAR UN PERFIL");
+            // Refrescar las tablas para que el cambio sea real
             
-            Object[] fila = {
-                tablaDisponibles.getValueAt(filaSeleccionada, 0),
-                tablaDisponibles.getValueAt(filaSeleccionada, 1)
-            };
-            
-            modeloAsignados.addRow(fila);
-            modeloDisponibles.removeRow(filaSeleccionada);
-            
-            JOptionPane.showMessageDialog(null, "Perfil asignado correctamente");
+            llenarTablas(idUsuarioDestino); 
+            JOptionPane.showMessageDialog(null, "Perfil asignado con éxito.");
         }
     } else {
-        JOptionPane.showMessageDialog(null, "Por favor, seleccione un perfil para asignar.");
+        JOptionPane.showMessageDialog(null, "Selecciona un perfil de la tabla de disponibles.");
     }
+
         
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAsignarUnoActionPerformed
+
+    private void cboUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboUsuarioActionPerformed
+                                      
+
+    if (cboUsuario.getSelectedIndex() != -1) {
+
+        cboUsuarioId.setSelectedIndex(cboUsuario.getSelectedIndex());
+        
+
+        int idSeleccionado = Integer.parseInt(cboUsuarioId.getSelectedItem().toString());
+        llenarTablas(idSeleccionado);
+    }
+
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboUsuarioActionPerformed
+
+    private void cboUsuarioIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboUsuarioIdActionPerformed
+
+        if (cboUsuarioId.getSelectedIndex() != -1) {
+            
+        // Sincroniza el índice del combo de nombres con el de IDs
+        cboUsuario.setSelectedIndex(cboUsuarioId.getSelectedIndex());
+    }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboUsuarioIdActionPerformed
 
     /**
      * @param args the command line arguments
@@ -329,12 +439,12 @@ private static final int Aplcodigo = 10010;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAsignarTodos;
     private javax.swing.JButton btnAsignarUno;
+    private javax.swing.JButton btnQuitarTodos;
     private javax.swing.JButton btnQuitarUno;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> cboUsuario;
+    private javax.swing.JComboBox<String> cboUsuarioId;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
