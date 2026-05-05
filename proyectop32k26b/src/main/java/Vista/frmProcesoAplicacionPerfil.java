@@ -16,6 +16,7 @@ import Controlador.clsUsuario;
 import Controlador.clsUsuarioConectado;
 import Modelo.BitacoraDAO;
 import Modelo.Conexion;
+import Modelo.PermisosDAO;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.io.File;
@@ -55,6 +56,7 @@ public class frmProcesoAplicacionPerfil extends javax.swing.JInternalFrame {
     // 4. Hacer que se destruya la instancia al cerrar para liberar memoria
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         limpiarPermisos();
+        cargarPermisos();
         
         
    
@@ -63,6 +65,26 @@ public class frmProcesoAplicacionPerfil extends javax.swing.JInternalFrame {
     AppDis.setModel(modeloD);
     AppAsig.setModel(modeloA);
     }
+    
+     public void cargarPermisos() {
+    int usuId = clsUsuarioConectado.getUsuId();
+    PermisosDAO permisosDAO = new PermisosDAO();
+
+    //METODO PARA EL SISTEMA DE SEGURIDAD DE PERMISOS AGREGAR A SUS FORMULARIOS CORRESPONDIENTES
+    // Todos usan código 10 = Mantenimiento Usuario
+    guardar.setEnabled( permisosDAO.puedeInsertar (usuId, 10011) );
+    btnObtener.setEnabled  ( permisosDAO.puedeBuscar   (usuId, 10011) );
+    //actualizar
+    AppDis.setEnabled( permisosDAO.puedeModificar(usuId, 10011) );
+    btnPasarUno.setEnabled( permisosDAO.puedeModificar(usuId, 10011) );
+    btnPasarTodos.setEnabled( permisosDAO.puedeModificar(usuId, 10011) );
+    //delete
+    btnRegresarUno.setEnabled( permisosDAO.puedeModificar(usuId, 10011) );
+    btnRegresarTodos.setEnabled( permisosDAO.puedeModificar(usuId, 10011) );
+        
+    AppAsig.setEnabled ( permisosDAO.puedeEliminar (usuId, 10011) );
+   // btnReportes.setEnabled( permisosDAO.puedeReportar (usuId, 10) );
+}
     
 private void moverAAsignadas() {
     //Obtener el modelo actual de la lista

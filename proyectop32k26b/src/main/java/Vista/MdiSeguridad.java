@@ -40,10 +40,10 @@ public class MdiSeguridad extends javax.swing.JFrame {
     //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!    
     //Agregadopor Astrid para cargar permisos del usuario conectado al abrir el MDI
     //Agreguen los permisos correspondientes a un usuario y luego quitan los comentarios de las lineas de abajo, si no va les va aparcer bloqueado
-    //int usuId = clsUsuarioConectado.getUsuId();
-    //PermisosDAO permisosDAO = new PermisosDAO();
-    //List<Integer> appsPermitidas = permisosDAO.obtenerAplicacionesPermitidas(usuId);
-    //configurarVisibilidadBotones(appsPermitidas);
+    int usuId = clsUsuarioConectado.getUsuId();
+    PermisosDAO permisosDAO = new PermisosDAO();
+    List<Integer> appsPermitidas = permisosDAO.obtenerAplicacionesPermitidas(usuId);
+    configurarVisibilidadBotones(appsPermitidas);
     }
     
     

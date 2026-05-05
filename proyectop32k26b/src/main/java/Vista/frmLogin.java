@@ -11,6 +11,7 @@ import Modelo.BitacoraDAO;
 import Controlador.clsSeguridad;
 import Controlador.clsUsuario;
 import Controlador.clsUsuarioConectado;
+import Vista.ComisionesVentas.frmComisionesVentas;
 
 import java.awt.HeadlessException;
 import java.util.HashSet;
@@ -133,7 +134,7 @@ public class frmLogin extends javax.swing.JFrame {
                                         .addComponent(btnAceptar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jButton2)))))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -257,6 +258,14 @@ public class frmLogin extends javax.swing.JFrame {
                             System.out.println(e);
                         }   
                         break;
+                        case "Comisiones de ventas":
+                        try {
+                            frmComisionesVentas menu = new frmComisionesVentas();
+                            menu.setVisible(true);
+                            this.dispose();
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }   
                         default:
                             break;
                     }
