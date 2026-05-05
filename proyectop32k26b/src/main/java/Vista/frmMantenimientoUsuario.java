@@ -11,7 +11,7 @@
                                //3. Se agrego a la ventana A = Activo, I = Inactivo", Para comprension del Usuario.
 package Vista;
 
-import Controlador.clsSeguridad;
+import Controlador.clsSeguridad; 
 import Controlador.clsBitacora;
 import Controlador.clsUsuario;
 import Controlador.clsUsuarioConectado;
