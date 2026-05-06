@@ -24,6 +24,7 @@ import Controlador.clsUsuarioConectado;
 //Librerias extra
 import Controlador.clsPerfil; 
 import Modelo.PerfilDAO;
+import java.io.File; //nueva agregada 
 
 
 
@@ -152,6 +153,7 @@ private static final int Aplcodigo = 10010;
         btnQuitarUno = new javax.swing.JButton();
         btnAsignarTodos = new javax.swing.JButton();
         btnQuitarTodos = new javax.swing.JButton();
+        btnayuda = new javax.swing.JButton();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -251,6 +253,14 @@ private static final int Aplcodigo = 10010;
             }
         });
         getContentPane().add(btnQuitarTodos, new org.netbeans.lib.awtextra.AbsoluteConstraints(376, 412, -1, -1));
+
+        btnayuda.setText("AYUDA");
+        btnayuda.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnayudaActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnayuda, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 10, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -393,6 +403,28 @@ if (cboUsuario.getItemCount() > 0 && cboUsuario.getSelectedIndex() != -1) {
         // TODO add your handling code here:
     }//GEN-LAST:event_cboUsuarioIdActionPerformed
 
+    private void btnayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnayudaActionPerformed
+
+        //AUTORA DEL CODIGO MARIA CELESTE MAYEN IBARRA. 
+        //POR PROBLEMAS TÉCNICOS JENNIFER BARRIOS HA INSERTADO EL CODIGO DEL BOTON.
+        
+        try {
+            if ((new File("src\\main\\java\\ayudas\\ProcesoMayor.chm")).exists()) {
+                Process p = Runtime
+                        .getRuntime()
+                        .exec("rundll32 url.dll,FileProtocolHandler src\\main\\java\\ayudas\\ProcesoMayor.chm");
+                p.waitFor();
+            } else {
+                System.out.println("La ayuda no Fue encontrada");
+            }
+            System.out.println("Correcto");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnayudaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -434,6 +466,7 @@ if (cboUsuario.getItemCount() > 0 && cboUsuario.getSelectedIndex() != -1) {
     private javax.swing.JButton btnAsignarUno;
     private javax.swing.JButton btnQuitarTodos;
     private javax.swing.JButton btnQuitarUno;
+    private javax.swing.JButton btnayuda;
     private javax.swing.JComboBox<String> cboUsuario;
     private javax.swing.JComboBox<String> cboUsuarioId;
     private javax.swing.JLabel jLabel1;
