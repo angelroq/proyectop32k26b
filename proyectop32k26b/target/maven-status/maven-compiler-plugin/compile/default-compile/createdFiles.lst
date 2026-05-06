@@ -19,6 +19,7 @@ Controlador\Bancos\clsConciliacionBancaria.class
 Controlador\Bancos\clsTipoTransaccion.class
 Modelo\PerfilDAO.class
 Vista\vistaPlanilla\MdiPlanillas$1.class
+Vista\frmMantenimientoBitacora$6.class
 Vista\frmProcesoPerfilUsuario$3.class
 Vista\frmMantenimientoUsuario$7.class
 Vista\frmProcesoAplicacionUsuario$8.class
