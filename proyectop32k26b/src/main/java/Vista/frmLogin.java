@@ -272,7 +272,7 @@ case "Ventas":
 
 default:
     break;
-
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this, "ERROR AL ENCONTRAR USUARIO o CONTRASEÑA",                              "ERROR", JOptionPane.ERROR_MESSAGE);
                     txtContraseña.setText("");
