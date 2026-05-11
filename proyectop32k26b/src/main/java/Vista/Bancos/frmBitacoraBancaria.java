@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista.Bancos;
-// Angoly Camila Araujo Mayen 9959-24-17
+// Angoly Camila Araujo Mayen 9959 - 24 - 17
 import Controlador.Bancos.clsBitacoraBancaria;
 import Controlador.clsUsuarioConectado;
 import Modelo.Bancos.BitacoraBancariaDAO;
