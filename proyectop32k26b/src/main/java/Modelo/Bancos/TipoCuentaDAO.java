@@ -319,4 +319,27 @@ public class TipoCuentaDAO {
             ex.printStackTrace(System.out);
         }
     }
+    
+    public void resetearAutoIncrement() {
+    String sql = "ALTER TABLE CatTipoCuenta AUTO_INCREMENT = 1";
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.executeUpdate();
+    } catch (SQLException ex) {
+        ex.printStackTrace(System.out);
+    }
+    }
+    
+    public void limpiarTabla() {
+    try (Connection conn = Conexion.getConnection();
+         Statement stmt = conn.createStatement()) {
+        
+        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+        stmt.executeUpdate("TRUNCATE TABLE CatTipoCuenta");
+        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+        
+    } catch (SQLException ex) {
+        ex.printStackTrace(System.out);
+    }
+}
 }
