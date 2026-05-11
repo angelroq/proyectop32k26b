@@ -108,11 +108,8 @@ Vista\vistaCuentasCorrientes\MdiGeneralCC$5.class
 Vista\frmProcesoAplicacionPerfil$7.class
 Controlador\clsBitacora.class
 Modelo\ComisionesVentas\RepostesDAO.class
-<<<<<<< HEAD
-Vista\Bancos\frmBitacoraBancaria.class
-=======
 Vista\vistaPlanilla\MdiPlanillas$10.class
->>>>>>> 292cfea142a879e85fb95e56ea29fd2599e888e5
+Vista\Bancos\frmBitacoraBancaria.class
 Vista\Bancos\MdiBancos$6.class
 Vista\Bancos\frmBitacoraBancaria$2.class
 Controlador\controladorPlanilla\prueba1.class
