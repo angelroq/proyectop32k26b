@@ -11,15 +11,13 @@ import Modelo.Conexion;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- *
- * @author Proyecto Final - Sistema Bancario
- */
+// Creado Por Karina Alejandra Arriaza Ortiz 9959-24-14190
+//Modificado por Angoly Camila Araujo Mayen 
 public class BancoDAO {
 
-    private static final int APL_CODIGO = 20001; // Código app Banco en tabla aplicaciones
+    private static final int APL_CODIGO = 5300; // Código módulo Bancos
 
+    // ── LISTAR TODOS ────────────────────────────────────────────
     public List<clsBanco> listar() {
         List<clsBanco> lista = new ArrayList<>();
         String sql = "SELECT * FROM Banco";
@@ -35,6 +33,7 @@ public class BancoDAO {
                 b.setBandireccion(rs.getString("Bandireccion"));
                 b.setBantelefono(rs.getString("Bantelefono"));
                 b.setBancorreo(rs.getString("Bancorreo"));
+                b.setBanfecharegistro(rs.getDate("Banfecharegistro"));
                 lista.add(b);
             }
 
@@ -44,8 +43,10 @@ public class BancoDAO {
         return lista;
     }
 
+    // ── INSERTAR ────────────────────────────────────────────────
     public void insert(clsBanco banco) {
-        String sql = "INSERT INTO Banco (nombre_banco, direccion, telefono, correo) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO Banco (Bannombre, Bandireccion, Bantelefono, Bancorreo) "
+                   + "VALUES (?, ?, ?, ?)";
 
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -56,7 +57,7 @@ public class BancoDAO {
             ps.setString(4, banco.getBancorreo());
             ps.executeUpdate();
 
-            new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "INSERT");
+            new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "INSERT Banco");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,8 +65,11 @@ public class BancoDAO {
         }
     }
 
+    // ── ACTUALIZAR ──────────────────────────────────────────────
     public void update(clsBanco banco) {
-        String sql = "UPDATE Banco SET nombre_banco=?, direccion=?, telefono=?, correo=? WHERE id_banco=?";
+        String sql = "UPDATE Banco SET Bannombre=?, Bandireccion=?, "
+                   + "Bantelefono=?, Bancorreo=? "
+                   + "WHERE Banid=?";
 
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -79,7 +83,7 @@ public class BancoDAO {
 
             if (rows == 0) throw new RuntimeException("No se encontró el banco para actualizar");
 
-            new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "UPDATE");
+            new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "UPDATE Banco");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,8 +91,9 @@ public class BancoDAO {
         }
     }
 
+    // ── ELIMINAR ────────────────────────────────────────────────
     public void delete(int idBanco) {
-        String sql = "DELETE FROM Banco WHERE id_banco=?";
+        String sql = "DELETE FROM Banco WHERE Banid=?";
 
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -98,7 +103,7 @@ public class BancoDAO {
 
             if (rows == 0) throw new RuntimeException("No se encontró el banco para eliminar");
 
-            new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "DELETE");
+            new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "DELETE Banco");
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,14 +111,16 @@ public class BancoDAO {
         }
     }
 
+    // ── CONSULTAR POR ID ─────────────────────────────────────────
     public clsBanco query(int idBanco) {
         clsBanco banco = null;
-        String sql = "SELECT * FROM Banco WHERE id_banco=?";
+        String sql = "SELECT * FROM Banco WHERE Banid=?";
 
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, idBanco);
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     banco = new clsBanco();
@@ -122,6 +129,7 @@ public class BancoDAO {
                     banco.setBandireccion(rs.getString("Bandireccion"));
                     banco.setBantelefono(rs.getString("Bantelefono"));
                     banco.setBancorreo(rs.getString("Bancorreo"));
+                    banco.setBanfecharegistro(rs.getDate("Banfecharegistro"));
                 }
             }
 
@@ -132,3 +140,7 @@ public class BancoDAO {
         return banco;
     }
 }
+
+
+
+
