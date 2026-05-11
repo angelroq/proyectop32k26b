@@ -12,11 +12,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import Vista.vistaPlanilla.frmMantenimientoDepartamento;
+import Vista.frmLogin;
 
 
 /**
  *
- * @author marlo
+ * @author Meilyn Garcia 9959-23-17838
  */
 public class MdiPlanillas extends javax.swing.JFrame {
 
@@ -25,6 +27,7 @@ public class MdiPlanillas extends javax.swing.JFrame {
      */
     public MdiPlanillas() {
         initComponents();
+        getContentPane().setBackground(new java.awt.Color(44, 62, 80));
         setLocationRelativeTo(null);
         this.setExtendedState(MdiPlanillas.MAXIMIZED_BOTH);
         this.setTitle("");
@@ -42,21 +45,21 @@ public class MdiPlanillas extends javax.swing.JFrame {
 
         jCheckBox1 = new javax.swing.JCheckBox();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        frmMantenimientoPerfiles2 = new javax.swing.JMenuItem();
+        archivo = new javax.swing.JMenu();
+        salirPlanillas = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        frmMantenimientoPerfiles1 = new javax.swing.JMenuItem();
+        manDepartamento = new javax.swing.JMenuItem();
         frmMantenimientoPerfiles5 = new javax.swing.JMenuItem();
         frmMantenimientoPerfiles6 = new javax.swing.JMenuItem();
         frmMantenimientoPerfiles7 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         frmMantenimientoPerfiles8 = new javax.swing.JMenuItem();
-        frmMantenimientoPerfiles9 = new javax.swing.JMenuItem();
         frmMantenimientoPerfiles10 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         frmMantenimientoPerfiles11 = new javax.swing.JMenuItem();
         frmMantenimientoPerfiles12 = new javax.swing.JMenuItem();
-        frmMantenimientoPerfiles13 = new javax.swing.JMenuItem();
         jMenu5 = new javax.swing.JMenu();
         frmMantenimientoPerfiles14 = new javax.swing.JMenuItem();
         frmMantenimientoPerfiles15 = new javax.swing.JMenuItem();
@@ -69,71 +72,131 @@ public class MdiPlanillas extends javax.swing.JFrame {
 
         jCheckBox1.setText("jCheckBox1");
 
-        jMenu1.setText("Archivo");
+        archivo.setText("Archivo");
+        archivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                archivoActionPerformed(evt);
+            }
+        });
 
-        frmMantenimientoPerfiles2.setText("salir de menu");
-        jMenu1.add(frmMantenimientoPerfiles2);
+        salirPlanillas.setText("salir de menu");
+        salirPlanillas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirPlanillasActionPerformed(evt);
+            }
+        });
+        archivo.add(salirPlanillas);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(archivo);
 
         jMenu2.setText("Catalogos");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
 
-        frmMantenimientoPerfiles1.setText("empleados");
-        jMenu2.add(frmMantenimientoPerfiles1);
+        manDepartamento.setText("Departamentos");
+        manDepartamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                manDepartamentoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(manDepartamento);
 
-        frmMantenimientoPerfiles5.setText("puestos");
+        frmMantenimientoPerfiles5.setText("Puestos");
+        frmMantenimientoPerfiles5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles5ActionPerformed(evt);
+            }
+        });
         jMenu2.add(frmMantenimientoPerfiles5);
 
-        frmMantenimientoPerfiles6.setText("deducciones");
+        frmMantenimientoPerfiles6.setText("Empleados");
+        frmMantenimientoPerfiles6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles6ActionPerformed(evt);
+            }
+        });
         jMenu2.add(frmMantenimientoPerfiles6);
 
-        frmMantenimientoPerfiles7.setText("bonificaciones");
+        frmMantenimientoPerfiles7.setText("Conceptos Planillas");
+        frmMantenimientoPerfiles7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles7ActionPerformed(evt);
+            }
+        });
         jMenu2.add(frmMantenimientoPerfiles7);
+
+        jMenuItem1.setText("Deducciones");
+        jMenu2.add(jMenuItem1);
+
+        jMenuItem2.setText("Bonificaciones");
+        jMenu2.add(jMenuItem2);
 
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Procesos");
 
-        frmMantenimientoPerfiles8.setText("calcular planilla");
+        frmMantenimientoPerfiles8.setText("Generar Planilla");
+        frmMantenimientoPerfiles8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles8ActionPerformed(evt);
+            }
+        });
         jMenu3.add(frmMantenimientoPerfiles8);
 
-        frmMantenimientoPerfiles9.setText("aplicar deduccion");
-        jMenu3.add(frmMantenimientoPerfiles9);
-
-        frmMantenimientoPerfiles10.setText("generar pagos");
+        frmMantenimientoPerfiles10.setText("Pago de Nómina");
+        frmMantenimientoPerfiles10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles10ActionPerformed(evt);
+            }
+        });
         jMenu3.add(frmMantenimientoPerfiles10);
 
         jMenuBar1.add(jMenu3);
 
         jMenu4.setText("Consultas");
 
-        frmMantenimientoPerfiles11.setText("empreados");
+        frmMantenimientoPerfiles11.setText("Consultar Empleados");
+        frmMantenimientoPerfiles11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles11ActionPerformed(evt);
+            }
+        });
         jMenu4.add(frmMantenimientoPerfiles11);
 
-        frmMantenimientoPerfiles12.setText("pagos");
+        frmMantenimientoPerfiles12.setText("Historial Planilla");
+        frmMantenimientoPerfiles12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles12ActionPerformed(evt);
+            }
+        });
         jMenu4.add(frmMantenimientoPerfiles12);
-
-        frmMantenimientoPerfiles13.setText("historial");
-        jMenu4.add(frmMantenimientoPerfiles13);
 
         jMenuBar1.add(jMenu4);
 
         jMenu5.setText("Reportes");
 
-        frmMantenimientoPerfiles14.setText("boleta de pagos");
+        frmMantenimientoPerfiles14.setText("Reporte Planilla");
         jMenu5.add(frmMantenimientoPerfiles14);
 
-        frmMantenimientoPerfiles15.setText("planilla genrar");
+        frmMantenimientoPerfiles15.setText("Reporte Empleados");
+        frmMantenimientoPerfiles15.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoPerfiles15ActionPerformed(evt);
+            }
+        });
         jMenu5.add(frmMantenimientoPerfiles15);
 
-        frmMantenimientoPerfiles16.setText("deduccciones");
+        frmMantenimientoPerfiles16.setText("Reporte Deducciones");
         jMenu5.add(frmMantenimientoPerfiles16);
 
         jMenuBar1.add(jMenu5);
 
         jMenu6.setText("Ayudas");
 
-        frmMantenimientoPerfiles4.setText("manual");
+        frmMantenimientoPerfiles4.setText("Manual Usuario");
         frmMantenimientoPerfiles4.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 frmMantenimientoPerfiles4AncestorAdded(evt);
@@ -150,7 +213,7 @@ public class MdiPlanillas extends javax.swing.JFrame {
         });
         jMenu6.add(frmMantenimientoPerfiles4);
 
-        frmMantenimientoPerfiles17.setText("acerca de");
+        frmMantenimientoPerfiles17.setText("Acerca de");
         jMenu6.add(frmMantenimientoPerfiles17);
 
         jMenuBar1.add(jMenu6);
@@ -227,6 +290,77 @@ public class MdiPlanillas extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_frmMantenimientoPerfiles4ActionPerformed
 
+    private void frmMantenimientoPerfiles10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles10ActionPerformed
+
+    private void frmMantenimientoPerfiles8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles8ActionPerformed
+
+    private void manDepartamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_manDepartamentoActionPerformed
+        // TODO add your handling code here:
+        frmMantenimientoDepartamento vista = new frmMantenimientoDepartamento();
+        vista.setVisible(true);
+    }//GEN-LAST:event_manDepartamentoActionPerformed
+
+    private void frmMantenimientoPerfiles6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles6ActionPerformed
+
+    private void frmMantenimientoPerfiles5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles5ActionPerformed
+
+    private void frmMantenimientoPerfiles7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles7ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles7ActionPerformed
+
+    private void frmMantenimientoPerfiles15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles15ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles15ActionPerformed
+
+    private void frmMantenimientoPerfiles12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles12ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles12ActionPerformed
+
+    private void frmMantenimientoPerfiles11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles11ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoPerfiles11ActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void archivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_archivoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_archivoActionPerformed
+
+    private void salirPlanillasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirPlanillasActionPerformed
+        // TODO add your handling code here:
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea cerrar sesión?",
+                "Cerrar sesión",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Sesión finalizada correctamente"
+            );
+
+            frmLogin login = new frmLogin();
+
+            login.setVisible(true);
+
+            this.dispose();
+        }
+    
+    }//GEN-LAST:event_salirPlanillasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -264,29 +398,29 @@ public class MdiPlanillas extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem frmMantenimientoPerfiles1;
+    private javax.swing.JMenu archivo;
     private javax.swing.JMenuItem frmMantenimientoPerfiles10;
     private javax.swing.JMenuItem frmMantenimientoPerfiles11;
     private javax.swing.JMenuItem frmMantenimientoPerfiles12;
-    private javax.swing.JMenuItem frmMantenimientoPerfiles13;
     private javax.swing.JMenuItem frmMantenimientoPerfiles14;
     private javax.swing.JMenuItem frmMantenimientoPerfiles15;
     private javax.swing.JMenuItem frmMantenimientoPerfiles16;
     private javax.swing.JMenuItem frmMantenimientoPerfiles17;
-    private javax.swing.JMenuItem frmMantenimientoPerfiles2;
     private javax.swing.JMenuItem frmMantenimientoPerfiles4;
     private javax.swing.JMenuItem frmMantenimientoPerfiles5;
     private javax.swing.JMenuItem frmMantenimientoPerfiles6;
     private javax.swing.JMenuItem frmMantenimientoPerfiles7;
     private javax.swing.JMenuItem frmMantenimientoPerfiles8;
-    private javax.swing.JMenuItem frmMantenimientoPerfiles9;
     private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem manDepartamento;
+    private javax.swing.JMenuItem salirPlanillas;
     // End of variables declaration//GEN-END:variables
 }

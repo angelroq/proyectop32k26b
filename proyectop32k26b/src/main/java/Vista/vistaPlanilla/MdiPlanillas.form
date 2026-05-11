@@ -4,15 +4,21 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="archivo">
           <Properties>
             <Property name="text" type="java.lang.String" value="Archivo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="archivoActionPerformed"/>
+          </Events>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles2">
+            <MenuItem class="javax.swing.JMenuItem" name="salirPlanillas">
               <Properties>
                 <Property name="text" type="java.lang.String" value="salir de menu"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="salirPlanillasActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -20,25 +26,50 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Catalogos"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu2ActionPerformed"/>
+          </Events>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles1">
+            <MenuItem class="javax.swing.JMenuItem" name="manDepartamento">
               <Properties>
-                <Property name="text" type="java.lang.String" value="empleados"/>
+                <Property name="text" type="java.lang.String" value="Departamentos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="manDepartamentoActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles5">
               <Properties>
-                <Property name="text" type="java.lang.String" value="puestos"/>
+                <Property name="text" type="java.lang.String" value="Puestos"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles5ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles6">
               <Properties>
-                <Property name="text" type="java.lang.String" value="deducciones"/>
+                <Property name="text" type="java.lang.String" value="Empleados"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles6ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles7">
               <Properties>
-                <Property name="text" type="java.lang.String" value="bonificaciones"/>
+                <Property name="text" type="java.lang.String" value="Conceptos Planillas"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles7ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Deducciones"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Bonificaciones"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -50,18 +81,19 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles8">
               <Properties>
-                <Property name="text" type="java.lang.String" value="calcular planilla"/>
+                <Property name="text" type="java.lang.String" value="Generar Planilla"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles9">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="aplicar deduccion"/>
-              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles8ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles10">
               <Properties>
-                <Property name="text" type="java.lang.String" value="generar pagos"/>
+                <Property name="text" type="java.lang.String" value="Pago de N&#xf3;mina"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles10ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -72,18 +104,19 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles11">
               <Properties>
-                <Property name="text" type="java.lang.String" value="empreados"/>
+                <Property name="text" type="java.lang.String" value="Consultar Empleados"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles11ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles12">
               <Properties>
-                <Property name="text" type="java.lang.String" value="pagos"/>
+                <Property name="text" type="java.lang.String" value="Historial Planilla"/>
               </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles13">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="historial"/>
-              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles12ActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -94,17 +127,20 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles14">
               <Properties>
-                <Property name="text" type="java.lang.String" value="boleta de pagos"/>
+                <Property name="text" type="java.lang.String" value="Reporte Planilla"/>
               </Properties>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles15">
               <Properties>
-                <Property name="text" type="java.lang.String" value="planilla genrar"/>
+                <Property name="text" type="java.lang.String" value="Reporte Empleados"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoPerfiles15ActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles16">
               <Properties>
-                <Property name="text" type="java.lang.String" value="deduccciones"/>
+                <Property name="text" type="java.lang.String" value="Reporte Deducciones"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -116,7 +152,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles4">
               <Properties>
-                <Property name="text" type="java.lang.String" value="manual"/>
+                <Property name="text" type="java.lang.String" value="Manual Usuario"/>
               </Properties>
               <Events>
                 <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="frmMantenimientoPerfiles4AncestorAdded"/>
@@ -125,7 +161,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoPerfiles17">
               <Properties>
-                <Property name="text" type="java.lang.String" value="acerca de"/>
+                <Property name="text" type="java.lang.String" value="Acerca de"/>
               </Properties>
             </MenuItem>
           </SubComponents>
