@@ -8,6 +8,16 @@ import Controlador.clsUsuarioConectado;
 import Modelo.BitacoraDAO;
 import Modelo.Bancos.ClientesDAO;
 import Modelo.Conexion;
+import java.sql.Connection;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
 /**
  *
  * @Angoly Camila Araujo Mayen 9959-24-17623
@@ -322,7 +332,21 @@ private final Modelo.Bancos.ClientesDAO clientesDAO = new Modelo.Bancos.Clientes
     }//GEN-LAST:event_buscarActionPerformed
 
     private void reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteActionPerformed
-
+    Connection conn = null;
+    Map p = new HashMap();
+    JasperReport report;
+    JasperPrint print;
+        try {
+            conn = Conexion.getConnection();
+            report = JasperCompileManager.compileReport(new File("").getAbsolutePath()
+                + "src\\main\\java\\Reportes\\Bancos\\Cliente.jrxml");
+                print = JasperFillManager.fillReport(report, p, conn);
+            JasperViewer view = new JasperViewer(print, false);
+                view.setTitle("Reporte Prueba");
+            view.setVisible(true);
+        } catch (Exception e) {
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_reporteActionPerformed
 
     private void ayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaActionPerformed
