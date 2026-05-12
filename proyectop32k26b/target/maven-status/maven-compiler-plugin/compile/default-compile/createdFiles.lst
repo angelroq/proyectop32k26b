@@ -1,15 +1,25 @@
 Vista\MdiSeguridad$14.class
+<<<<<<< HEAD
 Vista\vistaPlanilla\frmMantenimientoDepartamento$7.class
 Vista\frmMantenimientoPerfil$7.class
 Vista\frmMantenimientoUsuario$4.class
 Vista\vistaPlanilla\MdiPlanillas$11.class
 Vista\Bancos\frmCliente$1.class
+=======
+Vista\frmMantenimientoPerfil$7.class
+Vista\frmMantenimientoUsuario$4.class
+Vista\ComercialComprasyVentas\MdiComercio$4.class
+>>>>>>> origin/MC9959-23-3775
 Vista\Bancos\MdiBancos$7.class
 Vista\Bancos\frmBanco$8.class
 Vista\Bancos\frmCuentaBancaria$1.class
 Vista\frmRestablecerContraseña$2.class
 Controlador\clsAsignacionAplicacionUsuario.class
+<<<<<<< HEAD
 Vista\MdiComercio$3.class
+=======
+Vista\ComercialComprasyVentas\frmVentas$9.class
+>>>>>>> origin/MC9959-23-3775
 Vista\vistaCuentasCorrientes\MdiGeneralCC$1.class
 Vista\frmProcesoPerfilUsuario$6.class
 Vista\vistaPlanilla\MdiPlanillas$4.class
@@ -19,13 +29,23 @@ Controlador\Bancos\clsConciliacionBancaria.class
 Controlador\Bancos\clsTipoTransaccion.class
 Modelo\PerfilDAO.class
 Vista\frmMantenimientoBitacora$6.class
+<<<<<<< HEAD
+=======
+Vista\ComercialComprasyVentas\frmVentas.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmProcesoAplicacionUsuario$8.class
 Vista\frmProcesoAplicacionPerfil$9.class
 Vista\Bancos\frmCliente$7.class
 Vista\Bancos\MdiBancos$1.class
+<<<<<<< HEAD
 Vista\vistaPlanilla\frmMantenimientoDepartamento$1.class
 Vista\frmLogin$5.class
 Vista\vistaCuentasCorrientes\NewJFrame$1.class
+=======
+Vista\frmLogin$5.class
+Vista\vistaCuentasCorrientes\NewJFrame$1.class
+Vista\ComercialComprasyVentas\frmVentas$11.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmMantenimientoPerfil$2.class
 Vista\Bancos\MdiBancos$11.class
 Vista\MdiSeguridad$2.class
@@ -33,8 +53,11 @@ Vista\frmMantenimientoAplicaciones$2.class
 Vista\frmProcesoAplicacionPerfil$3.class
 Vista\frmMantenimientoBitacora$5.class
 Vista\frmMantenimientoAplicaciones$1.class
+<<<<<<< HEAD
 Vista\Bancos\frmCliente$6.class
 Modelo\modeloPlanilla\DepartamentoDAO.class
+=======
+>>>>>>> origin/MC9959-23-3775
 Vista\vistaPlanilla\MdiPlanillas$3.class
 Vista\frmMantenimientoUsuario$9.class
 Vista\frmProcesoPerfilUsuario$1.class
@@ -45,6 +68,7 @@ Vista\Bancos\MdiBancos$2.class
 Vista\frmRestablecerContraseña.class
 Vista\frmProcesoAplicacionPerfil$10.class
 Vista\MdiSeguridad$13.class
+<<<<<<< HEAD
 Vista\vistaPlanilla\MdiPlanillas$9.class
 Vista\vistaPlanilla\frmMantenimientoDepartamento$6.class
 Controlador\prueba.class
@@ -52,6 +76,10 @@ Vista\MdiComercio$4.class
 Vista\vistaPlanilla\frmMantenimientoDepartamento$10.class
 Vista\frmRestablecerContraseña$1.class
 Modelo\Bancos\ClientesDAO.class
+=======
+Controlador\prueba.class
+Vista\frmRestablecerContraseña$1.class
+>>>>>>> origin/MC9959-23-3775
 Vista\MdiSeguridad$7.class
 Vista\vistaCuentasCorrientes\MdiGeneralCC$2.class
 Vista\frmMantenimientoAplicaciones$7.class
@@ -59,10 +87,18 @@ Controlador\clsAplicaciones.class
 Vista\frmProcesoPerfilUsuario.class
 Vista\frmProcesoAplicacionPerfil$4.class
 Controlador\clsSeguridad.class
+Vista\ComercialComprasyVentas\frmVentas$2.class
 Vista\frmProcesoAplicacionUsuario$4.class
 Vista\Bancos\frmCliente$8.class
 Vista\frmMantenimientoAplicaciones$6.class
+Vista\ComercialComprasyVentas\frmVentas$15.class
 Vista\MdiSeguridad$9.class
+<<<<<<< HEAD
+=======
+Controlador\Compras\clsFacturadetallecompras.class
+Vista\ComercialComprasyVentas\frmVentas$18.class
+Modelo\Compras\FacturascomprasDAO.class
+>>>>>>> origin/MC9959-23-3775
 Vista\Bancos\MdiBancos$12.class
 Controlador\Bancos\clsEstadoConciliacion.class
 Vista\frmProcesoAplicacionPerfil$5.class
@@ -73,6 +109,7 @@ Modelo\Bancos\BancoDAO.class
 Modelo\Conexion.class
 Vista\frmProcesoAplicacionUsuario$10.class
 Controlador\Bancos\clsBanco.class
+<<<<<<< HEAD
 Modelo\Bancos\BitacoraBancariaDAO.class
 Vista\frmProcesoAplicacionPerfil$8.class
 Vista\frmMantenimientoPerfil$6.class
@@ -86,11 +123,27 @@ Vista\frmProcesoPerfilUsuario$7.class
 Vista\frmProcesoAplicacionUsuario$1.class
 Controlador\clsAsignacionAplicacionPerfil.class
 Vista\Bancos\frmMantenimientoTipoCuenta.class
+=======
+Vista\frmProcesoAplicacionPerfil$8.class
+Modelo\Compras\FacturadetallecomprasDAO.class
+Vista\frmMantenimientoPerfil$6.class
+Vista\Bancos\MdiBancos$8.class
+Vista\MdiSeguridad$10.class
+Vista\ComercialComprasyVentas\MdiComercio$5.class
+Controlador\Compras\clsFacturascompras.class
+Vista\frmMantenimientoBitacora$2.class
+Vista\frmProcesoPerfilUsuario$7.class
+Vista\frmProcesoAplicacionUsuario$1.class
+Vista\ComercialComprasyVentas\frmVentas$5.class
+Vista\ComercialComprasyVentas\MdiComercio$2.class
+Controlador\clsAsignacionAplicacionPerfil.class
+>>>>>>> origin/MC9959-23-3775
 Controlador\ComisionesVentas\clsReportes.class
 Controlador\clsUsuarioConectado.class
 Vista\frmProcesoPerfilUsuario$4.class
 Vista\frmMantenimientoAplicaciones$4.class
 Vista\frmProcesoAplicacionUsuario$11.class
+<<<<<<< HEAD
 Vista\frmProcesoAplicacionUsuario$2.class
 Vista\frmProcesoAplicacionPerfil$6.class
 Vista\vistaCuentasCorrientes\MdiGeneralCC$6.class
@@ -102,16 +155,37 @@ Vista\frmProcesoAplicacionUsuario$3.class
 Vista\Bancos\MdiBancos$10.class
 Modelo\Bancos\CuentaBancariaDAO.class
 Vista\vistaPlanilla\frmMantenimientoDepartamento$8.class
+=======
+Vista\ComercialComprasyVentas\frmVentas$4.class
+Vista\frmProcesoAplicacionUsuario$2.class
+Vista\frmProcesoAplicacionPerfil$6.class
+Vista\ComercialComprasyVentas\frmVentas$20.class
+Vista\vistaCuentasCorrientes\MdiGeneralCC$6.class
+Vista\ComercialComprasyVentas\frmVentas$17.class
+Vista\Bancos\MdiBancos$5.class
+Vista\ComercialComprasyVentas\MdiComercio$3.class
+Vista\frmMantenimientoBitacora$1.class
+Vista\ComercialComprasyVentas\frmVentas$3.class
+Vista\frmProcesoAplicacionUsuario$3.class
+Vista\Bancos\MdiBancos$10.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmProcesoAplicacionUsuario$12.class
 Vista\frmProcesoPerfilUsuario$5.class
 Vista\vistaCuentasCorrientes\MdiGeneralCC$5.class
 Vista\frmProcesoAplicacionPerfil$7.class
+<<<<<<< HEAD
 Controlador\clsBitacora.class
 Modelo\ComisionesVentas\RepostesDAO.class
 Vista\vistaPlanilla\MdiPlanillas$10.class
 Vista\Bancos\frmBitacoraBancaria.class
 Vista\Bancos\MdiBancos$6.class
 Vista\Bancos\frmBitacoraBancaria$2.class
+=======
+Vista\ComercialComprasyVentas\frmVentas$16.class
+Controlador\clsBitacora.class
+Modelo\ComisionesVentas\RepostesDAO.class
+Vista\Bancos\MdiBancos$6.class
+>>>>>>> origin/MC9959-23-3775
 Controlador\controladorPlanilla\prueba1.class
 Vista\vistaCuentasCorrientes\MdiGeneralCC$4.class
 Vista\frmProcesoAplicacionPerfil$1.class
@@ -119,6 +193,7 @@ Vista\frmLogin$2.class
 Vista\frmMantenimientoBitacora$3.class
 Vista\frmProcesoAplicacionPerfil.class
 Vista\MdiSeguridad$11.class
+<<<<<<< HEAD
 Vista\vistaPlanilla\frmMantenimientoDepartamento$4.class
 Vista\vistaPlanilla\MdiPlanillas$14.class
 Controlador\clsPerfil.class
@@ -133,16 +208,37 @@ Vista\vistaPlanilla\MdiPlanillas$7.class
 Vista\Bancos\MdiBancos.class
 Vista\Bancos\frmBanco.class
 Vista\Bancos\frmCliente$4.class
+=======
+Vista\ComercialComprasyVentas\MdiComercio$1.class
+Vista\ComercialComprasyVentas\frmVentas$6.class
+Controlador\clsPerfil.class
+Modelo\Ventas\Facturasventas.class
+Vista\vistaPlanilla\MdiPlanillas$1.class
+Vista\frmProcesoPerfilUsuario$3.class
+Vista\frmMantenimientoUsuario$7.class
+Vista\ComercialComprasyVentas\frmVentas$14.class
+Vista\MdiSeguridad$5.class
+Vista\frmMantenimientoAplicaciones$5.class
+Vista\Bancos\MdiBancos$4.class
+Vista\Bancos\MdiBancos.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmProcesoAplicacionUsuario.class
 Vista\Bancos\MdiBancos$14.class
 Vista\frmMantenimientoPerfil.class
 Vista\frmMantenimientoPerfil$5.class
 Controlador\controladorCuentasCorrientes\provicional.class
+<<<<<<< HEAD
 Vista\frmProcesoAplicacionUsuario$6.class
 Modelo\Bancos\TipoCuentaDAO.class
 Vista\Bancos\frmMantenimientoTipoCuenta$1.class
 Vista\frmLogin$1.class
 Vista\Bancos\frmMovimientoBancario$1.class
+=======
+Vista\ComercialComprasyVentas\frmVentas$13.class
+Vista\frmProcesoAplicacionUsuario$6.class
+Vista\ComercialComprasyVentas\frmCompras.class
+Vista\frmLogin$1.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmProcesoPerfilUsuario$8.class
 Vista\frmMantenimientoUsuario$2.class
 Vista\vistaCuentasCorrientes\NewJFrame.class
@@ -150,6 +246,11 @@ Vista\vistaCuentasCorrientes\MdiGeneralCC$3.class
 Controlador\Bancos\clsTipoCuenta.class
 Vista\frmMantenimientoBitacora.class
 Vista\vistaPlanilla\MdiPlanillas$2.class
+<<<<<<< HEAD
+=======
+Vista\ComercialComprasyVentas\frmVentas$1.class
+Vista\ComercialComprasyVentas\frmVentas$19.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmProcesoAplicacionUsuario$5.class
 Vista\Bancos\MdiBancos$13.class
 Vista\frmMantenimientoBitacora$4.class
@@ -157,6 +258,7 @@ Controlador\Bancos\clsMovimientoBancario.class
 Modelo\PermisosDAO.class
 Modelo\AsignacionPerfilUsuarioDAO.class
 Vista\frmMantenimientoUsuario$1.class
+<<<<<<< HEAD
 Vista\vistaPlanilla\MdiPlanillas$13.class
 Vista\Bancos\MdiBancos$3.class
 Vista\Bancos\MdiBancos$9.class
@@ -174,22 +276,45 @@ Vista\frmMantenimientoAplicaciones$9.class
 Modelo\AplicacionesDAO.class
 Vista\Bancos\frmCliente$5.class
 Vista\vistaPlanilla\frmMantenimientoDepartamento$3.class
+=======
+Vista\Bancos\MdiBancos$3.class
+Vista\Bancos\MdiBancos$9.class
+Vista\MdiSeguridad$12.class
+Modelo\BitacoraDAO.class
+Vista\frmMantenimientoPerfil$4.class
+Vista\frmMantenimientoUsuario$8.class
+Vista\ComercialComprasyVentas\frmVentas$7.class
+Vista\frmProcesoPerfilUsuario$2.class
+Controlador\Bancos\clsCliente.class
+Vista\frmLogin$6.class
+Vista\frmMantenimientoAplicaciones$9.class
+Modelo\AplicacionesDAO.class
+Vista\ComercialComprasyVentas\frmVentas$12.class
+>>>>>>> origin/MC9959-23-3775
 Vista\MdiSeguridad$3.class
 Controlador\Bancos\clsCuentaBancaria.class
 Vista\MdiSeguridad$6.class
 Vista\ComisionesVentas\frmComisionesVentas.class
 Vista\frmMantenimientoPerfil$3.class
 Modelo\modeloPlanilla\provicionalprueba.class
+<<<<<<< HEAD
 Vista\Bancos\frmBitacoraBancaria$1.class
 Vista\Bancos\MdiBancos$15.class
 Vista\frmMantenimientoUsuario$3.class
 Vista\Bancos\frmCliente.class
 Vista\MdiComercio$2.class
 Vista\Bancos\frmMantenimientoTipoCuenta$2.class
+=======
+Vista\ComercialComprasyVentas\MdiComercio.class
+Vista\Bancos\MdiBancos$15.class
+Vista\frmMantenimientoUsuario$3.class
+Vista\ComercialComprasyVentas\frmVentas$8.class
+>>>>>>> origin/MC9959-23-3775
 Modelo\AsignacionAplicacionPerfilDAO.class
 Vista\vistaPlanilla\MdiPlanillas.class
 Vista\frmProcesoAplicacionPerfil$2.class
 Vista\frmMantenimientoAplicaciones$10.class
+<<<<<<< HEAD
 Vista\frmMantenimientoUsuario$6.class
 Controlador\controladorPlanilla\clsDepartamento.class
 Vista\frmProcesoAplicacionUsuario$7.class
@@ -200,10 +325,18 @@ Vista\vistaPlanilla\MdiPlanillas$15.class
 Controlador\clsUsuario.class
 Vista\vistaPlanilla\frmMantenimientoDepartamento.class
 Vista\MdiComercio.class
+=======
+Controlador\Ventas\clsFacturasventas.class
+Vista\frmMantenimientoUsuario$6.class
+Vista\frmProcesoAplicacionUsuario$7.class
+Modelo\UsuarioDAO.class
+Controlador\clsUsuario.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmRestablecerContraseña$3.class
 Vista\frmLogin$4.class
 Vista\MdiSeguridad$4.class
 Vista\vistaCuentasCorrientes\MdiGeneralCC.class
+<<<<<<< HEAD
 Vista\Bancos\frmBanco$3.class
 Vista\frmProcesoAplicacionUsuario$9.class
 Vista\vistaPlanilla\MdiPlanillas$16.class
@@ -227,4 +360,17 @@ Vista\Bancos\MdiBancos$16.class
 Vista\frmLogin$3.class
 Vista\vistaPlanilla\frmMantenimientoDepartamento$2.class
 Vista\Bancos\frmCuentaBancaria.class
+=======
+Vista\frmProcesoAplicacionUsuario$9.class
+Vista\ComercialComprasyVentas\frmVentas$10.class
+Vista\frmLogin.class
+Vista\frmRestablecerContraseña$4.class
+Modelo\modeloCuentasCorrientes\provicionalDao.class
+Vista\frmMantenimientoUsuario$5.class
+Controlador\clsAsignacionPerfilUsuario.class
+Vista\frmMantenimientoPerfil$1.class
+Vista\MdiSeguridad$15.class
+Modelo\AsignacionAplicacionUsuarioDAO.class
+Vista\frmLogin$3.class
+>>>>>>> origin/MC9959-23-3775
 Vista\frmMantenimientoUsuario.class
