@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="34194f59-e48a-43ce-8a85-6b3d66626bfe">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM `banco`]]>
+	</queryString>
+	<field name="Banid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Bannombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Bandireccion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Bantelefono" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Bancorreo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Banfecharegistro" class="java.time.LocalDateTime">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="61" y="41" width="100" height="20" uuid="38fe2615-bfd1-47f0-8faa-b7db07e953b3"/>
+				<text><![CDATA[Bannombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="61" y="0" width="100" height="20" uuid="d9b8e2d2-4ef0-4f04-89f5-6d8d05bf4466"/>
+				<text><![CDATA[Banid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="195" y="0" width="100" height="20" uuid="69a568bb-9f5d-4fce-a5b8-2b87f9874c10"/>
+				<text><![CDATA[Bandireccion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="195" y="41" width="100" height="20" uuid="8578b3af-a8b9-44ad-989b-96c9c715c7b1"/>
+				<text><![CDATA[Bantelefono]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="0" width="100" height="20" uuid="20bd2713-3793-42a2-9387-1778cd453c4a"/>
+				<text><![CDATA[Bancorreo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="342" y="41" width="100" height="20" uuid="a857fbbf-1f42-43d2-93db-16b70f765feb"/>
+				<text><![CDATA[Banfecharegistro]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="61" y="79" width="100" height="20" uuid="602259df-0251-402d-858c-20253c48b241"/>
+				<textFieldExpression><![CDATA[$F{Bannombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="61" y="31" width="100" height="20" uuid="844fd3d7-72dc-4d2e-adee-5d3cf2ea49e4"/>
+				<textFieldExpression><![CDATA[$F{Banid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="31" width="100" height="20" uuid="d0d3f7a8-4893-4387-b3fb-d0db468ff489"/>
+				<textFieldExpression><![CDATA[$F{Bandireccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="195" y="79" width="100" height="20" uuid="2b696ca9-15df-457e-b1ce-920caf8dbbb7"/>
+				<textFieldExpression><![CDATA[$F{Bantelefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="342" y="31" width="100" height="20" uuid="2b1d56dd-37f5-4980-9949-7634a403f53a"/>
+				<textFieldExpression><![CDATA[$F{Bancorreo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="342" y="79" width="100" height="20" uuid="8ef71b3a-9a33-4182-8bfd-4810f1169027"/>
+				<textFieldExpression><![CDATA[""+$F{Banfecharegistro}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

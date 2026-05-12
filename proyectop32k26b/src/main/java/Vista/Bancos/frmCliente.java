@@ -8,6 +8,16 @@ import Controlador.clsUsuarioConectado;
 import Modelo.BitacoraDAO;
 import Modelo.Bancos.ClientesDAO;
 import Modelo.Conexion;
+import java.sql.Connection;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+//import net.sf.jasperreports.engine.JasperCompileManager;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.engine.JasperReport;
+//import net.sf.jasperreports.view.JasperViewer;
+
 /**
  *
  * @Angoly Camila Araujo Mayen 9959-24-17623
@@ -322,7 +332,52 @@ private final Modelo.Bancos.ClientesDAO clientesDAO = new Modelo.Bancos.Clientes
     }//GEN-LAST:event_buscarActionPerformed
 
     private void reporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reporteActionPerformed
-
+     Connection conn = null;
+    try {
+        conn = Modelo.Conexion.getConnection();
+        
+        // Ruta corregida — faltaba el separador entre getAbsolutePath() y src
+        String ruta = new java.io.File("").getAbsolutePath() 
+                    + "\\src\\main\\java\\Reportes\\Bancos\\Cliente.jrxml";
+        
+        System.out.println("Buscando reporte en: " + ruta); // Para verificar en consola
+        
+        java.io.File archivo = new java.io.File(ruta);
+        if (!archivo.exists()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No se encontró el archivo del reporte en:\n" + ruta,
+                "Archivo no encontrado", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        java.util.Map<String, Object> parametros = new java.util.HashMap<>();
+        
+        //net.sf.jasperreports.engine.JasperReport reporte =
+          //  net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
+        
+        //net.sf.jasperreports.engine.JasperPrint print =
+          //  net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
+        
+        //net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
+        //net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
+        
+        javax.swing.JFrame frame = new javax.swing.JFrame("Reporte de Clientes");
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+       // frame.add(viewer);
+        frame.setVisible(true);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Error al generar el reporte:\n" + e.getMessage(),
+            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (conn != null) {
+            try { conn.close(); } catch (Exception ex) { ex.printStackTrace(); }
+        }
+    }
     }//GEN-LAST:event_reporteActionPerformed
 
     private void ayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ayudaActionPerformed

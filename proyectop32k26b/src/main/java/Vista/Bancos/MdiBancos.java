@@ -91,8 +91,6 @@ public class MdiBancos extends javax.swing.JFrame {
         jMenuItem5 = new javax.swing.JMenuItem();
         mnuConsultas = new javax.swing.JMenu();
         frmMantenimientoBitacora = new javax.swing.JMenuItem();
-        mnuReportes = new javax.swing.JMenu();
-        mnuAyudas = new javax.swing.JMenu();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -237,17 +235,6 @@ public class MdiBancos extends javax.swing.JFrame {
         mnuConsultas.add(frmMantenimientoBitacora);
 
         mnuGeneral.add(mnuConsultas);
-
-        mnuReportes.setText("Reportes");
-        mnuGeneral.add(mnuReportes);
-
-        mnuAyudas.setText("Ayudas");
-        mnuAyudas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuAyudasActionPerformed(evt);
-            }
-        });
-        mnuGeneral.add(mnuAyudas);
 
         setJMenuBar(mnuGeneral);
 
@@ -473,21 +460,6 @@ vista.setVisible(true);
         ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
     }//GEN-LAST:event_frmProcesoAplicacionUsuarioActionPerformed
 
-    private void mnuAyudasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAyudasActionPerformed
- System.out.println("Abriendo ayuda del sistema");
-
-    try {
-        String ruta = System.getProperty("user.dir") + "C:\\Users\\VA\\Desktop\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Bancos";
-
-        // Ejecuta el archivo de ayuda
-        Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
-
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-                "No se pudo abrir la ayuda");
-    }
-    }//GEN-LAST:event_mnuAyudasActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -555,13 +527,11 @@ vista.setVisible(true);
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem mantenimientoBancos;
     private javax.swing.JMenu mnuArchivo;
-    private javax.swing.JMenu mnuAyudas;
     private javax.swing.JMenu mnuCatalogos;
     private javax.swing.JMenu mnuCatalogosMantenimientos;
     private javax.swing.JMenu mnuConsultas;
     private javax.swing.JMenuBar mnuGeneral;
     private javax.swing.JMenu mnuProcesos;
-    private javax.swing.JMenu mnuReportes;
     private javax.swing.JCheckBoxMenuItem mnuSalirSistema;
     // End of variables declaration//GEN-END:variables
 }
