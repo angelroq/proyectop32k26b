@@ -101,6 +101,14 @@ public class clsTipoCuenta {
     public int setEliminar(int id) {
         return new TipoCuentaDAO().eliminar(id);
     }
+    
+    public void resetearAutoIncrement() {
+    new TipoCuentaDAO().resetearAutoIncrement();
+    }
+    
+    public void limpiarTabla() {
+    new TipoCuentaDAO().limpiarTabla();
+    }
 
     @Override
     public String toString() {

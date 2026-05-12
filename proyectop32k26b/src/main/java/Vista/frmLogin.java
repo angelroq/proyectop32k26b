@@ -11,10 +11,13 @@ import Modelo.BitacoraDAO;
 import Controlador.clsSeguridad;
 import Controlador.clsUsuario;
 import Controlador.clsUsuarioConectado;
+import Vista.ComisionesVentas.frmComisionesVentas;
 
 import Vista.vistaCuentasCorrientes.MdiGeneralCC;
 
 import Vista.Bancos.MdiBancos;
+
+import Vista.vistaPlanilla.MdiPlanillas;
 
 import java.awt.HeadlessException;
 import java.util.HashSet;
@@ -91,7 +94,7 @@ public class frmLogin extends javax.swing.JFrame {
 
         jLabel4.setText("Departamento");
 
-        cboOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Compras", "Cuentas Corrientes", "Inventarios", "Seguridad", "Ventas", "Comisiones de ventas" }));
+        cboOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Compras", "Cuentas Corrientes", "Inventarios", "Seguridad", "Ventas", "Comisiones de ventas", "Planillas" }));
         cboOpciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboOpcionesActionPerformed(evt);
@@ -137,7 +140,7 @@ public class frmLogin extends javax.swing.JFrame {
                                         .addComponent(btnAceptar)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jButton2)))))))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,7 +164,7 @@ public class frmLogin extends javax.swing.JFrame {
                     .addComponent(btnAceptar)
                     .addComponent(jButton2)
                     .addComponent(ccontraseña))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -265,6 +268,25 @@ case "Ventas":
             "Módulo de Ventas aún no disponible", 
             "Información", 
             JOptionPane.INFORMATION_MESSAGE);
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+    break;
+    
+case "Planillas":
+    try {
+        MdiPlanillas menu = new MdiPlanillas();
+        menu.setVisible(true);
+        this.dispose();
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+    break;
+case "Comisiones de ventas":
+    try {
+         frmComisionesVentas menu = new frmComisionesVentas();
+        menu.setVisible(true);
+        this.dispose();
     } catch (Exception e) {
         System.out.println(e);
     }
