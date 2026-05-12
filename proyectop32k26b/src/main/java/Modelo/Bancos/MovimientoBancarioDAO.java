@@ -6,6 +6,7 @@ package Modelo.Bancos;
  *
  * Proporciona operaciones CRUD sobre la tabla MovimientoBancario
  * y registra automáticamente cada acción en BitacoraBancaria.
+ * Actualiza el saldo de CuentaBancaria en cada operación.
  *
  * Estructura de tabla MovimientoBancario:
  *   Movbid               INT           PK AUTO_INCREMENT
@@ -14,13 +15,14 @@ package Modelo.Bancos;
  *   Movdescripcion       VARCHAR(255)
  *   CBANid               INT           FK -> CuentaBancaria
  *   TTid                 INT           FK -> CatTipoTransaccion
- *   Movbtipomov          VARCHAR(20)   NOT NULL
+ *   Movbtipomov          VARCHAR(20)   NOT NULL  (Credito / Debito)
  *   Movbreferencia       VARCHAR(50)
  *   Movbconciliado       CHAR(1)       DEFAULT 'N'
  *
  * @author Angel Méndez
  * @carnet 9959-24-6845
- * @since 2026-05-10
+ * @since  2026-05-10
+ * @update 2026-05-11
  */
 
 import Controlador.Bancos.clsMovimientoBancario;
@@ -34,19 +36,94 @@ public class MovimientoBancarioDAO {
     private static final String TABLA = "MovimientoBancario";
 
     // ─────────────────────────────────────────────────────────────────────
+    // HELPERS PRIVADOS DE SALDO
+    // ─────────────────────────────────────────────────────────────────────
+
+    /**
+     * Verifica si la cuenta tiene fondos suficientes para un débito.
+     *
+     * @param cbanId ID de la cuenta bancaria
+     * @param monto  monto a debitar
+     * @return true si saldo >= monto
+     */
+    private boolean tieneFondos(int cbanId, double monto) {
+        String sql = "SELECT CBANsaldoactual FROM CuentaBancaria WHERE CBANid = ?";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cbanId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                double saldo = rs.getDouble("CBANsaldoactual");
+                return saldo >= monto;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return false;
+    }
+
+    /**
+     * Suma o resta el saldo de una cuenta bancaria.
+     *
+     * @param cbanId ID de la cuenta
+     * @param monto  monto a aplicar
+     * @param sumar  true = suma, false = resta
+     */
+    private void actualizarSaldo(int cbanId, double monto, boolean sumar) {
+        String sql = sumar
+            ? "UPDATE CuentaBancaria SET CBANsaldoactual = CBANsaldoactual + ? WHERE CBANid = ?"
+            : "UPDATE CuentaBancaria SET CBANsaldoactual = CBANsaldoactual - ? WHERE CBANid = ?";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, monto);
+            stmt.setInt(2, cbanId);
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+    }
+
+    /**
+     * Obtiene el saldo actual de una cuenta bancaria.
+     *
+     * @param cbanId ID de la cuenta
+     * @return saldo actual o 0 si no existe
+     */
+    public double getSaldoCuenta(int cbanId) {
+        String sql = "SELECT CBANsaldoactual FROM CuentaBancaria WHERE CBANid = ?";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, cbanId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) return rs.getDouble("CBANsaldoactual");
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }
+        return 0;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
     // INSERT
     // ─────────────────────────────────────────────────────────────────────
 
     /**
-     * Inserta un nuevo movimiento bancario.
-     * La fecha se registra automáticamente por la BD (DEFAULT CURRENT_TIMESTAMP).
+     * Inserta un nuevo movimiento bancario y actualiza el saldo.
+     * Si es Débito, valida fondos antes de insertar.
      *
      * @param mov   datos del movimiento
      * @param usuId usuario conectado para bitácora
-     * @return filas afectadas
+     * @return filas afectadas, -1 si fondos insuficientes
      */
     public int insertar(clsMovimientoBancario mov, int usuId) {
         int resultado = 0;
+
+        // Validar fondos ANTES de insertar si es Debito
+        if ("Debito".equals(mov.getMovbtipomov())) {
+            if (!tieneFondos(mov.getCBANid(), mov.getMovibmonto())) {
+                return -1;
+            }
+        }
+
         String sql = "INSERT INTO MovimientoBancario "
                 + "(Movibmonto, Movdescripcion, CBANid, TTid, Movbtipomov, Movbreferencia, Movbconciliado) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -68,6 +145,10 @@ public class MovimientoBancarioDAO {
                 ResultSet gk = stmt.getGeneratedKeys();
                 if (gk.next()) nuevoId = gk.getInt(1);
 
+                // Actualizar saldo: Credito suma, Debito resta
+                boolean sumar = "Credito".equals(mov.getMovbtipomov());
+                actualizarSaldo(mov.getCBANid(), mov.getMovibmonto(), sumar);
+
                 String valorNuevo = "Monto=" + mov.getMovibmonto()
                         + ", Cuenta=" + mov.getCBANid()
                         + ", TipoTrans=" + mov.getTTid()
@@ -76,8 +157,7 @@ public class MovimientoBancarioDAO {
                         + ", Conciliado=" + mov.getMovbconciliado();
 
                 registrarBitacora(usuId, "INSERT", TABLA, nuevoId, null, valorNuevo,
-                        "Nuevo movimiento bancario: " + mov.getMovbtipomov()
-                        + " Q" + mov.getMovibmonto());
+                        "Nuevo movimiento: " + mov.getMovbtipomov() + " Q" + mov.getMovibmonto());
             }
 
         } catch (SQLException ex) {
@@ -94,7 +174,8 @@ public class MovimientoBancarioDAO {
     // ─────────────────────────────────────────────────────────────────────
 
     /**
-     * Obtiene todos los movimientos con número de cuenta y nombre de tipo transacción.
+     * Obtiene todos los movimientos con número de cuenta y tipo de transacción.
+     * @return lista de clsMovimientoBancario con campos auxiliares rellenos
      */
     public List<clsMovimientoBancario> seleccionar() {
         List<clsMovimientoBancario> lista = new ArrayList<>();
@@ -138,6 +219,11 @@ public class MovimientoBancarioDAO {
     // SELECT por ID
     // ─────────────────────────────────────────────────────────────────────
 
+    /**
+     * Busca un movimiento por su PK incluyendo datos de JOIN.
+     * @param id Movbid
+     * @return clsMovimientoBancario o null
+     */
     public clsMovimientoBancario buscarPorId(int id) {
         String sql =
             "SELECT m.Movbid, m.Movbfechamovimiento, m.Movibmonto, m.Movdescripcion, "
@@ -180,8 +266,12 @@ public class MovimientoBancarioDAO {
 
     /**
      * Actualiza un movimiento bancario.
-     * Registra valor anterior y nuevo en BitacoraBancaria.
-     * Nota: No se actualiza Movbfechamovimiento (fecha queda fija al momento original).
+     * Revierte el saldo anterior y aplica el nuevo.
+     * Valida fondos si el nuevo movimiento es Débito.
+     *
+     * @param mov   datos actualizados
+     * @param usuId usuario conectado para bitácora
+     * @return filas afectadas, -1 si fondos insuficientes
      */
     public int actualizar(clsMovimientoBancario mov, int usuId) {
         int resultado = 0;
@@ -193,6 +283,18 @@ public class MovimientoBancarioDAO {
                   + ", TipoMov=" + anterior.getMovbtipomov()
                   + ", Conciliado=" + anterior.getMovbconciliado()
                 : null;
+
+        // Validar fondos si el nuevo movimiento es Debito
+        if ("Debito".equals(mov.getMovbtipomov()) && anterior != null) {
+            double saldoReal = getSaldoCuenta(mov.getCBANid());
+            double saldoConReversion = "Debito".equals(anterior.getMovbtipomov())
+                ? saldoReal + anterior.getMovibmonto()
+                : saldoReal - anterior.getMovibmonto();
+
+            if (saldoConReversion < mov.getMovibmonto()) {
+                return -1;
+            }
+        }
 
         String sql = "UPDATE MovimientoBancario SET Movibmonto=?, Movdescripcion=?, "
                 + "CBANid=?, TTid=?, Movbtipomov=?, Movbreferencia=?, Movbconciliado=? "
@@ -211,14 +313,22 @@ public class MovimientoBancarioDAO {
             stmt.setInt(8, mov.getMovbid());
             resultado = stmt.executeUpdate();
 
-            if (resultado > 0) {
+            if (resultado > 0 && anterior != null) {
+                // 1. Revertir saldo anterior
+                boolean sumarReversion = "Debito".equals(anterior.getMovbtipomov());
+                actualizarSaldo(anterior.getCBANid(), anterior.getMovibmonto(), sumarReversion);
+
+                // 2. Aplicar nuevo saldo
+                boolean sumarNuevo = "Credito".equals(mov.getMovbtipomov());
+                actualizarSaldo(mov.getCBANid(), mov.getMovibmonto(), sumarNuevo);
+
                 String valorNuevo = "Monto=" + mov.getMovibmonto()
                         + ", Cuenta=" + mov.getCBANid()
                         + ", TipoMov=" + mov.getMovbtipomov()
                         + ", Conciliado=" + mov.getMovbconciliado();
                 registrarBitacora(usuId, "UPDATE", TABLA, mov.getMovbid(),
                         valorAnterior, valorNuevo,
-                        "Actualización movimiento bancario ID=" + mov.getMovbid());
+                        "Actualización movimiento ID=" + mov.getMovbid());
             }
 
         } catch (SQLException ex) {
@@ -227,12 +337,20 @@ public class MovimientoBancarioDAO {
         return resultado;
     }
 
+    /** Sobrecarga sin usuId */
     public int actualizar(clsMovimientoBancario mov) { return actualizar(mov, 0); }
 
     // ─────────────────────────────────────────────────────────────────────
     // DELETE
     // ─────────────────────────────────────────────────────────────────────
 
+    /**
+     * Elimina un movimiento bancario y revierte el saldo en la cuenta.
+     *
+     * @param id    Movbid a eliminar
+     * @param usuId usuario conectado para bitácora
+     * @return filas afectadas
+     */
     public int eliminar(int id, int usuId) {
         int resultado = 0;
 
@@ -248,10 +366,14 @@ public class MovimientoBancarioDAO {
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             resultado = stmt.executeUpdate();
-            if (resultado > 0) {
+            if (resultado > 0 && anterior != null) {
+                // Revertir saldo: si era Debito se suma, si era Credito se resta
+                boolean sumar = "Debito".equals(anterior.getMovbtipomov());
+                actualizarSaldo(anterior.getCBANid(), anterior.getMovibmonto(), sumar);
+
                 registrarBitacora(usuId, "DELETE", TABLA, id,
                         valorAnterior, null,
-                        "Eliminación movimiento bancario ID=" + id);
+                        "Eliminación movimiento ID=" + id);
             }
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
@@ -259,12 +381,17 @@ public class MovimientoBancarioDAO {
         return resultado;
     }
 
+    /** Sobrecarga sin usuId */
     public int eliminar(int id) { return eliminar(id, 0); }
 
     // ─────────────────────────────────────────────────────────────────────
     // SELECT BITÁCORA
     // ─────────────────────────────────────────────────────────────────────
 
+    /**
+     * Obtiene los registros de BitacoraBancaria de MovimientoBancario.
+     * @return lista de Object[] con columnas de la bitácora
+     */
     public List<Object[]> seleccionarBitacora() {
         List<Object[]> lista = new ArrayList<>();
         String sql = "SELECT BBid, BBusuarioaccion, BBaccion, BBtabla, BBregistroid, "
@@ -295,9 +422,73 @@ public class MovimientoBancarioDAO {
     }
 
     // ─────────────────────────────────────────────────────────────────────
+    // COMBOS
+    // ─────────────────────────────────────────────────────────────────────
+
+    /**
+     * Obtiene cuentas bancarias para cargar en ComboBox.
+     * @return lista de [CBANid, CBANnumerocuenta]
+     */
+    public List<Object[]> seleccionarCuentas() {
+        List<Object[]> lista = new ArrayList<>();
+        String sql = "SELECT CBANid, CBANnumerocuenta FROM CuentaBancaria ORDER BY CBANid ASC";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next())
+                lista.add(new Object[]{rs.getInt("CBANid"), rs.getString("CBANnumerocuenta")});
+        } catch (SQLException ex) { ex.printStackTrace(System.out); }
+        return lista;
+    }
+
+    /**
+     * Obtiene tipos de transacción para cargar en ComboBox.
+     * @return lista de [TTid, TTnombretipo]
+     */
+    public List<Object[]> seleccionarTiposTransaccion() {
+        List<Object[]> lista = new ArrayList<>();
+        String sql = "SELECT TTid, TTnombretipo FROM CatTipoTransaccion ORDER BY TTid ASC";
+        try (Connection conn = Conexion.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next())
+                lista.add(new Object[]{rs.getInt("TTid"), rs.getString("TTnombretipo")});
+        } catch (SQLException ex) { ex.printStackTrace(System.out); }
+        return lista;
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
+    // LIMPIAR
+    // ─────────────────────────────────────────────────────────────────────
+
+    /**
+     * Trunca la tabla MovimientoBancario y resetea el AUTO_INCREMENT.
+     * Desactiva temporalmente las llaves foráneas.
+     */
+    public void limpiarTabla() {
+        try (Connection conn = Conexion.getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+            stmt.executeUpdate("TRUNCATE TABLE MovimientoBancario");
+            stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+        } catch (SQLException ex) { ex.printStackTrace(System.out); }
+    }
+
+    // ─────────────────────────────────────────────────────────────────────
     // HELPER: registrar en BitacoraBancaria
     // ─────────────────────────────────────────────────────────────────────
 
+    /**
+     * Inserta un registro en BitacoraBancaria.
+     *
+     * @param usuId         usuario que ejecuta la acción
+     * @param accion        INSERT, UPDATE o DELETE
+     * @param tabla         nombre de la tabla afectada
+     * @param registroId    PK del registro
+     * @param valorAnterior estado anterior (null en INSERT)
+     * @param valorNuevo    estado nuevo (null en DELETE)
+     * @param descripcion   texto descriptivo
+     */
     private void registrarBitacora(int usuId, String accion, String tabla,
             int registroId, String valorAnterior, String valorNuevo, String descripcion) {
 
@@ -320,36 +511,4 @@ public class MovimientoBancarioDAO {
             ex.printStackTrace(System.out);
         }
     }
-    public List<Object[]> seleccionarCuentas() {
-    List<Object[]> lista = new ArrayList<>();
-    String sql = "SELECT CBANid, CBANnumerocuenta FROM CuentaBancaria ORDER BY CBANid ASC";
-    try (Connection conn = Conexion.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
-        while (rs.next())
-            lista.add(new Object[]{rs.getInt("CBANid"), rs.getString("CBANnumerocuenta")});
-    } catch (SQLException ex) { ex.printStackTrace(System.out); }
-    return lista;
-}
-
-public List<Object[]> seleccionarTiposTransaccion() {
-    List<Object[]> lista = new ArrayList<>();
-    String sql = "SELECT TTid, TTnombretipo FROM CatTipoTransaccion ORDER BY TTid ASC";
-    try (Connection conn = Conexion.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql);
-         ResultSet rs = stmt.executeQuery()) {
-        while (rs.next())
-            lista.add(new Object[]{rs.getInt("TTid"), rs.getString("TTnombretipo")});
-    } catch (SQLException ex) { ex.printStackTrace(System.out); }
-    return lista;
-}
-
-public void limpiarTabla() {
-    try (Connection conn = Conexion.getConnection();
-         Statement stmt = conn.createStatement()) {
-        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
-        stmt.executeUpdate("TRUNCATE TABLE MovimientoBancario");
-        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
-    } catch (SQLException ex) { ex.printStackTrace(System.out); }
-}
 }

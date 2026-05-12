@@ -47,14 +47,41 @@ private void cargarCombos() {
     for (Object[] t : new clsMovimientoBancario().getTiposTransaccion())
         cmbTipoTransaccion.addItem(t[0] + " - " + t[1]);
 
-    // cmbTipoMovimiento es fijo
     cmbTipoMovimiento.removeAllItems();
     cmbTipoMovimiento.addItem("Credito");
     cmbTipoMovimiento.addItem("Debito");
 
-    if (cmbCuentaBancaria.getItemCount() > 0)  cmbCuentaBancaria.setSelectedIndex(0);
+    if (cmbCuentaBancaria.getItemCount() > 0) cmbCuentaBancaria.setSelectedIndex(0);
     if (cmbTipoTransaccion.getItemCount() > 0) cmbTipoTransaccion.setSelectedIndex(0);
     if (cmbTipoMovimiento.getItemCount() > 0)  cmbTipoMovimiento.setSelectedIndex(0);
+
+    // Actualiza saldo al cambiar cuenta
+    cmbCuentaBancaria.addActionListener(e -> actualizarLblSaldo());
+    
+    // Actualiza tipo movimiento automático según transacción
+    cmbTipoTransaccion.addActionListener(e -> {
+        if (cmbTipoTransaccion.getSelectedItem() != null) {
+            String tipo = cmbTipoTransaccion.getSelectedItem().toString();
+            if (tipo.contains("Deposito") || tipo.contains("Cobro")) {
+                cmbTipoMovimiento.setSelectedItem("Credito");
+            } else {
+                cmbTipoMovimiento.setSelectedItem("Debito");
+            }
+        }
+    });
+
+    // Muestra saldo inicial
+    actualizarLblSaldo();
+}
+
+private void actualizarLblSaldo() {
+    if (cmbCuentaBancaria.getSelectedItem() != null) {
+        int id = getIdCombo(cmbCuentaBancaria);
+        double saldo = new clsMovimientoBancario().getSaldoCuenta(id);
+        lblSaldo.setText("Saldo: Q" + String.format("%.2f", saldo));
+    } else {
+        lblSaldo.setText("Saldo: Q0.00");
+    }
 }
 
 private void cargarDatos() {
@@ -73,8 +100,9 @@ private void cargarDatos() {
             mov.getMovbconciliado()
         });
     }
+    actualizarLblSaldo();
 }
-
+        
 private void configurarSeleccionTabla() {
     getTabla().getSelectionModel().addListSelectionListener(e -> {
         if (!e.getValueIsAdjusting() && getTabla().getSelectedRow() >= 0) {
@@ -139,10 +167,15 @@ private void configurarBotones() {
                 0, fecha, monto, desc, cbanId, ttId, tipomov, ref, conc);
             int r = new clsMovimientoBancario().setInsertar(mov);
             if (r > 0) {
-                JOptionPane.showMessageDialog(this, "Movimiento insertado correctamente.");
-                limpiarCampos(); cargarDatos();
+            JOptionPane.showMessageDialog(this, "Movimiento insertado correctamente.");
+            limpiarCampos(); 
+            cargarDatos();
+            } else if (r == -1) {
+            JOptionPane.showMessageDialog(this,
+            "Fondos insuficientes.\nNo se realizó el movimiento.",
+            "Fondos insuficientes", JOptionPane.WARNING_MESSAGE);
             } else {
-                JOptionPane.showMessageDialog(this, "Error al insertar.");
+            JOptionPane.showMessageDialog(this, "Error al insertar.");
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "El monto debe ser un número válido.");
@@ -265,6 +298,7 @@ private void limpiarCampos() {
         Movbid = new javax.swing.JTextField();
         txtFechaApertura = new com.toedter.calendar.JDateChooser();
         cmbTipoTransaccion = new javax.swing.JComboBox<>();
+        lblSaldo = new javax.swing.JLabel();
 
         tblTipoCuenta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -332,6 +366,8 @@ private void limpiarCampos() {
 
         cmbTipoTransaccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        lblSaldo.setText("Saldo: Q0.00");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -340,9 +376,12 @@ private void limpiarCampos() {
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbCuentaBancaria, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(cmbCuentaBancaria, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblSaldo))
                         .addGap(59, 59, 59)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel7)
@@ -422,9 +461,10 @@ private void limpiarCampos() {
                             .addComponent(jLabel8)))
                     .addComponent(txtFechaApertura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(cmbTipoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmbTipoTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbTipoTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblSaldo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel9)
                 .addGap(18, 18, 18)
@@ -505,6 +545,7 @@ private void limpiarCampos() {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblSaldo;
     private javax.swing.JTable tblMovimientoBancario;
     private javax.swing.JTable tblTipoCuenta;
     private javax.swing.JTextField txtDescripcion;

@@ -49,9 +49,14 @@
               <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="cmbCuentaBancaria" min="-2" pref="84" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="cmbCuentaBancaria" min="-2" pref="84" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lblSaldo" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <EmptySpace min="-2" pref="59" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel7" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -153,9 +158,10 @@
                   <Component id="txtFechaApertura" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="cmbTipoMovimiento" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="cmbTipoTransaccion" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cmbTipoTransaccion" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblSaldo" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="jLabel9" min="-2" max="-2" attributes="0"/>
@@ -336,6 +342,11 @@
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblSaldo">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Saldo: Q0.00"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>
