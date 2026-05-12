@@ -8,42 +8,61 @@ package Controlador.ComisionesVentas;
  *
  * @author giron
  */
+/**/
 public class clsComisionVentas {
-     private int id_comision;
-    private int ven_id;
-    private int id_empleado;
+    //atributos de comision ventas
+    private int id_comision;
+    private int id_empleado; 
     private double monto_ventas;
     private double meta;
     private double ventas_adicionales;
     private double comision;
+    //atributos de vendedores
+    private int venid;
+    private String vennombre; 
+    private String ventelefono;
+    private String vencorreo;
+    //atributos de productos
+    private int proid;
+    private String prodnombre;
+    private double prodprecioventa;
+    //atributos de marcas
+    private String marnombre;
+    //atributos de linea
+    private String linnombre;
+    private double lincomision;
 
-    public clsComisionVentas (){
-        
-    }
-    public clsComisionVentas(int id_comision, int ven_id, int id_empleado, double monto_ventas, double meta, double ventas_adicionales, double comision) {
+    //constructores
+    public clsComisionVentas(int id_comision, int id_empleado, double monto_ventas, double meta, double ventas_adicionales, double comision, int venid, String vennombre, String ventelefono, String vencorreo, int proid, String prodnombre, double prodprecioventa, String marnombre, String linnombre, double lincomision) {
         this.id_comision = id_comision;
-        this.ven_id = ven_id;
         this.id_empleado = id_empleado;
         this.monto_ventas = monto_ventas;
         this.meta = meta;
         this.ventas_adicionales = ventas_adicionales;
         this.comision = comision;
+        this.venid = venid;
+        this.vennombre = vennombre;
+        this.ventelefono = ventelefono;
+        this.vencorreo = vencorreo;
+        this.proid = proid;
+        this.prodnombre = prodnombre;
+        this.prodprecioventa = prodprecioventa;
+        this.marnombre = marnombre;
+        this.linnombre = linnombre;
+        this.lincomision = lincomision;
     }
-
+    //constructor vacio
+    public clsComisionVentas(){
+        
+    }
+    
+    //Getters y setters de comision ventas
     public int getId_comision() {
         return id_comision;
     }
 
     public void setId_comision(int id_comision) {
         this.id_comision = id_comision;
-    }
-
-    public int getVen_id() {
-        return ven_id;
-    }
-
-    public void setVen_id(int ven_id) {
-        this.ven_id = ven_id;
     }
 
     public int getId_empleado() {
@@ -86,8 +105,90 @@ public class clsComisionVentas {
         this.comision = comision;
     }
 
+    //getters y setters de vendedores
+    public int getVenid() {
+        return venid;
+    }
+
+    public void setVenid(int venid) {
+        this.venid = venid;
+    }
+
+    public String getVennombre() {
+        return vennombre;
+    }
+
+    public void setVennombre(String vennombre) {
+        this.vennombre = vennombre;
+    }
+
+    public String getVentelefono() {
+        return ventelefono;
+    }
+
+    public void setVentelefono(String ventelefono) {
+        this.ventelefono = ventelefono;
+    }
+
+    public String getVencorreo() {
+        return vencorreo;
+    }
+
+    public void setVencorreo(String vencorreo) {
+        this.vencorreo = vencorreo;
+    }
+    //getters y setters de productos
+    public int getProid() {
+        return proid;
+    }
+
+    public void setProid(int proid) {
+        this.proid = proid;
+    }
+
+    public String getProdnombre() {
+        return prodnombre;
+    }
+
+    public void setProdnombre(String prodnombre) {
+        this.prodnombre = prodnombre;
+    }
+
+    public double getProdprecioventa() {
+        return prodprecioventa;
+    }
+
+    public void setProdprecioventa(double prodprecioventa) {
+        this.prodprecioventa = prodprecioventa;
+    }
+    //getter y setter de marca
+    public String getMarnombre() {
+        return marnombre;
+    }
+
+    public void setMarnombre(String marnombre) {
+        this.marnombre = marnombre;
+    }
+    //getters y setters de linea
+    public String getLinnombre() {
+        return linnombre;
+    }
+
+    public void setLinnombre(String linnombre) {
+        this.linnombre = linnombre;
+    }
+
+    public double getLincomision() {
+        return lincomision;
+    }
+
+    public void setLincomision(double lincomision) {
+        this.lincomision = lincomision;
+    }
+
     @Override
     public String toString() {
-        return "clsComisionVentas{" + "id_comision=" + id_comision + ", ven_id=" + ven_id + ", id_empleado=" + id_empleado + ", monto_ventas=" + monto_ventas + ", meta=" + meta + ", ventas_adicionales=" + ventas_adicionales + ", comision=" + comision + '}';
+        return "clsComisionVentas{" + "id_comision=" + id_comision + ", id_empleado=" + id_empleado + ", monto_ventas=" + monto_ventas + ", meta=" + meta + ", ventas_adicionales=" + ventas_adicionales + ", comision=" + comision + ", venid=" + venid + ", vennombre=" + vennombre + ", ventelefono=" + ventelefono + ", vencorreo=" + vencorreo + ", proid=" + proid + ", prodnombre=" + prodnombre + ", prodprecioventa=" + prodprecioventa + ", marnombre=" + marnombre + ", linnombre=" + linnombre + ", lincomision=" + lincomision + '}';
     }
+    
 }

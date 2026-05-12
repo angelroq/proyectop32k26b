@@ -3,13 +3,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista.comisionesVentas;
-
+import Controlador.ComisionesVentas.clsComisionVentas;
+import Modelo.ComisionesVentas.comisionesVentasDAO;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+import java.util.ArrayList;
 /**
  *
  * @author giron
  */
 public class frmProcesoComisiones extends javax.swing.JFrame {
-
+comisionesVentasDAO dao = new comisionesVentasDAO();
     /**
      * Creates new form frmProcesoComisiones
      */
@@ -29,14 +33,14 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabladatos = new javax.swing.JTable();
         IDEMPLEADO = new javax.swing.JTextField();
         NOMEMPLEADO = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        rbdvendedores = new javax.swing.JRadioButton();
+        btncargardatos = new javax.swing.JButton();
+        btncalcular = new javax.swing.JButton();
+        rdbvendedores = new javax.swing.JRadioButton();
         rdblinea = new javax.swing.JRadioButton();
         rdbmarca = new javax.swing.JRadioButton();
         rdbproducto = new javax.swing.JRadioButton();
@@ -46,7 +50,7 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabladatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -54,27 +58,52 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
                 "ID", "Nombre empleado", "Comision Ventas", "Meta", "Marca", "Metas adicionales", "Comision"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabladatos);
 
         jLabel1.setText("ID EMPLEADO");
 
         jLabel2.setText("NOMBRE EMPLEADO");
 
-        jButton1.setText("Cargar datos");
+        btncargardatos.setText("Cargar datos");
+        btncargardatos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncargardatosActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Calcular ");
+        btncalcular.setText("Calcular ");
 
-        buttonGroup1.add(rbdvendedores);
-        rbdvendedores.setText("Vendedores");
+        buttonGroup1.add(rdbvendedores);
+        rdbvendedores.setText("Vendedores");
+        rdbvendedores.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbvendedoresActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(rdblinea);
         rdblinea.setText("Linea");
+        rdblinea.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdblineaActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(rdbmarca);
         rdbmarca.setText("Marca");
+        rdbmarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbmarcaActionPerformed(evt);
+            }
+        });
 
         buttonGroup1.add(rdbproducto);
         rdbproducto.setText("Producto");
+        rdbproducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rdbproductoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -90,15 +119,15 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
                                 .addGap(43, 43, 43)
                                 .addComponent(IDEMPLEADO, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jButton1))
-                            .addComponent(jButton2)
+                                .addComponent(btncargardatos))
+                            .addComponent(btncalcular)
                             .addComponent(calculoComisiones, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 10, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(rdbproducto, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(rbdvendedores, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rdbvendedores, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(rdblinea, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(rdbmarca, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -114,7 +143,7 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(IDEMPLEADO, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(btncargardatos))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -122,7 +151,7 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(rbdvendedores)
+                        .addComponent(rdbvendedores)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(rdblinea)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -131,7 +160,7 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
                         .addComponent(rdbproducto))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btncalcular)
                 .addGap(18, 18, 18)
                 .addComponent(calculoComisiones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(91, Short.MAX_VALUE))
@@ -139,6 +168,95 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
+       // Inicia un bloque de seguridad para capturar cualquier error de conexión o base de datos
+    try {
+        // Solicita al DAO que traiga todos los registros de la base de datos y los guarde en una lista
+        List<clsComisionVentas> listaComisiones = dao.obtenerDatosComisiones();
+        
+        // Obtiene el modelo de la tabla visual para poder manipular sus filas y columnas
+        DefaultTableModel modelo = (DefaultTableModel) tabladatos.getModel();
+        
+        // Elimina todas las filas existentes en la tabla para no duplicar datos al recargar
+        modelo.setRowCount(0);
+
+        // Inicia un ciclo para recorrer uno por uno los objetos de la lista recibida
+        for (clsComisionVentas c : listaComisiones) {
+            // Crea un contenedor (arreglo) para representar una fila con 7 columnas
+            Object[] fila = new Object[7]; 
+            
+            // Asigna el ID del vendedor a la primera posición de la fila
+            fila[0] = c.getVenid();
+            // Asigna el nombre del vendedor a la segunda posición de la fila
+            fila[1] = c.getVennombre();
+            // Asigna el valor de la meta a la cuarta posición de la fila
+            fila[3] = c.getMeta();
+            // Asigna el monto de la comisión final a la séptima posición de la fila
+            fila[6] = c.getComision();
+
+            // Verifica si el botón de opción de "Marca" está seleccionado
+            if (rdbmarca.isSelected()) {
+                // Si es así, coloca el nombre de la marca en la quinta columna
+                fila[4] = c.getMarnombre(); 
+                // Limpia la columna de ventas para este modo de vista
+                fila[2] = ""; 
+                // Limpia la columna de metas adicionales para este modo de vista
+                fila[5] = ""; 
+            } 
+            // Si no es marca, verifica si el botón de "Producto" está seleccionado
+            else if (rdbproducto.isSelected()) {
+                // Coloca el nombre del producto en la quinta columna
+                fila[4] = c.getProdnombre(); 
+                // Coloca el monto de las ventas realizadas en la tercera columna
+                fila[2] = c.getMonto_ventas();
+                // Coloca las ventas adicionales en la sexta columna
+                fila[5] = c.getVentas_adicionales();
+            }
+            // Si no es producto, verifica si el botón de "Vendedores" está seleccionado
+            else if (rdbvendedores.isSelected()) {
+                // Muestra el total de ventas del vendedor en la tercera columna
+                fila[2] = c.getMonto_ventas();
+                // Indica que la vista es de tipo general en la quinta columna
+                fila[4] = "GENERAL";
+                // Muestra las ventas adicionales en la sexta columna
+                fila[5] = c.getVentas_adicionales();
+            }
+            // Si no es ninguno de los anteriores, verifica si es el botón de "Linea"
+            else if (rdblinea.isSelected()) {
+                // Coloca el nombre de la línea de productos en la quinta columna
+                fila[4] = c.getLinnombre();
+                // Limpia la columna de ventas
+                fila[2] = "";
+                // Muestra el porcentaje o monto de comisión de la línea en la sexta columna
+                fila[5] = c.getLincomision();
+            }
+
+            // Agrega la fila ya configurada al modelo de la tabla para que sea visible
+            modelo.addRow(fila);
+        }
+    // Captura cualquier excepción que ocurra durante el proceso
+    } catch (Exception e) {
+        // Imprime el mensaje de error en la consola para facilitar la corrección
+        System.out.println("Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btncargardatosActionPerformed
+
+    private void rdbvendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbvendedoresActionPerformed
+        btncargardatosActionPerformed(null);
+    }//GEN-LAST:event_rdbvendedoresActionPerformed
+
+    private void rdblineaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdblineaActionPerformed
+        btncargardatosActionPerformed(null);
+    }//GEN-LAST:event_rdblineaActionPerformed
+
+    private void rdbmarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbmarcaActionPerformed
+        btncargardatosActionPerformed(null);
+    }//GEN-LAST:event_rdbmarcaActionPerformed
+
+    private void rdbproductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbproductoActionPerformed
+        btncargardatosActionPerformed(null);
+    }//GEN-LAST:event_rdbproductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,18 +296,18 @@ public class frmProcesoComisiones extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField IDEMPLEADO;
     private javax.swing.JTextField NOMEMPLEADO;
+    private javax.swing.JButton btncalcular;
+    private javax.swing.JButton btncargardatos;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField calculoComisiones;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JRadioButton rbdvendedores;
     private javax.swing.JRadioButton rdblinea;
     private javax.swing.JRadioButton rdbmarca;
     private javax.swing.JRadioButton rdbproducto;
+    private javax.swing.JRadioButton rdbvendedores;
+    private javax.swing.JTable tabladatos;
     // End of variables declaration//GEN-END:variables
 }
