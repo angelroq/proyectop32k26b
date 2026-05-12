@@ -43,6 +43,10 @@ public class clsCuentaBancaria {
     // ── Constructores ─────────────────────────────────────────────────────
 
     public clsCuentaBancaria() {}
+    public List<Object[]> getBancos() { return new CuentaBancariaDAO().seleccionarBancos(); }
+    public List<Object[]> getClientes() { return new CuentaBancariaDAO().seleccionarClientes(); }
+    public List<Object[]> getTiposCuenta() { return new CuentaBancariaDAO().seleccionarTiposCuenta(); }
+    public void limpiarTabla() { new CuentaBancariaDAO().limpiarTabla(); }
 
     /**
      * Constructor completo con claves foráneas

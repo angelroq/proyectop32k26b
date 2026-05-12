@@ -46,6 +46,9 @@ public class clsMovimientoBancario {
     // ── Constructores ─────────────────────────────────────────────────────
 
     public clsMovimientoBancario() {}
+    public List<Object[]> getCuentasBancarias() { return new MovimientoBancarioDAO().seleccionarCuentas(); }
+    public List<Object[]> getTiposTransaccion() { return new MovimientoBancarioDAO().seleccionarTiposTransaccion(); }
+    public void limpiarTabla() { new MovimientoBancarioDAO().limpiarTabla(); }
 
     /**
      * Constructor completo

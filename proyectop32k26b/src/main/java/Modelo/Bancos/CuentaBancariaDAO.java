@@ -312,4 +312,48 @@ public class CuentaBancariaDAO {
             ex.printStackTrace(System.out);
         }
     }
+    public List<Object[]> seleccionarBancos() {
+    List<Object[]> lista = new ArrayList<>();
+    String sql = "SELECT Banid, Bannombre FROM Banco ORDER BY Bannombre";
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next())
+            lista.add(new Object[]{rs.getInt("Banid"), rs.getString("Bannombre")});
+    } catch (SQLException ex) { ex.printStackTrace(System.out); }
+    return lista;
+}
+
+public List<Object[]> seleccionarClientes() {
+    List<Object[]> lista = new ArrayList<>();
+    String sql = "SELECT Clid, Clinombre FROM Cliente ORDER BY Clinombre";
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next())
+            lista.add(new Object[]{rs.getInt("Clid"), rs.getString("Clinombre")});
+    } catch (SQLException ex) { ex.printStackTrace(System.out); }
+    return lista;
+}
+
+public List<Object[]> seleccionarTiposCuenta() {
+    List<Object[]> lista = new ArrayList<>();
+    String sql = "SELECT TCidcuenta, TCnombretipo FROM CatTipoCuenta ORDER BY TCnombretipo";
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next())
+            lista.add(new Object[]{rs.getInt("TCidcuenta"), rs.getString("TCnombretipo")});
+    } catch (SQLException ex) { ex.printStackTrace(System.out); }
+    return lista;
+}
+
+public void limpiarTabla() {
+    try (Connection conn = Conexion.getConnection();
+         Statement stmt = conn.createStatement()) {
+        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+        stmt.executeUpdate("TRUNCATE TABLE CuentaBancaria");
+        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+    } catch (SQLException ex) { ex.printStackTrace(System.out); }
+}
 }

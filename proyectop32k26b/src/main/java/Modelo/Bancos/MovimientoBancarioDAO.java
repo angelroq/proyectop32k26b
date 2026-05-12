@@ -320,4 +320,36 @@ public class MovimientoBancarioDAO {
             ex.printStackTrace(System.out);
         }
     }
+    public List<Object[]> seleccionarCuentas() {
+    List<Object[]> lista = new ArrayList<>();
+    String sql = "SELECT CBANid, CBANnumerocuenta FROM CuentaBancaria ORDER BY CBANid ASC";
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next())
+            lista.add(new Object[]{rs.getInt("CBANid"), rs.getString("CBANnumerocuenta")});
+    } catch (SQLException ex) { ex.printStackTrace(System.out); }
+    return lista;
+}
+
+public List<Object[]> seleccionarTiposTransaccion() {
+    List<Object[]> lista = new ArrayList<>();
+    String sql = "SELECT TTid, TTnombretipo FROM CatTipoTransaccion ORDER BY TTid ASC";
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
+         ResultSet rs = stmt.executeQuery()) {
+        while (rs.next())
+            lista.add(new Object[]{rs.getInt("TTid"), rs.getString("TTnombretipo")});
+    } catch (SQLException ex) { ex.printStackTrace(System.out); }
+    return lista;
+}
+
+public void limpiarTabla() {
+    try (Connection conn = Conexion.getConnection();
+         Statement stmt = conn.createStatement()) {
+        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+        stmt.executeUpdate("TRUNCATE TABLE MovimientoBancario");
+        stmt.executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+    } catch (SQLException ex) { ex.printStackTrace(System.out); }
+}
 }
