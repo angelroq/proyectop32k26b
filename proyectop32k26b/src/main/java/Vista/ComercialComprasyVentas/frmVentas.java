@@ -5,7 +5,7 @@
 package Vista.ComercialComprasyVentas;
 
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel; 
+import javax.swing.table.DefaultTableModel;            
 /**
  *
  * @author Marice
@@ -451,6 +451,7 @@ public class frmVentas extends javax.swing.JFrame {
             + "Estado: " + facturaEstado.getText();
     javax.swing.JOptionPane.showMessageDialog(this, vista);
 
+    
         // TODO add your handling code here:
     }//GEN-LAST:event_vistaPreviaActionPerformed
 
