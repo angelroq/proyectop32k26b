@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Vista.ComercialComprasyVentas;
+package Vista.ComercialComprayVentas;
 
+import Vista.ComercialComprayVentas.frmCompras;
 import java.awt.Dimension;
 import java.io.File;
 import javax.swing.JOptionPane;

@@ -1,18 +1,18 @@
+package Vista.ComercialComprayVentas;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-<<<<<<< HEAD:proyectop32k26b/src/main/java/Vista/ComercialComprayVentas/frmCompras.java
-package Vista.ComercialComprayVentas;
+
+
 //Librerias
 import Modelo.Compras.FacturascomprasDAO;
 import Modelo.Compras.FacturadetallecomprasDAO;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
-=======
-package Vista.ComercialComprasyVentas;
 
->>>>>>> origin/MC9959-23-3775:proyectop32k26b/src/main/java/Vista/ComercialComprasyVentas/frmCompras.java
+
 import javax.swing.JOptionPane;
 import Controlador.Compras.clsFacturascompras;
 import Controlador.Compras.clsFacturadetallecompras;
