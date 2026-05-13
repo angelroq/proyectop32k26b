@@ -47,13 +47,10 @@ public class ConciliacionBancariaDAO {
             while (rs.next()) {
                 lista.add(new clsConciliacionBancaria(
                     rs.getInt("Conbid"),
-                    rs.getDate("conbfecha"),
                     rs.getDouble("Conbsaldosistema"),
                     rs.getDouble("Conbsaldobanco"),
                     rs.getDouble("Conbdiferencia"),
-                    rs.getInt("CBANid"),
-                    rs.getInt("Catesid")
-                ));
+                    rs.getInt("CBANid")));
             }
 
         } catch (Exception e) {
@@ -168,13 +165,10 @@ public class ConciliacionBancariaDAO {
                 if (rs.next()) {
                     conb = new clsConciliacionBancaria(
                         rs.getInt("Conbid"),
-                        rs.getDate("conbfecha"),
                         rs.getDouble("Conbsaldosistema"),
                         rs.getDouble("Conbsaldobanco"),
                         rs.getDouble("Conbdiferencia"),
-                        rs.getInt("CBANid"),
-                        rs.getInt("Catesid")
-                    );
+                        rs.getInt("CBANid"));
                 }
             }
 
@@ -204,13 +198,10 @@ public class ConciliacionBancariaDAO {
                 while (rs.next()) {
                     lista.add(new clsConciliacionBancaria(
                         rs.getInt("Conbid"),
-                        rs.getDate("conbfecha"),
                         rs.getDouble("Conbsaldosistema"),
                         rs.getDouble("Conbsaldobanco"),
                         rs.getDouble("Conbdiferencia"),
-                        rs.getInt("CBANid"),
-                        rs.getInt("Catesid")
-                    ));
+                        rs.getInt("CBANid")));
                 }
             }
 

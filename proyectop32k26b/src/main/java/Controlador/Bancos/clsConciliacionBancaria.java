@@ -32,7 +32,7 @@ public class clsConciliacionBancaria {
      * @param cuenta     Cuenta bancaria asociada
      * @param estado     Estado de la conciliación
      */
-    public clsConciliacionBancaria(int id, Date fecha, double sistema, double banco, double diferencia, int cuenta, int estado) {
+    public clsConciliacionBancaria(int id, double sistema, double banco, double diferencia, int cuenta) {
         this.Conbid = id;
         this.conbfecha = fecha;
         this.Conbsaldosistema = sistema;
