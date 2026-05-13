@@ -6,6 +6,7 @@
 //Marco. Hernandez 9959-24-6201 
 //Marco. Hernandez 9959-24-6291 24-04-2026  1. Creacion frmMantenimientoTransporte, implementaciones basicas
                               //09-05-2026  2. Implementacion de funcionalidad de botones
+                              //13-05-2023  4. Implementacion CRUD
 
 
 package Vista.Logistica;
@@ -17,6 +18,9 @@ import java.util.List;
 import Controlador.Logistica.clsTransportistas;
 import Modelo.Logistica.TransportistasDAO;
 import java.io.File;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableRowSorter;
+import javax.swing.RowFilter;
 
 /**
  *
@@ -70,17 +74,24 @@ private DefaultTableModel modeloTransportes;
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaTransporte = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        btnEliminar = new javax.swing.JButton();
-        btnLimpiar = new javax.swing.JButton();
-        btnRegistrar = new javax.swing.JButton();
+        cboxTipoBusqueda = new javax.swing.JComboBox<>();
+        txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
-        btnReportes = new javax.swing.JButton();
-        btnAyuda = new javax.swing.JButton();
-        btnModificar = new javax.swing.JButton();
-        label19 = new javax.swing.JLabel();
-        txtbuscado = new javax.swing.JTextField();
         label15 = new javax.swing.JLabel();
-        txtIngresarVehiculo = new javax.swing.JTextField();
+        txtTipoVehiculo = new javax.swing.JTextField();
+        btnLimpiar = new javax.swing.JButton();
+        btnActualizar = new javax.swing.JButton();
+        btnAyuda = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
+        label16 = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        txtIdMovimiento2 = new javax.swing.JTextField();
+        label17 = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtIdMovimiento4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(782, 736));
@@ -106,40 +117,34 @@ private DefaultTableModel modeloTransportes;
         jScrollPane2.setViewportView(tablaTransporte);
 
         getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(10, 270, 692, 406);
+        jScrollPane2.setBounds(10, 290, 692, 300);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        jLabel3.setText("Transportes");
+        jLabel3.setText("Transportistas");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(264, 23, 107, 25);
+        jLabel3.setBounds(264, 23, 160, 25);
 
-        btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        cboxTipoBusqueda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        cboxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Nombre", "Tipo Vehiculo" }));
+        cboxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                cboxTipoBusquedaActionPerformed(evt);
             }
         });
-        getContentPane().add(btnEliminar);
-        btnEliminar.setBounds(190, 170, 77, 27);
+        getContentPane().add(cboxTipoBusqueda);
+        cboxTipoBusqueda.setBounds(10, 30, 124, 30);
 
-        btnLimpiar.setText("Limpiar");
-        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+        txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimpiarActionPerformed(evt);
+                txtBuscarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnLimpiar);
-        btnLimpiar.setBounds(100, 200, 90, 27);
+        getContentPane().add(txtBuscar);
+        txtBuscar.setBounds(10, 70, 110, 30);
 
-        btnRegistrar.setText("Registrar");
-        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarActionPerformed(evt);
-            }
-        });
-        getContentPane().add(btnRegistrar);
-        btnRegistrar.setBounds(20, 170, 80, 27);
-
+        btnBuscar.setBackground(new java.awt.Color(255, 227, 250));
+        btnBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnBuscar.setText("Buscar");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,16 +152,36 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnBuscar);
-        btnBuscar.setBounds(170, 80, 76, 27);
+        btnBuscar.setBounds(130, 70, 76, 31);
 
-        btnReportes.setText("Reportes");
-        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+        label15.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        label15.setText("Tipo Vehiculo");
+        getContentPane().add(label15);
+        label15.setBounds(20, 220, 84, 16);
+
+        txtTipoVehiculo.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtTipoVehiculo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        getContentPane().add(txtTipoVehiculo);
+        txtTipoVehiculo.setBounds(120, 220, 170, 17);
+
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnReportesActionPerformed(evt);
+                btnLimpiarActionPerformed(evt);
             }
         });
-        getContentPane().add(btnReportes);
-        btnReportes.setBounds(20, 200, 80, 27);
+        getContentPane().add(btnLimpiar);
+        btnLimpiar.setBounds(430, 140, 80, 30);
+
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnActualizar);
+        btnActualizar.setBounds(430, 170, 86, 27);
 
         btnAyuda.setText("Ayuda");
         btnAyuda.addActionListener(new java.awt.event.ActionListener() {
@@ -165,7 +190,25 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnAyuda);
-        btnAyuda.setBounds(190, 200, 76, 27);
+        btnAyuda.setBounds(600, 220, 76, 27);
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnEliminar);
+        btnEliminar.setBounds(350, 210, 77, 27);
+
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnRegistrar);
+        btnRegistrar.setBounds(340, 140, 80, 27);
 
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -174,24 +217,46 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnModificar);
-        btnModificar.setBounds(100, 170, 85, 27);
+        btnModificar.setBounds(340, 170, 85, 27);
 
-        label19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label19.setText("ID a buscar");
-        getContentPane().add(label19);
-        label19.setBounds(20, 80, 66, 16);
-        getContentPane().add(txtbuscado);
-        txtbuscado.setBounds(100, 80, 68, 26);
+        btnReportes.setText("Reportes");
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnReportes);
+        btnReportes.setBounds(520, 220, 80, 27);
 
-        label15.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label15.setText("Ingresar Vehiculo");
-        getContentPane().add(label15);
-        label15.setBounds(20, 130, 103, 16);
+        label16.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        label16.setText("ID");
+        getContentPane().add(label16);
+        label16.setBounds(20, 140, 12, 16);
 
-        txtIngresarVehiculo.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txtIngresarVehiculo.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
-        getContentPane().add(txtIngresarVehiculo);
-        txtIngresarVehiculo.setBounds(140, 130, 120, 17);
+        txtId.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        getContentPane().add(txtId);
+        txtId.setBounds(120, 140, 170, 17);
+
+        txtIdMovimiento2.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtIdMovimiento2.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        getContentPane().add(txtIdMovimiento2);
+        txtIdMovimiento2.setBounds(120, 140, 140, 17);
+
+        label17.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        label17.setText("Nombre");
+        getContentPane().add(label17);
+        label17.setBounds(20, 180, 48, 16);
+
+        txtNombre.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtNombre.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        getContentPane().add(txtNombre);
+        txtNombre.setBounds(120, 180, 170, 17);
+
+        txtIdMovimiento4.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtIdMovimiento4.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        getContentPane().add(txtIdMovimiento4);
+        txtIdMovimiento4.setBounds(120, 180, 140, 17);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -200,150 +265,220 @@ private DefaultTableModel modeloTransportes;
         // TODO add your handling code here:
     }//GEN-LAST:event_tablaTransporteAncestorAdded
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.TransportistasDAO();
-    
-    if (!txtbuscado.getText().trim().isEmpty()) {
-        int id = Integer.parseInt(txtbuscado.getText().trim());
-        if (transporteDAO.eliminar(id)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Eliminado con éxito");
-            actualizarTabla();
-            btnLimpiarActionPerformed(null); // Limpia los campos
+    private void cboxTipoBusquedaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxTipoBusquedaActionPerformed
+
+        txtBuscar.setText("");
+        txtBuscar.requestFocus();
+        String seleccion = cboxTipoBusqueda.getSelectedItem().toString();
+        switch (seleccion) {
+            case "ID Movimiento":
+            buscarPorID();
+            break;
+            case "Tipo de Movimiento":
+            buscarPorNombre();
+            break;
+            case "Producto":
+            buscarPorTipoVehiculo();
+            break;
+   
         }
-    }
-    
-    if (!txtbuscado.getText().trim().isEmpty()) {
-        int respuesta = javax.swing.JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este transportista?", "Confirmar", javax.swing.JOptionPane.YES_NO_OPTION);
-        
-        if (respuesta == 0) { // 0 es YES
-            int id = Integer.parseInt(txtbuscado.getText().trim());
-            if (transporteDAO.eliminar(id)) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Registro eliminado.");
-                actualizarTabla();
-                btnLimpiarActionPerformed(null);
+    }//GEN-LAST:event_cboxTipoBusquedaActionPerformed
+
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
+        String filtro = txtBuscar.getText().trim().toLowerCase();
+        String criterio = cboxTipoBusqueda.getSelectedItem().toString();
+        boolean encontrado = false;
+
+        if (filtro.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ingrese un valor para buscar.");
+            return;
+        }
+        int columna = 0;
+        if (criterio.equals("ID Movimiento")) columna = 0;
+        else if (criterio.equals("Tipo de Movimiento")) columna = 1;
+        else if (criterio.equals("Producto")) columna = 2;
+        else if (criterio.equals("Fecha")) columna = 3;
+
+        for (int i = 0; i < tablaTransporte.getRowCount(); i++) {
+            String valorCelda = tablaTransporte.getValueAt(i, columna).toString().toLowerCase();
+
+            if (valorCelda.contains(filtro)) {
+                tablaTransporte.setRowSelectionInterval(i, i);
+                encontrado = true;
+                break;
             }
         }
-    }
 
-    }//GEN-LAST:event_btnEliminarActionPerformed
-
-    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-
-   txtbuscado.setText("");
-    txtIngresarVehiculo.setText("");
-    txtbuscado.requestFocus();
- 
-    }//GEN-LAST:event_btnLimpiarActionPerformed
-
-    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-Controlador.Logistica.clsTransportistas transporte = new Controlador.Logistica.clsTransportistas();
-    Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.TransportistasDAO();
-
-    // VALIDACIÓN: No permitir campos vacíos
-    if (txtIngresarVehiculo.getText().trim().isEmpty() || txtbuscado.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: Debe ingresar el vehículo y el ID del empleado.");
-        return;
-    }
-
-    try {
-        // CAPTURA: Pasamos los datos de la Vista al Objeto
-        transporte.setTrantipovehiculo(txtIngresarVehiculo.getText().trim());
-        
-        // El ID del empleado lo tomamos de 'txtbuscado'
-        int idEmp = Integer.parseInt(txtbuscado.getText().trim());
-        transporte.setEmpcodigo(idEmp);
-
-        // ACCIÓN: Llamamos al DAO para que inserte en la base de datos
-       boolean respuesta = transporteDAO.insertar(transporte);
-
-if (respuesta) { // Si es true, el registro fue exitoso
-    javax.swing.JOptionPane.showMessageDialog(this, "¡Éxito! Transporte registrado correctamente.");
-    actualizarTabla(); 
-    
-    // Limpiamos los campos
-    txtIngresarVehiculo.setText("");
-    txtbuscado.setText("");
-    txtIngresarVehiculo.requestFocus();
-} else {
-    javax.swing.JOptionPane.showMessageDialog(this, "Error: El registro no se pudo guardar.");
-}
-
-    } catch (NumberFormatException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error: El ID del empleado debe ser un número entero.");
-    }
-    }//GEN-LAST:event_btnRegistrarActionPerformed
+        if (!encontrado) {
+            javax.swing.JOptionPane.showMessageDialog(this, "No se encontró coincidencia para: " + filtro);
+        }
+    }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-      
-Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.TransportistasDAO();
-    Controlador.Logistica.clsTransportistas transporteConsultado;
-    
-    try {
-        int idBuscar = Integer.parseInt(txtbuscado.getText().trim());
-        
-        // 2. LLAMAR AL MÉTODO DESDE EL OBJETO 'transporteDAO'
-        transporteConsultado = transporteDAO.buscarPorId(idBuscar);
+        String filtro = txtBuscar.getText().trim();
+        String criterio = cboxTipoBusqueda.getSelectedItem().toString();
 
-        if (transporteConsultado != null) {
-            txtIngresarVehiculo.setText(transporteConsultado.getTrantipovehiculo());
-            javax.swing.JOptionPane.showMessageDialog(this, "Registro encontrado.");
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) tablaTransporte.getModel());
+        tablaTransporte.setRowSorter(sorter);
+
+        if (filtro.length() == 0) {
+            sorter.setRowFilter(null);
         } else {
-            // Si entra aquí, es porque el DAO no encontró el ID en la base de datos real
-            javax.swing.JOptionPane.showMessageDialog(this, "El ID no está registrado en la Base de Datos.");
+            int indiceColumna = 0;
+            switch (criterio) {
+                case "ID":
+                indiceColumna = 0;
+                break;
+                case "Nombre":
+                indiceColumna = 1;
+                break;
+                case "Tipo Vehiculo":
+                indiceColumna = 2;
+                break;
+                default:
+                indiceColumna = 0;
+                break;
+            }
+
+            try {
+
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + filtro, indiceColumna));
+                if (tablaTransporte.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(this, "No se encontraron resultados.");
+                }
+            } catch (Exception e) {
+                System.err.println("Error en el filtro: " + e.getMessage());
+            }
         }
-    } catch (NumberFormatException e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "El ID debe ser un número.");
-    }
+        //Registro de la accion en bitacora
+        //     BitacoraDAO bitacoraDAO = new BitacoraDAO();
+        //    bitacoraDAO.insert(idUsuario, Aplcodigo, "CONSULTA");
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnReportesActionPerformed
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        txtTipoVehiculo.setText("");
+        txtId.setText("");
+        txtNombre.setText("");
+        tablaTransporte.clearSelection();
+        cboxTipoBusqueda.setSelectedIndex(0);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+
+        if (tablaTransporte.getRowSorter() != null) {
+            tablaTransporte.setRowSorter(null);
+        }
+        txtBuscar.setText("");
+        cboxTipoBusqueda.setSelectedIndex(0);
+
+        txtTipoVehiculo.setText("");
+        txtNombre.setText("");
+        txtId.setText("");
+
+        tablaTransporte.clearSelection();
+
+        JOptionPane.showMessageDialog(this, "Formulario restablecido correctamente.");
+    }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         Vista.Logistica.frmAyuda ventanaAyuda = new Vista.Logistica.frmAyuda();
-    
-    ventanaAyuda.setVisible(true);
-    ventanaAyuda.setLocationRelativeTo(null);
-    
-    //Ferdynand Monroy mayo 2026: agregue la ayuda junto al archivo .chm
-        
+
+        ventanaAyuda.setVisible(true);
+        ventanaAyuda.setLocationRelativeTo(null);
+        //Ferdynand Monroy mayo 2026: agregue la ayuda junto al archivo .chm
+
         try {
-        String ruta = "C:\\Users\\ferit\\Desktop\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
+            String ruta = "C:\\Users\\ferit\\Desktop\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
 
-        File archivo = new File(ruta);
+            File archivo = new File(ruta);
 
-        if (archivo.exists()) {
-            Runtime.getRuntime().exec(
-                "rundll32 url.dll,FileProtocolHandler \"" + ruta + "\""
-            );
-        } else {
-            System.out.println("La ayuda no fue encontrada");
+            if (archivo.exists()) {
+                Runtime.getRuntime().exec(
+                    "rundll32 url.dll,FileProtocolHandler \"" + ruta + "\""
+                );
+            } else {
+                System.out.println("La ayuda no fue encontrada");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
     }//GEN-LAST:event_btnAyudaActionPerformed
 
-    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-   Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.TransportistasDAO();
-    Controlador.Logistica.clsTransportistas transporte = new Controlador.Logistica.clsTransportistas();
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-    try {
-        // Usamos el ID que se cargó en txtbuscado al hacer clic en la tabla
-        transporte.setTranid(Integer.parseInt(txtbuscado.getText().trim()));
-        transporte.setTrantipovehiculo(txtIngresarVehiculo.getText().trim());
-        
-        if (transporteDAO.actualizar(transporte)) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Modificado con éxito");
-            actualizarTabla(); // Para ver el cambio reflejado
+        int filaSeleccionada = tablaTransporte.getSelectedRow();
+
+        if (filaSeleccionada != -1) {
+
+            int filaModelo = tablaTransporte.convertRowIndexToModel(filaSeleccionada);
+
+            int respuesta = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro de eliminar este movimiento?",
+                "Confirmación de eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+
+            if (respuesta == JOptionPane.YES_OPTION) {
+
+                modeloTransportes.removeRow(filaModelo);
+
+                btnLimpiarActionPerformed(null);
+
+                JOptionPane.showMessageDialog(this, "Registro eliminado correctamente.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila de la tabla para eliminar.");
         }
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Error al modificar: " + e.getMessage());
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+      String id = txtId.getText();
+    String nombre = txtNombre.getText();
+    String vehiculo = txtTipoVehiculo.getText();
+    
+    if (id.isEmpty() || nombre.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Complete los campos básicos (ID y Nombre)");
+        return;
     }
 
+    // Usamos llaves {} para inicializar el arreglo correctamente
+    Object[] nuevaFila = {id, nombre, vehiculo};
+    modeloTransportes.addRow(nuevaFila);
+    
+    JOptionPane.showMessageDialog(this, "Registro agregado exitosamente.");
+    btnLimpiarActionPerformed(null);
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+int filaVisual = tablaTransporte.getSelectedRow();
+
+    if (filaVisual != -1) {
+        int filaModelo = tablaTransporte.convertRowIndexToModel(filaVisual);
+
+        if (!txtId.getText().trim().isEmpty()) {
+            modeloTransportes.setValueAt(txtId.getText(), filaModelo, 0);
+        }
+        if (!txtNombre.getText().trim().isEmpty()) {
+            modeloTransportes.setValueAt(txtNombre.getText(), filaModelo, 1);
+        }
+        if (!txtTipoVehiculo.getText().trim().isEmpty()) {
+            modeloTransportes.setValueAt(txtTipoVehiculo.getText(), filaModelo, 2);
+        }
+
+        JOptionPane.showMessageDialog(this, "Cambios aplicados únicamente a los campos editados.");
+        btnLimpiarActionPerformed(null); 
+        
+    } else {
+        JOptionPane.showMessageDialog(this, "Primero selecciona un registro de la tabla.");
+    }
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+        Vista.Logistica.frmReportes ventana = new Vista.Logistica.frmReportes();
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btnReportesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -380,14 +515,11 @@ Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.Transpor
         System.out.println("Buscando por Nombre...");
     }
 
-    private void buscarPorEmpresa() {
-        System.out.println("Buscando por Empresa...");
+    private void buscarPorTipoVehiculo() {
+        System.out.println("Buscando por Vehiculo...");
     }
 
-    private void buscarPorTipo() {
-        System.out.println("Buscando por Tipo de Vehículo...");
-    }
-    
+  
     
    public void actualizarTabla() {
     Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.TransportistasDAO();
@@ -413,20 +545,16 @@ Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.Transpor
 }
    
    private void tablaTransporteMouseClicked(java.awt.event.MouseEvent evt) {                                             
-    // 1. Identificar qué fila se tocó
-    int filaSeleccionada = tablaTransporte.getSelectedRow();
+    int filaVisual = tablaTransporte.getSelectedRow();
     
-    // 2. Si hay una fila seleccionada, extraer los datos
-    if (filaSeleccionada != -1) {
-        // Obtenemos el ID (Columna 0) y lo pasamos al cuadro de texto
-        String id = tablaTransporte.getValueAt(filaSeleccionada, 0).toString();
-        String vehiculo = tablaTransporte.getValueAt(filaSeleccionada, 2).toString();
+    if (filaVisual != -1) {
+        // Convertimos el índice por si la tabla está filtrada
+        int filaModelo = tablaTransporte.convertRowIndexToModel(filaVisual);
         
-        txtbuscado.setText(id);
-        txtIngresarVehiculo.setText(vehiculo);
-        
-        // Opcional: Mandar un mensaje a la consola para confirmar
-        System.out.println("Seleccionado ID: " + id);
+        // Extraemos datos del modelo y los subimos a los campos
+        txtId.setText(modeloTransportes.getValueAt(filaModelo, 0).toString());
+        txtNombre.setText(modeloTransportes.getValueAt(filaModelo, 1).toString());
+        txtTipoVehiculo.setText(modeloTransportes.getValueAt(filaModelo, 2).toString());
     }
 }
    
@@ -435,6 +563,7 @@ Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.Transpor
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAyuda;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
@@ -442,12 +571,18 @@ Modelo.Logistica.TransportistasDAO transporteDAO = new Modelo.Logistica.Transpor
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JButton btnReportes;
+    private javax.swing.JComboBox<String> cboxTipoBusqueda;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel label15;
-    private javax.swing.JLabel label19;
+    private javax.swing.JLabel label16;
+    private javax.swing.JLabel label17;
     private javax.swing.JTable tablaTransporte;
-    private javax.swing.JTextField txtIngresarVehiculo;
-    private javax.swing.JTextField txtbuscado;
+    private javax.swing.JTextField txtBuscar;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtIdMovimiento2;
+    private javax.swing.JTextField txtIdMovimiento4;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTipoVehiculo;
     // End of variables declaration//GEN-END:variables
 }

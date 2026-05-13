@@ -20,6 +20,8 @@ import Controlador.clsUsuarioConectado;
 import Modelo.PermisosDAO;
 import java.util.List;
 import Vista.Logistica.frmAyuda;
+import java.awt.Dimension;
+import javax.swing.JInternalFrame;
 
 //formulario
 
@@ -86,8 +88,10 @@ public class MdiLogistica extends javax.swing.JFrame {
         mnuGeneral = new javax.swing.JMenuBar();
         mnuTransporte = new javax.swing.JMenu();
         frmTansportes = new javax.swing.JMenuItem();
-        mnuBodega = new javax.swing.JMenu();
+        mnuInventario = new javax.swing.JMenu();
         frmKardex = new javax.swing.JMenuItem();
+        mnuEntradaSalida = new javax.swing.JMenu();
+        frmKBodega = new javax.swing.JMenuItem();
         frmStock = new javax.swing.JMenuItem();
         mnuPedidos = new javax.swing.JMenu();
         frmGestion = new javax.swing.JMenuItem();
@@ -125,7 +129,7 @@ public class MdiLogistica extends javax.swing.JFrame {
 
         mnuGeneral.add(mnuTransporte);
 
-        mnuBodega.setText("Bodega");
+        mnuInventario.setText("Inventarios");
 
         frmKardex.setText("Kardex");
         frmKardex.addActionListener(new java.awt.event.ActionListener() {
@@ -133,17 +137,34 @@ public class MdiLogistica extends javax.swing.JFrame {
                 frmKardexActionPerformed(evt);
             }
         });
-        mnuBodega.add(frmKardex);
+        mnuInventario.add(frmKardex);
 
-        frmStock.setText("Stock");
+        mnuGeneral.add(mnuInventario);
+
+        mnuEntradaSalida.setText("Bodega");
+        mnuEntradaSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuEntradaSalidaActionPerformed(evt);
+            }
+        });
+
+        frmKBodega.setText("Gestion Bodega");
+        frmKBodega.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmKBodegaActionPerformed(evt);
+            }
+        });
+        mnuEntradaSalida.add(frmKBodega);
+
+        frmStock.setText("Existencias");
         frmStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 frmStockActionPerformed(evt);
             }
         });
-        mnuBodega.add(frmStock);
+        mnuEntradaSalida.add(frmStock);
 
-        mnuGeneral.add(mnuBodega);
+        mnuGeneral.add(mnuEntradaSalida);
 
         mnuPedidos.setText("Pedidos");
 
@@ -319,6 +340,35 @@ Vista.Logistica.frmAyuda ventana = new Vista.Logistica.frmAyuda();
     ventana.setLocationRelativeTo(null);
     }//GEN-LAST:event_frmAyudainActionPerformed
 
+    private void frmKBodegaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmKBodegaActionPerformed
+      boolean abierta = false;
+    for (javax.swing.JInternalFrame f : jDesktopPane1.getAllFrames()) {
+        if (f instanceof frmMantenimientoBodega) {
+            abierta = true;
+            f.toFront(); // Si ya existe, solo la traemos al frente
+            try { f.setSelected(true); } catch (Exception e) {}
+            break;
+        }
+    }
+
+    if (!abierta) {
+        frmMantenimientoBodega ventana = new frmMantenimientoBodega();
+        jDesktopPane1.add(ventana);
+        
+        // Centrar
+        Dimension desktopSize = jDesktopPane1.getSize();
+        Dimension FrameSize = ventana.getSize();
+        ventana.setLocation((desktopSize.width - FrameSize.width) / 2, 
+                            (desktopSize.height - FrameSize.height) / 2);
+        
+        ventana.setVisible(true);
+    }
+    }//GEN-LAST:event_frmKBodegaActionPerformed
+
+    private void mnuEntradaSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuEntradaSalidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuEntradaSalidaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -347,13 +397,15 @@ Vista.Logistica.frmAyuda ventana = new Vista.Logistica.frmAyuda();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem frmAyudain;
     private javax.swing.JMenuItem frmGestion;
+    private javax.swing.JMenuItem frmKBodega;
     private javax.swing.JMenuItem frmKardex;
     private javax.swing.JMenuItem frmStock;
     private javax.swing.JMenuItem frmTansportes;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu mnuArchivo;
-    private javax.swing.JMenu mnuBodega;
+    private javax.swing.JMenu mnuEntradaSalida;
     private javax.swing.JMenuBar mnuGeneral;
+    private javax.swing.JMenu mnuInventario;
     private javax.swing.JMenu mnuPedidos;
     private javax.swing.JCheckBoxMenuItem mnuSalirSistema;
     private javax.swing.JMenu mnuTransporte;
