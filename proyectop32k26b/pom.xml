@@ -37,6 +37,7 @@
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE150</version>
         </dependency>
+<<<<<<< HEAD
         <dependency>
             <groupId>net.sf.jasperreports</groupId>
             <artifactId>jasperreports</artifactId>
@@ -47,5 +48,10 @@
             <artifactId>groovy</artifactId>
             <version>3.0.21</version>
         </dependency>
+=======
+        
+ 
+    
+>>>>>>> 09f73419de3105bc61c972474c1e4c703c466879
     </dependencies>  
 </project>

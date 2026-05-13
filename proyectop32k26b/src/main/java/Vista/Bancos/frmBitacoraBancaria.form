@@ -25,7 +25,7 @@
           <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="43" pref="286" max="32767" attributes="0"/>
+                      <EmptySpace min="43" pref="495" max="32767" attributes="0"/>
                       <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                       <Component id="btnLimpiar" min="-2" max="-2" attributes="0"/>
@@ -49,7 +49,7 @@
                       <EmptySpace min="-2" pref="124" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <Component id="ayudas" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -101,7 +101,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnBuscar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnLimpiar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jButton2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="ayudas" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" max="-2" attributes="0"/>
@@ -133,7 +133,7 @@
             <StringItem index="2" value="Accion"/>
             <StringItem index="3" value="Tabla"/>
             <StringItem index="4" value="Registro"/>
-            <StringItem index="5" value="Valor Anterioir"/>
+            <StringItem index="5" value="Valor Anterior"/>
             <StringItem index="6" value="Valor nuevo"/>
             <StringItem index="7" value="Fechas"/>
             <StringItem index="8" value="Descripci&#xf3;n"/>
@@ -147,7 +147,7 @@
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="ayudas">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Segoe UI" size="14" style="0"/>
@@ -155,7 +155,7 @@
         <Property name="text" type="java.lang.String" value="Ayuda"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ayudasActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtBuscar">

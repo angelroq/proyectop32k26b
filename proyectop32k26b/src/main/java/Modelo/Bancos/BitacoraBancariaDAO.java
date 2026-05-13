@@ -24,7 +24,7 @@ public class BitacoraBancariaDAO {
             while (rs.next()) {
                 clsBitacoraBancaria b = new clsBitacoraBancaria();
                 b.setBBid(rs.getInt("BBid"));
-                b.setBBusuarioaccion(rs.getInt("BBusuarioaccion"));
+                b.setBBusuarioaccion(rs.getString("BBusuarioaccion"));
                 b.setBBaccion(rs.getString("BBaccion"));
                 b.setBBtabla(rs.getString("BBtabla"));
                 b.setBBregistroid(rs.getObject("BBregistroid") != null ? rs.getInt("BBregistroid") : null);
@@ -50,7 +50,7 @@ public class BitacoraBancariaDAO {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, bitacora.getBBusuarioaccion());
+            ps.setString(1, bitacora.getBBusuarioaccion());
             ps.setString(2, bitacora.getBBaccion());
             ps.setString(3, bitacora.getBBtabla());
             if (bitacora.getBBregistroid() != null)
@@ -79,7 +79,7 @@ public class BitacoraBancariaDAO {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, bitacora.getBBusuarioaccion());
+            ps.setString(1, bitacora.getBBusuarioaccion());
             ps.setString(2, bitacora.getBBaccion());
             ps.setString(3, bitacora.getBBtabla());
             if (bitacora.getBBregistroid() != null)
@@ -136,7 +136,7 @@ public class BitacoraBancariaDAO {
                 if (rs.next()) {
                     bitacora = new clsBitacoraBancaria();
                     bitacora.setBBid(rs.getInt("BBid"));
-                    bitacora.setBBusuarioaccion(rs.getInt("BBusuarioaccion"));
+                    bitacora.setBBusuarioaccion(rs.getString("BBusuarioaccion"));
                     bitacora.setBBaccion(rs.getString("BBaccion"));
                     bitacora.setBBtabla(rs.getString("BBtabla"));
                     bitacora.setBBregistroid(rs.getObject("BBregistroid") != null ? rs.getInt("BBregistroid") : null);
@@ -168,7 +168,7 @@ public class BitacoraBancariaDAO {
                 while (rs.next()) {
                     clsBitacoraBancaria b = new clsBitacoraBancaria();
                     b.setBBid(rs.getInt("BBid"));
-                    b.setBBusuarioaccion(rs.getInt("BBusuarioaccion"));
+                    b.setBBusuarioaccion(rs.getString("BBusuarioaccion"));
                     b.setBBaccion(rs.getString("BBaccion"));
                     b.setBBtabla(rs.getString("BBtabla"));
                     b.setBBregistroid(rs.getObject("BBregistroid") != null ? rs.getInt("BBregistroid") : null);

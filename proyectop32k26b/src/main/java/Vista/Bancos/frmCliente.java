@@ -12,12 +12,12 @@ import java.sql.Connection;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-//import net.sf.jasperreports.engine.JasperCompileManager;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperPrint;
-//import net.sf.jasperreports.engine.JasperReport;
-//import net.sf.jasperreports.view.JasperViewer;
-
+/*import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+*/
 /**
  *
  * @Angoly Camila Araujo Mayen 9959-24-17623
@@ -352,21 +352,21 @@ private final Modelo.Bancos.ClientesDAO clientesDAO = new Modelo.Bancos.Clientes
         
         java.util.Map<String, Object> parametros = new java.util.HashMap<>();
         
-        //net.sf.jasperreports.engine.JasperReport reporte =
-          //  net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
+        /*net.sf.jasperreports.engine.JasperReport reporte =
+            net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
         
-        //net.sf.jasperreports.engine.JasperPrint print =
-          //  net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
+        net.sf.jasperreports.engine.JasperPrint print =
+          net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
         
-        //net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
-        //net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
+        net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
+        net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
         
         javax.swing.JFrame frame = new javax.swing.JFrame("Reporte de Clientes");
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-       // frame.add(viewer);
-        frame.setVisible(true);
+        frame.add(viewer);
+        frame.setVisible(true);*/
         
     } catch (Exception e) {
         e.printStackTrace();
