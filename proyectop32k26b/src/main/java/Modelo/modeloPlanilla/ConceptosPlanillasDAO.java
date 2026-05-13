@@ -50,15 +50,13 @@ public class ConceptosPlanillasDAO {
             return true;
 
         } catch (Exception e) {
-
-            System.out.println(e);
-
+            System.out.println("Error INSERT conceptos: " + e.getMessage());
             return false;
         }
     }
 
     // LISTAR
-    public List listar() {
+    public List<clsConceptosPlanillas> listar() {
 
         List<clsConceptosPlanillas> lista = new ArrayList<>();
 
