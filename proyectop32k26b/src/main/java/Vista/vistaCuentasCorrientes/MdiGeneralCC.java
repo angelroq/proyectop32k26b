@@ -14,6 +14,7 @@ package Vista.vistaCuentasCorrientes;
 import Controlador.clsUsuarioConectado;
 import Modelo.PermisosDAO;
 import Vista.frmMantenimientoBitacora;
+import Vista.frmMantenimientoUsuario;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -72,6 +73,9 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         mnuGeneral = new javax.swing.JMenuBar();
         mnuArchivo = new javax.swing.JMenu();
         mnuSalirSistema = new javax.swing.JCheckBoxMenuItem();
+        mnuAcreedores = new javax.swing.JMenu();
+        mnuMantenimientoAcre = new javax.swing.JMenuItem();
+        jMenuItem9 = new javax.swing.JMenuItem();
         mnuGestionCobros = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -79,7 +83,7 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        mnuReportes = new javax.swing.JMenu();
+        jMenuItem8 = new javax.swing.JMenuItem();
         mnuAyudas = new javax.swing.JMenu();
         mnuConsultas = new javax.swing.JMenu();
         frmMantenimientoBitacora = new javax.swing.JMenuItem();
@@ -126,6 +130,21 @@ public class MdiGeneralCC extends javax.swing.JFrame {
 
         mnuGeneral.add(mnuArchivo);
 
+        mnuAcreedores.setText("Acreedores");
+
+        mnuMantenimientoAcre.setText("Mantenimiento Acreedores");
+        mnuMantenimientoAcre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuMantenimientoAcreActionPerformed(evt);
+            }
+        });
+        mnuAcreedores.add(mnuMantenimientoAcre);
+
+        jMenuItem9.setText("Registro factura Acreedor");
+        mnuAcreedores.add(jMenuItem9);
+
+        mnuGeneral.add(mnuAcreedores);
+
         mnuGestionCobros.setText("Gestión de Cobros");
 
         jMenuItem3.setText("Generar Cuenta por Cobrar");
@@ -139,6 +158,11 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         mnuGestionPagos.setText("Gestion de Pagos");
 
         jMenuItem6.setText("Generar Cuenta por Pagar");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
         mnuGestionPagos.add(jMenuItem6);
 
         jMenuItem7.setText("Registrar Pago");
@@ -147,10 +171,16 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         mnuGeneral.add(mnuGestionPagos);
 
         jMenu3.setText("Movimientos Bancarios");
-        mnuGeneral.add(jMenu3);
 
-        mnuReportes.setText("Reportes");
-        mnuGeneral.add(mnuReportes);
+        jMenuItem8.setText("Movimientos Transacciones");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem8);
+
+        mnuGeneral.add(jMenu3);
 
         mnuAyudas.setText("Ayudas");
         mnuGeneral.add(mnuAyudas);
@@ -249,6 +279,32 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
     }//GEN-LAST:event_frmMantenimientoBitacoraActionPerformed
 
+    private void mnuMantenimientoAcreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMantenimientoAcreActionPerformed
+        // TODO add your handling code here:
+        System.out.println("entre a mantenimiento Acreedor");
+        frmMantenimientoAcreedor ventana = new frmMantenimientoAcreedor();
+        jDesktopPane1.add(ventana);
+        Dimension desktopSize = jDesktopPane1.getSize();
+        Dimension FrameSize = ventana.getSize();
+        ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+    }//GEN-LAST:event_mnuMantenimientoAcreActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        // TODO add your handling code here:
+        System.out.println("entre a Movimiento Transaccion");
+        CCconciliacionBancaria ventana = new CCconciliacionBancaria();
+        jDesktopPane1.add(ventana);
+        Dimension desktopSize = jDesktopPane1.getSize();
+        Dimension FrameSize = ventana.getSize();
+        ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        // TODO add your handling code here:
+        cuentasporpagar formulario = new cuentasporpagar();
+        formulario.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -312,13 +368,16 @@ public class MdiGeneralCC extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JMenuItem jMenuItem9;
+    private javax.swing.JMenu mnuAcreedores;
     private javax.swing.JMenu mnuArchivo;
     private javax.swing.JMenu mnuAyudas;
     private javax.swing.JMenu mnuConsultas;
     private javax.swing.JMenuBar mnuGeneral;
     private javax.swing.JMenu mnuGestionCobros;
     private javax.swing.JMenu mnuGestionPagos;
-    private javax.swing.JMenu mnuReportes;
+    private javax.swing.JMenuItem mnuMantenimientoAcre;
     private javax.swing.JCheckBoxMenuItem mnuSalirSistema;
     // End of variables declaration//GEN-END:variables
 }
