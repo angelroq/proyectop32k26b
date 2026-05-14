@@ -6,6 +6,9 @@
 package Vista.Logistica;
 
 import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 /**
  *
@@ -108,9 +111,8 @@ public class frmAyuda extends javax.swing.JFrame {
     private void BotonAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonAyudaActionPerformed
         // TODO add your handling code here:
         //Ferdynand Monroy mayo 2026: agregue la ayuda junto al archivo .chm
-        
         try {
-        String ruta = "C:\\Users\\ferit\\Desktop\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
+        String ruta = "C:\\Users\\ferit\\Desktop\\proyFinalP32K26b\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
 
         File archivo = new File(ruta);
 
@@ -124,7 +126,7 @@ public class frmAyuda extends javax.swing.JFrame {
 
     } catch (Exception e) {
         e.printStackTrace();
-    }
+        }
     }//GEN-LAST:event_BotonAyudaActionPerformed
 
     /**

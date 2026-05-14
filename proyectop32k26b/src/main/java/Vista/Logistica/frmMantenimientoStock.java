@@ -478,9 +478,8 @@ public frmMantenimientoStock() {
     ventanaAyuda.setLocationRelativeTo(null);
     
     //Ferdynand Monroy mayo 2026: agregue la ayuda junto al archivo .chm
-        
         try {
-        String ruta = "C:\\Users\\ferit\\Desktop\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
+        String ruta = "C:\\Users\\ferit\\Desktop\\proyFinalP32K26b\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
 
         File archivo = new File(ruta);
 
@@ -494,7 +493,7 @@ public frmMantenimientoStock() {
 
     } catch (Exception e) {
         e.printStackTrace();
-    }
+        }
     }//GEN-LAST:event_btnAdydaActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed

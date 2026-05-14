@@ -10,6 +10,7 @@ import Modelo.Logistica.MarcaDAO;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Modelo.BitacoraDAO;
+import java.io.File; //ferdynand monroy mayo 2026 este import muestra el archivo .chm
 import javax.swing.JOptionPane;
 
 /**
@@ -286,6 +287,23 @@ public class frmMarcas extends javax.swing.JInternalFrame {
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
         // TODO add your handling code here:
+        //Ferdynand Monroy mayo 2026: agregue la ayuda junto al archivo .chm
+        try {
+        String ruta = "C:\\Users\\ferit\\Desktop\\proyFinalP32K26b\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
+
+        File archivo = new File(ruta);
+
+        if (archivo.exists()) {
+            Runtime.getRuntime().exec(
+                "rundll32 url.dll,FileProtocolHandler \"" + ruta + "\""
+            );
+        } else {
+            System.out.println("La ayuda no fue encontrada");
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        }
         
     }//GEN-LAST:event_btnAyudaActionPerformed
 
