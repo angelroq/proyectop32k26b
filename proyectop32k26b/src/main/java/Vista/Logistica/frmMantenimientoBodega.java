@@ -11,6 +11,7 @@
 
 
 package Vista.Logistica;
+import java.io.File; //para que se vea el archivo de ayuda llamado Logistica.chm
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
@@ -289,29 +290,28 @@ DefaultTableModel modeloBodega;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnAdydaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdydaActionPerformed
-      /*  Vista.Logistica.frmAyuda ventanaAyuda = new Vista.Logistica.frmAyuda();
+        Vista.Logistica.frmAyuda ventanaAyuda = new Vista.Logistica.frmAyuda();
 
         ventanaAyuda.setVisible(true);
         ventanaAyuda.setLocationRelativeTo(null);
 
         //Ferdynand Monroy mayo 2026: agregue la ayuda junto al archivo .chm
-
         try {
-            String ruta = "C:\\Users\\ferit\\Desktop\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
+        String ruta = "C:\\Users\\ferit\\Desktop\\proyFinalP32K26b\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
 
-            File archivo = new File(ruta);
+        File archivo = new File(ruta);
 
-            if (archivo.exists()) {
-                Runtime.getRuntime().exec(
-                    "rundll32 url.dll,FileProtocolHandler \"" + ruta + "\""
-                );
-            } else {
-                System.out.println("La ayuda no fue encontrada");
-            }
+        if (archivo.exists()) {
+            Runtime.getRuntime().exec(
+                "rundll32 url.dll,FileProtocolHandler \"" + ruta + "\""
+            );
+        } else {
+            System.out.println("La ayuda no fue encontrada");
+        }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
+    } catch (Exception e) {
+        e.printStackTrace();
+        }
     }//GEN-LAST:event_btnAdydaActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
