@@ -13,28 +13,13 @@ import java.util.List;
 
 /**
  * DAO para la gestión de Conciliaciones Bancarias (ConciliacionBancaria).
- *
- * Permite realizar operaciones CRUD sobre la base de datos:
- * - Listar todos los registros
- * - Insertar nuevas conciliaciones
- * - Actualizar conciliaciones existentes
- * - Eliminar registros
- * - Consultar por ID
- * - Consultar por cuenta bancaria
- *
- * Además, cada operación es registrada en la bitácora del sistema.
- *
- * @author Karina Alejandra Arriaza Ortiz 9959-24-14190
  */
 public class ConciliacionBancariaDAO {
 
-    // Código de la aplicación para registro en bitácora
     private static final int APL_CODIGO = 5300;
 
     /**
      * Obtiene todas las conciliaciones bancarias registradas.
-     *
-     * @return Lista de objetos clsConciliacionBancaria
      */
     public List<clsConciliacionBancaria> listar() {
         List<clsConciliacionBancaria> lista = new ArrayList<>();
@@ -47,13 +32,12 @@ public class ConciliacionBancariaDAO {
             while (rs.next()) {
                 lista.add(new clsConciliacionBancaria(
                     rs.getInt("Conbid"),
-                    rs.getDate("conbfecha"),
+                    rs.getDate("conbfecha"),               // ✅ Fecha agregada
                     rs.getDouble("Conbsaldosistema"),
                     rs.getDouble("Conbsaldobanco"),
                     rs.getDouble("Conbdiferencia"),
                     rs.getInt("CBANid"),
-                    rs.getInt("Catesid")
-                ));
+                    rs.getInt("Catesid")));                // ✅ Estado agregado
             }
 
         } catch (Exception e) {
@@ -64,10 +48,11 @@ public class ConciliacionBancariaDAO {
 
     /**
      * Inserta una nueva conciliación bancaria.
-     *
-     * @param conb Objeto a insertar
      */
-    public void insert(clsConciliacionBancaria conb) {String sql = "INSERT INTO ConciliacionBancaria " +"(conbfecha, Conbsaldosistema, Conbsaldobanco, Conbdiferencia, CBANid, Catesid) " +"VALUES (?, ?, ?, ?, ?, ?)";
+    public void insert(clsConciliacionBancaria conb) {
+        String sql = "INSERT INTO ConciliacionBancaria "
+                   + "(conbfecha, Conbsaldosistema, Conbsaldobanco, Conbdiferencia, CBANid, Catesid) "
+                   + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -80,8 +65,6 @@ public class ConciliacionBancariaDAO {
             ps.setInt(6, conb.getCatesid());
 
             ps.executeUpdate();
-
-            // Registro en bitácora
             new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "INSERT");
 
         } catch (Exception e) {
@@ -92,10 +75,12 @@ public class ConciliacionBancariaDAO {
 
     /**
      * Actualiza una conciliación bancaria existente.
-     *
-     * @param conb Objeto con los datos actualizados
      */
-    public void update(clsConciliacionBancaria conb) {String sql = "UPDATE ConciliacionBancaria SET " +"conbfecha=?, Conbsaldosistema=?, Conbsaldobanco=?, " +"Conbdiferencia=?, CBANid=?, Catesid=? " +"WHERE Conbid=?";
+    public void update(clsConciliacionBancaria conb) {
+        String sql = "UPDATE ConciliacionBancaria SET "
+                   + "conbfecha=?, Conbsaldosistema=?, Conbsaldobanco=?, "
+                   + "Conbdiferencia=?, CBANid=?, Catesid=? "
+                   + "WHERE Conbid=?";
 
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -109,11 +94,9 @@ public class ConciliacionBancariaDAO {
             ps.setInt(7, conb.getConbid());
 
             int rows = ps.executeUpdate();
-
             if (rows == 0)
                 throw new RuntimeException("No se encontró la ConciliacionBancaria para actualizar");
 
-            // Registro en bitácora
             new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "UPDATE");
 
         } catch (Exception e) {
@@ -124,8 +107,6 @@ public class ConciliacionBancariaDAO {
 
     /**
      * Elimina una conciliación bancaria por su ID.
-     *
-     * @param id Identificador de la conciliación
      */
     public void delete(int id) {
         String sql = "DELETE FROM ConciliacionBancaria WHERE Conbid=?";
@@ -136,11 +117,9 @@ public class ConciliacionBancariaDAO {
             ps.setInt(1, id);
 
             int rows = ps.executeUpdate();
-
             if (rows == 0)
                 throw new RuntimeException("No se encontró la ConciliacionBancaria para eliminar");
 
-            // Registro en bitácora
             new BitacoraDAO().insert(clsUsuarioConectado.getUsuId(), APL_CODIGO, "DELETE");
 
         } catch (Exception e) {
@@ -151,12 +130,9 @@ public class ConciliacionBancariaDAO {
 
     /**
      * Consulta una conciliación bancaria por su ID.
-     *
-     * @param id Identificador de la conciliación
-     * @return Objeto encontrado o null si no existe
      */
     public clsConciliacionBancaria query(int id) {
-        clsConciliacionBancaria conb = null;
+        clsConciliacionBancaria conb = null;                  // ✅ Era "cb", corregido a "conb"
         String sql = "SELECT * FROM ConciliacionBancaria WHERE Conbid=?";
 
         try (Connection conn = Conexion.getConnection();
@@ -166,15 +142,14 @@ public class ConciliacionBancariaDAO {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    conb = new clsConciliacionBancaria(
+                    conb = new clsConciliacionBancaria(      // ✅ Era "cb", corregido a "conb"
                         rs.getInt("Conbid"),
-                        rs.getDate("conbfecha"),
+                        rs.getDate("conbfecha"),             // ✅ Fecha agregada
                         rs.getDouble("Conbsaldosistema"),
                         rs.getDouble("Conbsaldobanco"),
                         rs.getDouble("Conbdiferencia"),
                         rs.getInt("CBANid"),
-                        rs.getInt("Catesid")
-                    );
+                        rs.getInt("Catesid"));               // ✅ Estado agregado
                 }
             }
 
@@ -187,9 +162,6 @@ public class ConciliacionBancariaDAO {
 
     /**
      * Consulta todas las conciliaciones asociadas a una cuenta bancaria.
-     *
-     * @param cbanId Identificador de la cuenta bancaria
-     * @return Lista de conciliaciones de esa cuenta
      */
     public List<clsConciliacionBancaria> queryPorCuenta(int cbanId) {
         List<clsConciliacionBancaria> lista = new ArrayList<>();
@@ -204,13 +176,12 @@ public class ConciliacionBancariaDAO {
                 while (rs.next()) {
                     lista.add(new clsConciliacionBancaria(
                         rs.getInt("Conbid"),
-                        rs.getDate("conbfecha"),
+                        rs.getDate("conbfecha"),             // ✅ Fecha agregada
                         rs.getDouble("Conbsaldosistema"),
                         rs.getDouble("Conbsaldobanco"),
                         rs.getDouble("Conbdiferencia"),
                         rs.getInt("CBANid"),
-                        rs.getInt("Catesid")
-                    ));
+                        rs.getInt("Catesid")));              // ✅ Estado agregado
                 }
             }
 

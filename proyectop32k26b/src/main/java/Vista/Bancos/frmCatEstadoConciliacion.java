@@ -3,6 +3,13 @@ package Vista.Bancos;
 
 import Controlador.Bancos.clsCatEstadoConciliacion;
 import Modelo.Bancos.CatEstadoConciliacionDAO;
+import java.io.File;
+import java.sql.Connection;
+//import net.sf.jasperreports.engine.JasperCompileManager;
+//import net.sf.jasperreports.engine.JasperFillManager;
+//import net.sf.jasperreports.engine.JasperPrint;
+//import net.sf.jasperreports.engine.JasperReport;
+//import net.sf.jasperreports.view.JasperViewer;
 
 
 public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
@@ -33,7 +40,6 @@ public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
         btnBuscar = new javax.swing.JButton();
         btnReporte = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnAyuda = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -43,8 +49,9 @@ public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
         btnActualizar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        btnBuscar1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnBuscar.setFont(new java.awt.Font("MS Gothic", 2, 12)); // NOI18N
         btnBuscar.setText("Buscar");
@@ -64,14 +71,6 @@ public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("MS Gothic", 2, 14)); // NOI18N
         jLabel1.setText("Estado Conciliación");
-
-        btnAyuda.setFont(new java.awt.Font("MS Gothic", 2, 12)); // NOI18N
-        btnAyuda.setText("Ayuda");
-        btnAyuda.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAyudaActionPerformed(evt);
-            }
-        });
 
         jLabel2.setFont(new java.awt.Font("MS Gothic", 2, 12)); // NOI18N
         jLabel2.setText("ID:");
@@ -118,6 +117,14 @@ public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        btnBuscar1.setFont(new java.awt.Font("MS Gothic", 2, 12)); // NOI18N
+        btnBuscar1.setText("Ayudas");
+        btnBuscar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscar1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,32 +135,35 @@ public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel2))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
-                        .addGap(24, 24, 24)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtid, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAgregar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnBuscar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnActualizar)
-                                .addGap(28, 28, 28)
-                                .addComponent(btnEliminar)))
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(btnReporte))
-                            .addComponent(btnAyuda))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnAgregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuscar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnActualizar)
+                        .addGap(28, 28, 28)
+                        .addComponent(btnEliminar)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(btnReporte)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -175,17 +185,15 @@ public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
                                     .addComponent(jLabel3)
                                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
+                                .addGap(28, 28, 28)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(btnActualizar)
-                                    .addComponent(btnEliminar)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnReporte)
-                        .addGap(30, 30, 30)
-                        .addComponent(btnAyuda)))
-                .addGap(28, 28, 28)
+                                    .addComponent(btnEliminar)
+                                    .addComponent(btnBuscar1)))))
+                    .addComponent(btnReporte))
+                .addGap(40, 40, 40)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(196, Short.MAX_VALUE))
+                .addContainerGap(186, Short.MAX_VALUE))
         );
 
         pack();
@@ -221,12 +229,53 @@ if (txtid.getText().trim().isEmpty()) {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        // TODO add your handling code here:
+Connection conn = null;
+    try {
+        conn = Modelo.Conexion.getConnection();
+        
+        // Ruta corregida — faltaba el separador entre getAbsolutePath() y src
+        String ruta = new java.io.File("").getAbsolutePath() 
+                    + "\\src\\main\\java\\Reportes\\Bancos\\CatEC.jrxml";
+        
+        System.out.println("Buscando reporte en: " + ruta); // Para verificar en consola
+        
+        java.io.File archivo = new java.io.File(ruta);
+        if (!archivo.exists()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No se encontró el archivo del reporte en:\n" + ruta,
+                "Archivo no encontrado", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        java.util.Map<String, Object> parametros = new java.util.HashMap<>();
+        
+        //net.sf.jasperreports.engine.JasperReport reporte =
+         //   net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
+        
+        //net.sf.jasperreports.engine.JasperPrint print =
+        //    net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
+        
+        //net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
+        //net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
+        
+        javax.swing.JFrame frame = new javax.swing.JFrame("Reporte de Estado Conciliacion");
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        //frame.add(viewer);
+        frame.setVisible(true);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Error al generar el reporte:\n" + e.getMessage(),
+            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (conn != null) {
+            try { conn.close(); } catch (Exception ex) { ex.printStackTrace(); }
+        }
+    }
     }//GEN-LAST:event_btnReporteActionPerformed
-
-    private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 if (txtid.getText().trim().isEmpty()) {
@@ -305,6 +354,23 @@ if (!camposCompletos()) return;
             "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
+        try {
+            String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
+
+            File archivo = new File(ruta);
+
+            if (archivo.exists()) {
+                Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
+            } else {
+                System.out.println("La ayuda no fue encontrada");
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnBuscar1ActionPerformed
 // ── Llena la tabla con todos los estados de conciliación ────────────────────
 private void cargarTabla() {
     javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
@@ -398,8 +464,8 @@ private clsCatEstadoConciliacion getEstadoConciliacionDeFormulario() {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnAgregar;
-    private javax.swing.JButton btnAyuda;
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnBuscar1;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnReporte;
     private javax.swing.JLabel jLabel1;

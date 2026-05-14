@@ -103,12 +103,12 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProcesosActionPerformed"/>
           </Events>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="frmProcesoPerfilUsuario">
+            <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoConciliacionBancaria">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Asignacion Movimiento Bancario"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmProcesoPerfilUsuarioActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoConciliacionBancariaActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="frmProcesoAplicacionPerfil">
@@ -119,12 +119,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmProcesoAplicacionPerfilActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="frmProcesoAplicacionUsuario">
+            <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoCatEstadoConciliacion">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Asignacion Estado Conciliaci&#xf3;n"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmProcesoAplicacionUsuarioActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoCatEstadoConciliacionActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
@@ -135,10 +135,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+            <MenuItem class="javax.swing.JMenuItem" name="frmMantenimientoCatTipoTransaccion">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Asignaci&#xf3;n Transacci&#xf3;n"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="frmMantenimientoCatTipoTransaccionActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

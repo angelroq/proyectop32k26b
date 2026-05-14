@@ -7,19 +7,6 @@ package Vista.Bancos;
 //Modificado Por Angoly Camila Araujo Mayen 9959-24-17623
 
 import Vista.*;
-import Controlador.clsUsuarioConectado;
-import Modelo.PermisosDAO;
-import Controlador.Bancos.clsBanco;
-import Controlador.Bancos.clsTipoCuenta;
-import Controlador.Bancos.clsCuentaBancaria;
-import Controlador.Bancos.clsMovimientoBancario;
-import Controlador.clsUsuarioConectado;
-import Modelo.BitacoraDAO;
-import Modelo.Bancos.BancoDAO;
-import Modelo.Bancos.TipoCuentaDAO;
-import Modelo.Bancos.CuentaBancariaDAO;
-import Modelo.Bancos.MovimientoBancarioDAO;
-import Modelo.Conexion;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -84,11 +71,11 @@ public class MdiBancos extends javax.swing.JFrame {
         frmMantenimientoClientes = new javax.swing.JMenuItem();
         frmMantenimientoTipoCuenta = new javax.swing.JMenuItem();
         mnuProcesos = new javax.swing.JMenu();
-        frmProcesoPerfilUsuario = new javax.swing.JMenuItem();
+        frmMantenimientoConciliacionBancaria = new javax.swing.JMenuItem();
         frmProcesoAplicacionPerfil = new javax.swing.JMenuItem();
-        frmProcesoAplicacionUsuario = new javax.swing.JMenuItem();
+        frmMantenimientoCatEstadoConciliacion = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        frmMantenimientoCatTipoTransaccion = new javax.swing.JMenuItem();
         mnuConsultas = new javax.swing.JMenu();
         frmMantenimientoBitacora = new javax.swing.JMenuItem();
 
@@ -187,13 +174,13 @@ public class MdiBancos extends javax.swing.JFrame {
             }
         });
 
-        frmProcesoPerfilUsuario.setText("Asignacion Movimiento Bancario");
-        frmProcesoPerfilUsuario.addActionListener(new java.awt.event.ActionListener() {
+        frmMantenimientoConciliacionBancaria.setText("Asignacion Movimiento Bancario");
+        frmMantenimientoConciliacionBancaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                frmProcesoPerfilUsuarioActionPerformed(evt);
+                frmMantenimientoConciliacionBancariaActionPerformed(evt);
             }
         });
-        mnuProcesos.add(frmProcesoPerfilUsuario);
+        mnuProcesos.add(frmMantenimientoConciliacionBancaria);
 
         frmProcesoAplicacionPerfil.setText("Asignacion Cuenta Bancaria");
         frmProcesoAplicacionPerfil.addActionListener(new java.awt.event.ActionListener() {
@@ -203,13 +190,13 @@ public class MdiBancos extends javax.swing.JFrame {
         });
         mnuProcesos.add(frmProcesoAplicacionPerfil);
 
-        frmProcesoAplicacionUsuario.setText("Asignacion Estado Conciliación");
-        frmProcesoAplicacionUsuario.addActionListener(new java.awt.event.ActionListener() {
+        frmMantenimientoCatEstadoConciliacion.setText("Asignacion Estado Conciliación");
+        frmMantenimientoCatEstadoConciliacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                frmProcesoAplicacionUsuarioActionPerformed(evt);
+                frmMantenimientoCatEstadoConciliacionActionPerformed(evt);
             }
         });
-        mnuProcesos.add(frmProcesoAplicacionUsuario);
+        mnuProcesos.add(frmMantenimientoCatEstadoConciliacion);
 
         jMenuItem3.setText("Asignacion Conciliación Bancaria");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
@@ -219,8 +206,13 @@ public class MdiBancos extends javax.swing.JFrame {
         });
         mnuProcesos.add(jMenuItem3);
 
-        jMenuItem5.setText("Asignación Transacción");
-        mnuProcesos.add(jMenuItem5);
+        frmMantenimientoCatTipoTransaccion.setText("Asignación Transacción");
+        frmMantenimientoCatTipoTransaccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                frmMantenimientoCatTipoTransaccionActionPerformed(evt);
+            }
+        });
+        mnuProcesos.add(frmMantenimientoCatTipoTransaccion);
 
         mnuGeneral.add(mnuProcesos);
 
@@ -291,9 +283,12 @@ public void configurarVisibilidadBotones(List<Integer> appsPermitidas) {
     frmMantenimientoClientes.setEnabled(false);
     frmMantenimientoTipoCuenta.setEnabled(false);
     frmMantenimientoBitacora.setEnabled(false);
-    frmProcesoPerfilUsuario.setEnabled(false);
+    frmMantenimientoConciliacionBancaria.setEnabled(false);
     frmProcesoAplicacionPerfil.setEnabled(false);
-    frmProcesoAplicacionUsuario.setEnabled(false);
+    frmMantenimientoCatEstadoConciliacion.setEnabled(false);
+    frmMantenimientoConciliacionBancaria.setEnabled(false);
+    frmMantenimientoCatTipoTransaccion.setEnabled(false);
+    frmMantenimientoCatEstadoConciliacion.setEnabled(false);
 
     // Recorre la lista y enciende las que el usuario tenga asignadas
     for (int codigoApp : appsPermitidas) {
@@ -311,13 +306,22 @@ public void configurarVisibilidadBotones(List<Integer> appsPermitidas) {
                 frmMantenimientoBitacora.setEnabled(true);
                 break;
             case 10010:
-                frmProcesoPerfilUsuario.setEnabled(true);
+                frmMantenimientoConciliacionBancaria.setEnabled(true);
                 break;
             case 10011:
                 frmProcesoAplicacionPerfil.setEnabled(true);
                 break;
             case 10012:
-                frmProcesoAplicacionUsuario.setEnabled(true);
+                frmMantenimientoCatEstadoConciliacion.setEnabled(true);
+                break;
+            case 10020:
+                frmMantenimientoConciliacionBancaria.setEnabled(true);
+                break;
+            case 10021:
+                frmMantenimientoCatTipoTransaccion.setEnabled(true);
+                break;
+            case 10022:
+                frmMantenimientoCatEstadoConciliacion.setEnabled(true);
                 break;
         }
     }
@@ -420,7 +424,7 @@ public void configurarVisibilidadBotones(List<Integer> appsPermitidas) {
     ventana.setVisible(true);
     }//GEN-LAST:event_frmMantenimientoBitacoraActionPerformed
 
-    private void frmProcesoPerfilUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmProcesoPerfilUsuarioActionPerformed
+    private void frmMantenimientoConciliacionBancariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoConciliacionBancariaActionPerformed
     System.out.println("Abriendo Movimiento Bancario");
 
     frmMovimientoBancario ventana = new frmMovimientoBancario();
@@ -435,7 +439,7 @@ public void configurarVisibilidadBotones(List<Integer> appsPermitidas) {
     );
 
     ventana.setVisible(true);
-    }//GEN-LAST:event_frmProcesoPerfilUsuarioActionPerformed
+    }//GEN-LAST:event_frmMantenimientoConciliacionBancariaActionPerformed
 
     private void frmProcesoAplicacionPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmProcesoAplicacionPerfilActionPerformed
     System.out.println("Abriendo Cuenta Bancaria");
@@ -455,7 +459,7 @@ public void configurarVisibilidadBotones(List<Integer> appsPermitidas) {
 vista.setVisible(true);
     }//GEN-LAST:event_frmProcesoAplicacionPerfilActionPerformed
 
-    private void frmProcesoAplicacionUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmProcesoAplicacionUsuarioActionPerformed
+    private void frmMantenimientoCatEstadoConciliacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoCatEstadoConciliacionActionPerformed
         // TODO add your handling code here:
         System.out.println("entre a proceso Aplicacion a Usuario");
         frmProcesoAplicacionUsuario ventana = new frmProcesoAplicacionUsuario();
@@ -463,11 +467,47 @@ vista.setVisible(true);
         Dimension desktopSize = jDesktopPane1.getSize();
         Dimension FrameSize = ventana.getSize();
         ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
-    }//GEN-LAST:event_frmProcesoAplicacionUsuarioActionPerformed
+    }//GEN-LAST:event_frmMantenimientoCatEstadoConciliacionActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+    System.out.println("Abriendo Mantenimiento Conciliacion Bancaria");
+
+    frmConciliacionBancaria ventana = new frmConciliacionBancaria();
+
+    ventana.pack();
+
+    jDesktopPane1.add(ventana);
+
+    Dimension desktopSize = jDesktopPane1.getSize();
+    Dimension frameSize = ventana.getSize();
+
+    ventana.setLocation(
+        (desktopSize.width - frameSize.width) / 2,
+        (desktopSize.height - frameSize.height) / 2
+    );
+
+    ventana.setVisible(true);        
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void frmMantenimientoCatTipoTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoCatTipoTransaccionActionPerformed
+   System.out.println("Abriendo Mantenimiento Tipo Transaccion");
+
+    frmCatTipoTransaccion ventana = new frmCatTipoTransaccion();
+
+    ventana.pack();
+
+    jDesktopPane1.add(ventana);
+
+    Dimension desktopSize = jDesktopPane1.getSize();
+    Dimension frameSize = ventana.getSize();
+
+    ventana.setLocation(
+        (desktopSize.width - frameSize.width) / 2,
+        (desktopSize.height - frameSize.height) / 2
+    );
+
+    ventana.setVisible(true);           // TODO add your handling code here:
+    }//GEN-LAST:event_frmMantenimientoCatTipoTransaccionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -521,11 +561,12 @@ vista.setVisible(true);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem frmMantenimientoBitacora;
+    private javax.swing.JMenuItem frmMantenimientoCatEstadoConciliacion;
+    private javax.swing.JMenuItem frmMantenimientoCatTipoTransaccion;
     private javax.swing.JMenuItem frmMantenimientoClientes;
+    private javax.swing.JMenuItem frmMantenimientoConciliacionBancaria;
     private javax.swing.JMenuItem frmMantenimientoTipoCuenta;
     private javax.swing.JMenuItem frmProcesoAplicacionPerfil;
-    private javax.swing.JMenuItem frmProcesoAplicacionUsuario;
-    private javax.swing.JMenuItem frmProcesoPerfilUsuario;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JMenu jMenu1;
@@ -533,7 +574,6 @@ vista.setVisible(true);
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem mantenimientoBancos;
     private javax.swing.JMenu mnuArchivo;
     private javax.swing.JMenu mnuCatalogos;

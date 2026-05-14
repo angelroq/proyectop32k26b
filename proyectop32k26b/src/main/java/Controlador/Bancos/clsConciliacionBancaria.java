@@ -33,14 +33,14 @@ public class clsConciliacionBancaria {
      * @param estado     Estado de la conciliación
      */
     public clsConciliacionBancaria(int id, Date fecha, double sistema, double banco, double diferencia, int cuenta, int estado) {
-        this.Conbid = id;
-        this.conbfecha = fecha;
-        this.Conbsaldosistema = sistema;
-        this.Conbsaldobanco = banco;
-        this.Conbdiferencia = diferencia;
-        this.CBANid = cuenta;
-        this.Catesid = estado;
-    }
+    this.Conbid = id;
+    this.conbfecha = fecha;
+    this.Conbsaldosistema = sistema;
+    this.Conbsaldobanco = banco;
+    this.Conbdiferencia = diferencia;
+    this.CBANid = cuenta;
+    this.Catesid = estado;
+}
 
     /**
      * @return Identificador único de la conciliación

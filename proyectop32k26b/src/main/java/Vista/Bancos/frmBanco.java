@@ -3,15 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista.Bancos;
-import Controlador.Bancos.clsBanco;
-import Controlador.clsUsuarioConectado;
-import Modelo.BitacoraDAO;
-import Modelo.Bancos.BancoDAO;
-import Modelo.Conexion;
-import java.sql.Connection;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
 //import net.sf.jasperreports.engine.JasperCompileManager;
 //import net.sf.jasperreports.engine.JasperFillManager;
 //import net.sf.jasperreports.engine.JasperPrint;
@@ -257,10 +250,20 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-      javax.swing.JOptionPane.showMessageDialog(this,
-        "Módulo de Ayuda en construcción.",
-        "Próximamente", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        try {
+    String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
 
+    File archivo = new File(ruta);
+
+    if (archivo.exists()) {
+        Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
+    } else {
+        System.out.println("La ayuda no fue encontrada");
+    }
+
+} catch (Exception ex) {
+    ex.printStackTrace();
+}
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
