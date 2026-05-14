@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4ea937be-6941-4158-a2ee-83cfab775bde">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="36"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM sig.pedidos;]]>
+	</queryString>
+	<field name="Pedid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Cliid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Pedfecha" class="java.time.LocalDateTime">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Pedestado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="97" y="17" width="364" height="49" uuid="87459869-930f-49f2-b67d-a34199db8efc"/>
+				<textElement>
+					<font size="28"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE PEDIDOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="6a216075-794c-467a-9bc4-d779711d1d2a"/>
+				<text><![CDATA[Pedid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="121" y="0" width="100" height="20" uuid="fd393342-abc0-4f13-9f37-b5a10fbeb7e9"/>
+				<text><![CDATA[Cliid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="0" width="100" height="20" uuid="c4304896-2988-4ae9-b96f-f348186c2b5e"/>
+				<text><![CDATA[Pedfecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="387" y="0" width="100" height="20" uuid="2e8a6dd1-4304-40ee-9f27-9ce525f74888"/>
+				<text><![CDATA[Pedestado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="67329998-baf4-4468-8d35-970258abd5b9"/>
+				<textFieldExpression><![CDATA[$F{Pedid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="121" y="0" width="100" height="20" uuid="67da302c-df5e-4061-ae8a-73e8db9b4210"/>
+				<textFieldExpression><![CDATA[$F{Cliid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="252" y="0" width="100" height="20" uuid="5b167242-db1b-4a1f-a3aa-0cff712fc3cc"/>
+				<textFieldExpression><![CDATA[""+$F{Pedfecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="387" y="0" width="100" height="20" uuid="150d85a4-4eb3-43c3-a00f-e8c108f8d669"/>
+				<textFieldExpression><![CDATA[$F{Pedestado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="51" y="0" width="455" height="50" uuid="c234b374-0e94-4184-9e60-963b9842a081"/>
+				<textElement verticalAlignment="Middle">
+					<font size="28"/>
+				</textElement>
+				<text><![CDATA[NO HAY DATOS PARA MOSTRAR]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="1302" pageHeight="2380" whenNoDataType="NoDataSection" columnWidth="1262" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="663bf938-f0ee-4aed-a268-c8b99f34ccbc">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="220"/>
+	<property name="ireport.y" value="46"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM sig.movimientosinventario;]]>
+	</queryString>
+	<field name="Movimientoid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Prodid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bodegaid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Movtipomovimiento" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Movmotivo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Movcantidad" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Movfecha" class="java.time.LocalDateTime">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Movtiporeferencia" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Movreferenciaid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Movobservacion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="367" y="12" width="510" height="54" uuid="2eb1b2d8-c2b8-4f5e-b30b-883a686fe14c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[REPORTE PARA MOVIMIENTOS EN INVENTARIOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="696ae092-889e-47de-96f8-20a82b4db767"/>
+				<text><![CDATA[Movimientoid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="0" width="62" height="20" uuid="7fb1e8e4-5c1a-4a31-807e-42356ccfadfc"/>
+				<text><![CDATA[Prodid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="218" y="0" width="100" height="20" uuid="80595973-6ea7-469e-b8f1-dc00ea56cdf5"/>
+				<text><![CDATA[bodegaid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="347" y="0" width="100" height="20" uuid="ac1c4697-4439-4c68-a88a-50b04ed52301"/>
+				<text><![CDATA[Movtipomovimiento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="478" y="0" width="100" height="20" uuid="e74bd605-1210-46bc-9c36-840275ac4b74"/>
+				<text><![CDATA[Movmotivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="614" y="0" width="100" height="20" uuid="4f7d022b-dcb7-4813-b7c0-2091f47e0afa"/>
+				<text><![CDATA[Movcantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="747" y="0" width="100" height="20" uuid="64f3ea7a-460b-4f21-a439-ccc3acbf2adb"/>
+				<text><![CDATA[Movfecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="877" y="0" width="100" height="20" uuid="325e7164-1ba1-4c7d-8e22-8bf58baf16bc"/>
+				<text><![CDATA[Movtiporeferencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1004" y="0" width="100" height="20" uuid="851f4b28-f04b-4639-bf74-4aec90905797"/>
+				<text><![CDATA[Movreferenciaid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1130" y="0" width="100" height="20" uuid="9edce179-ce5b-4889-b905-dfec3c2600dd"/>
+				<text><![CDATA[Movobservacion]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="8fc49d06-5918-4adc-a3d5-21dfe2f6e354"/>
+				<textFieldExpression><![CDATA[$F{Movimientoid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="131" y="0" width="62" height="20" uuid="dd799418-0598-4d2d-a10a-fe4b3b234b53"/>
+				<textFieldExpression><![CDATA[$F{Prodid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="218" y="0" width="100" height="20" uuid="f92a67ac-10bc-4ab9-925b-f2af3f3ae61e"/>
+				<textFieldExpression><![CDATA[$F{bodegaid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="347" y="0" width="100" height="20" uuid="e4f840e1-cccd-4ee1-854f-9afbbdeec545"/>
+				<textFieldExpression><![CDATA[$F{Movtipomovimiento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="478" y="0" width="100" height="20" uuid="30f9e2f2-5efa-4259-bc3d-6e3398032cd7"/>
+				<textFieldExpression><![CDATA[$F{Movmotivo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="614" y="0" width="100" height="20" uuid="56d2a348-66c5-4f1b-800a-96cc362dedbe"/>
+				<textFieldExpression><![CDATA[$F{Movcantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="747" y="0" width="100" height="20" uuid="beefab07-cee0-4e39-b5f1-c48204e377ec"/>
+				<textFieldExpression><![CDATA[""+$F{Movfecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="877" y="0" width="100" height="20" uuid="4b01077f-9b29-43b8-beb1-b56a7329a958"/>
+				<textFieldExpression><![CDATA[$F{Movtiporeferencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1004" y="0" width="100" height="20" uuid="55732720-124f-4672-80ec-53fc97b4ddf3"/>
+				<textFieldExpression><![CDATA[$F{Movreferenciaid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1130" y="0" width="100" height="20" uuid="3af63484-3a94-495d-ad75-4eec1bcee5ee"/>
+				<textFieldExpression><![CDATA[$F{Movobservacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="347" y="0" width="559" height="50" uuid="3748b38b-2e26-4f48-bb10-a42c2842d27d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[NO HAY DATOS PARA MOSTRAR]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

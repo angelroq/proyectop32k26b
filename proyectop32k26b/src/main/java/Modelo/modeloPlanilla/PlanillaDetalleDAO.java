@@ -35,26 +35,34 @@ public class PlanillaDetalleDAO {
             con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
 
+            // 🔥 cálculo automático recomendado
+            double liquido = d.getDetsalario()
+                    + d.getDettotalpercepciones()
+                    - d.getDettotaldeducciones();
+
+            d.setDetliquido(liquido);
+
             ps.setInt(1, d.getPlacodigo());
             ps.setInt(2, d.getEmpcodigo());
             ps.setDouble(3, d.getDetsalario());
             ps.setDouble(4, d.getDettotalpercepciones());
             ps.setDouble(5, d.getDettotaldeducciones());
+
             ps.setDouble(6, d.getDetliquido());
 
             ps.executeUpdate();
             return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error INSERT planilla detalle: " + e.getMessage());
             return false;
         }
     }
 
     // LISTAR
-    public java.util.List<clsPlanillaDetalle> listar() {
+    public List<clsPlanillaDetalle> listar() {
 
-        java.util.List<clsPlanillaDetalle> lista = new java.util.ArrayList<>();
+        List<clsPlanillaDetalle> lista = new ArrayList<>();
 
         String sql = "SELECT * FROM planilladetalle";
 
@@ -78,14 +86,14 @@ public class PlanillaDetalleDAO {
                 lista.add(d);
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error LISTAR planilla detalle: " + e.getMessage());
         }
 
         return lista;
     }
 
-    // BUSCAR POR ID
+    // BUSCAR
     public clsPlanillaDetalle buscar(int id) {
 
         String sql = "SELECT * FROM planilladetalle WHERE Detcodigo=?";
@@ -111,7 +119,7 @@ public class PlanillaDetalleDAO {
                 return d;
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error BUSCAR planilla detalle: " + e.getMessage());
         }
 
@@ -130,6 +138,12 @@ public class PlanillaDetalleDAO {
             con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
 
+            double liquido = d.getDetsalario()
+                    + d.getDettotalpercepciones()
+                    - d.getDettotaldeducciones();
+
+            d.setDetliquido(liquido);
+
             ps.setInt(1, d.getPlacodigo());
             ps.setInt(2, d.getEmpcodigo());
             ps.setDouble(3, d.getDetsalario());
@@ -141,7 +155,7 @@ public class PlanillaDetalleDAO {
             ps.executeUpdate();
             return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error UPDATE planilla detalle: " + e.getMessage());
             return false;
         }
@@ -161,7 +175,7 @@ public class PlanillaDetalleDAO {
 
             return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error DELETE planilla detalle: " + e.getMessage());
             return false;
         }

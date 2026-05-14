@@ -19,8 +19,6 @@ import javax.swing.table.DefaultTableModel;
  * @author meilyn garcia 
  */
 public class ConceptosPlanillasDAO {
-    Conexion cn = new Conexion();
-
     Connection con;
     PreparedStatement ps;
     ResultSet rs;
@@ -29,13 +27,11 @@ public class ConceptosPlanillasDAO {
     public boolean insertar(clsConceptosPlanillas cp) {
 
         String sql = "INSERT INTO conceptosplanilla "
-                + "(Connombre, Contipo, Conporcentaje, "
-                + "Conmonto, Conaplica, Conestado) "
+                + "(Connombre, Contipo, Conporcentaje, Conmonto, Conaplica, Conestado) "
                 + "VALUES (?,?,?,?,?,?)";
 
         try {
-
-            con = cn.getConnection();
+            con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
 
             ps.setString(1, cp.getNombre());
@@ -46,10 +42,9 @@ public class ConceptosPlanillasDAO {
             ps.setInt(6, cp.getEstado());
 
             ps.executeUpdate();
-
             return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error INSERT conceptos: " + e.getMessage());
             return false;
         }
@@ -63,8 +58,7 @@ public class ConceptosPlanillasDAO {
         String sql = "SELECT * FROM conceptosplanilla";
 
         try {
-
-            con = cn.getConnection();
+            con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -83,9 +77,8 @@ public class ConceptosPlanillasDAO {
                 lista.add(cp);
             }
 
-        } catch (Exception e) {
-
-            System.out.println(e);
+        } catch (SQLException e) {
+            System.out.println("Error LISTAR conceptos: " + e.getMessage());
         }
 
         return lista;
@@ -94,21 +87,17 @@ public class ConceptosPlanillasDAO {
     // BUSCAR
     public clsConceptosPlanillas buscar(int codigo) {
 
-        clsConceptosPlanillas cp = new clsConceptosPlanillas();
-
-        String sql = "SELECT * FROM conceptosplanilla "
-                + "WHERE Concodigo=?";
+        String sql = "SELECT * FROM conceptosplanilla WHERE Concodigo=?";
 
         try {
-
-            con = cn.getConnection();
+            con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
-
             ps.setInt(1, codigo);
-
             rs = ps.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
+
+                clsConceptosPlanillas cp = new clsConceptosPlanillas();
 
                 cp.setCodigo(rs.getInt("Concodigo"));
                 cp.setNombre(rs.getString("Connombre"));
@@ -117,31 +106,26 @@ public class ConceptosPlanillasDAO {
                 cp.setMonto(rs.getDouble("Conmonto"));
                 cp.setAplica(rs.getString("Conaplica"));
                 cp.setEstado(rs.getInt("Conestado"));
+
+                return cp;
             }
 
-        } catch (Exception e) {
-
-            System.out.println(e);
+        } catch (SQLException e) {
+            System.out.println("Error BUSCAR conceptos: " + e.getMessage());
         }
 
-        return cp;
+        return null;
     }
 
     // MODIFICAR
     public boolean modificar(clsConceptosPlanillas cp) {
 
         String sql = "UPDATE conceptosplanilla SET "
-                + "Connombre=?, "
-                + "Contipo=?, "
-                + "Conporcentaje=?, "
-                + "Conmonto=?, "
-                + "Conaplica=?, "
-                + "Conestado=? "
+                + "Connombre=?, Contipo=?, Conporcentaje=?, Conmonto=?, Conaplica=?, Conestado=? "
                 + "WHERE Concodigo=?";
 
         try {
-
-            con = cn.getConnection();
+            con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
 
             ps.setString(1, cp.getNombre());
@@ -153,13 +137,10 @@ public class ConceptosPlanillasDAO {
             ps.setInt(7, cp.getCodigo());
 
             ps.executeUpdate();
-
             return true;
 
-        } catch (Exception e) {
-
-            System.out.println(e);
-
+        } catch (SQLException e) {
+            System.out.println("Error UPDATE conceptos: " + e.getMessage());
             return false;
         }
     }
@@ -167,25 +148,19 @@ public class ConceptosPlanillasDAO {
     // ELIMINAR LOGICO
     public boolean eliminar(int codigo) {
 
-        String sql = "UPDATE conceptosplanilla "
-                + "SET Conestado=0 "
-                + "WHERE Concodigo=?";
+        String sql = "UPDATE conceptosplanilla SET Conestado=0 WHERE Concodigo=?";
 
         try {
-
-            con = cn.getConnection();
+            con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
 
             ps.setInt(1, codigo);
-
             ps.executeUpdate();
 
             return true;
 
-        } catch (Exception e) {
-
-            System.out.println(e);
-
+        } catch (SQLException e) {
+            System.out.println("Error DELETE conceptos: " + e.getMessage());
             return false;
         }
     }

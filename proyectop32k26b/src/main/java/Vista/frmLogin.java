@@ -16,6 +16,7 @@ import Vista.ComisionesVentas.frmComisionesVentas;
 import Vista.vistaCuentasCorrientes.MdiGeneralCC;
 
 import Vista.Bancos.MdiBancos;
+import Vista.Logistica.MdiLogistica;
 
 import Vista.vistaPlanilla.MdiPlanillas;
 
@@ -94,7 +95,7 @@ public class frmLogin extends javax.swing.JFrame {
 
         jLabel4.setText("Departamento");
 
-        cboOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Compras", "Cuentas Corrientes", "Inventarios", "Seguridad", "Ventas", "Comisiones de ventas", "Planillas" }));
+        cboOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Compras", "Cuentas Corrientes", "Inventarios", "Seguridad", "Ventas", "Comisiones de ventas", "Planillas", "Logistica", " " }));
         cboOpciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboOpcionesActionPerformed(evt);
@@ -285,6 +286,15 @@ case "Planillas":
 case "Comisiones de ventas":
     try {
          frmComisionesVentas menu = new frmComisionesVentas();
+        menu.setVisible(true);
+        this.dispose();
+    } catch (Exception e) {
+        System.out.println(e);
+    }
+    break;
+    case "Logistica":
+    try {
+         MdiLogistica menu = new MdiLogistica();
         menu.setVisible(true);
         this.dispose();
     } catch (Exception e) {

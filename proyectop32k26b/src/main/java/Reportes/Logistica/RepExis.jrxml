@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="NoDataSection" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="58528ee0-b991-4c54-9e9d-f849e66c31f4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="36"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT * FROM sig.existencias;]]>
+	</queryString>
+	<field name="Existenciaid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Prodid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bodegaid" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Existock" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="129" y="19" width="330" height="49" uuid="704e3cde-f6a8-429e-8d56-43df4fb6071d"/>
+				<textElement>
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE EXISTENCIAS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="100" height="20" uuid="f3fddc59-a049-4de1-bf1d-b8f76da573b1"/>
+				<text><![CDATA[Existenciaid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="129" y="0" width="100" height="20" uuid="b53d8cbb-5f4b-4e10-b249-1f69ca859c9c"/>
+				<text><![CDATA[Prodid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="262" y="0" width="100" height="20" uuid="f60077cc-865e-4e34-9cdf-d4213be527d0"/>
+				<text><![CDATA[bodegaid]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="397" y="0" width="100" height="20" uuid="175dccc1-15cc-4f6b-b0ed-7119ee94d658"/>
+				<text><![CDATA[Existock]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="100" height="20" uuid="d71c9000-5178-48cc-981f-503244f67431"/>
+				<textFieldExpression><![CDATA[$F{Existenciaid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="0" width="100" height="20" uuid="8f9e6470-f9ec-43d3-9eaa-e124da05047f"/>
+				<textFieldExpression><![CDATA[$F{Prodid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="262" y="0" width="100" height="20" uuid="d289e002-03c3-427e-8242-ad018611dfe2"/>
+				<textFieldExpression><![CDATA[$F{bodegaid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="397" y="0" width="100" height="20" uuid="bcd2eb1a-f44e-4334-ba77-83349d74e95a"/>
+				<textFieldExpression><![CDATA[$F{Existock}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+	<noData>
+		<band height="50">
+			<staticText>
+				<reportElement x="100" y="0" width="359" height="42" uuid="d606253f-ce0c-4d9d-9cd5-59dc06bfb684"/>
+				<textElement>
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[NO HAY DATOS PARA MOSTRAR]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>
