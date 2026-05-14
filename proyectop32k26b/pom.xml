@@ -29,11 +29,10 @@
         </repository>
     </repositories>
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>com.mycompany.proyectop32k26.ProyectoP32K26</exec.mainClass>
+        <exec.mainClass>Vista.frmLogin</exec.mainClass>
+        <exec.vmArgs>--enable-preview</exec.vmArgs>
     </properties>
        
     <dependencies>
