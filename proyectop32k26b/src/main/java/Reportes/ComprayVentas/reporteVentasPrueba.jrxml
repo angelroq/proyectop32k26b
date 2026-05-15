@@ -31,7 +31,22 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="79" splitType="Stretch"/>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="229" y="25" width="100" height="20" uuid="4d3c351d-145f-4542-8530-8fcd6e910395"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Prueba Ventas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="153" y="10" width="254" height="54" uuid="9e369369-37b0-48e5-8f6f-982f672b174b"/>
+				<textElement>
+					<font size="36"/>
+				</textElement>
+				<text><![CDATA[Prueba Ventas]]></text>
+			</staticText>
+		</band>
 	</title>
 	<pageHeader>
 		<band height="35" splitType="Stretch"/>
@@ -39,15 +54,15 @@
 	<columnHeader>
 		<band height="61" splitType="Stretch">
 			<staticText>
-				<reportElement x="32" y="2" width="100" height="20" uuid="47f7c23e-8907-43ee-8c3d-6dd6721fc2e1"/>
+				<reportElement x="32" y="41" width="100" height="20" uuid="47f7c23e-8907-43ee-8c3d-6dd6721fc2e1"/>
 				<text><![CDATA[Cliid]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="153" y="2" width="100" height="20" uuid="28462e2d-dcea-4fea-8634-9bf69e72170d"/>
+				<reportElement x="153" y="41" width="100" height="20" uuid="28462e2d-dcea-4fea-8634-9bf69e72170d"/>
 				<text><![CDATA[Clinombre]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="286" y="2" width="100" height="20" uuid="850b69ae-76de-4a87-a29c-59195991c685"/>
+				<reportElement x="286" y="41" width="100" height="20" uuid="850b69ae-76de-4a87-a29c-59195991c685"/>
 				<text><![CDATA[Clinit]]></text>
 			</staticText>
 		</band>
@@ -59,7 +74,7 @@
 				<textFieldExpression><![CDATA[$F{Cliid}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="164" y="15" width="100" height="20" uuid="120d4166-2dc5-4944-9049-0cd75be668d1"/>
+				<reportElement x="153" y="15" width="100" height="20" uuid="120d4166-2dc5-4944-9049-0cd75be668d1"/>
 				<textFieldExpression><![CDATA[$F{Clinombre}]]></textFieldExpression>
 			</textField>
 			<textField>

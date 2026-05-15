@@ -12,6 +12,7 @@ import java.lang.Process;
 import java.lang.Runtime;
 
 import javax.swing.JOptionPane;
+<<<<<<< HEAD
 
 import Vista.ComercialComprasyVentas.frmVentas;
 import Vista.ComercialComprasyVentas.frmMantenimientoProveedores; 
@@ -19,6 +20,11 @@ import Vista.ComercialComprasyVentas.frmMantenimientoProveedores;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+=======
+import Vista.ComercialComprasyVentas.frmVentas;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+>>>>>>> origin/CM9959-23-3775
 import javax.swing.JFrame;
 
 
@@ -33,12 +39,13 @@ public class MdiComercio extends javax.swing.JFrame {
      */
     public MdiComercio() {
         initComponents();
-       setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
         this.setExtendedState(MdiComercio.MAXIMIZED_BOTH);
         this.setTitle("Sistema Comercial - Compras y Ventas");
         cerrar();
     }
-     private void cerrar() {
+
+    private void cerrar() {
         try {
             this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
             addWindowListener(new WindowAdapter() {
@@ -58,7 +65,7 @@ public class MdiComercio extends javax.swing.JFrame {
             System.exit(0);
         }
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -175,11 +182,11 @@ public class MdiComercio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 277, Short.MAX_VALUE)
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         pack();
@@ -252,18 +259,14 @@ public class MdiComercio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ventasmenuActionPerformed
 
-    private void menudelasventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menudelasventasActionPerformed
-
-        System.out.println("Ventas");
+    private void menudelasventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         frmVentas ventana = new frmVentas();
         jDesktopPane1.add(ventana);
         Dimension desktopSize = jDesktopPane1.getSize();
         Dimension FrameSize = ventana.getSize();
         ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
         ventana.setVisible(true);
-       
-        // TODO add your handling code here:
-    }//GEN-LAST:event_menudelasventasActionPerformed
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void proveedoresMantenimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proveedoresMantenimientoActionPerformed
         frmMantenimientoProveedores ventana = new frmMantenimientoProveedores(); 
