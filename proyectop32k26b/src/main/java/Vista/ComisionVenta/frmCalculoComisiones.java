@@ -1,23 +1,23 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-package Vista.comisionesVentas;
+package Vista.ComisionVenta;
 import Controlador.ComisionesVentas.clsComisionVentas;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import Modelo.ComisionesVentas.comisionesVentasDAO;
-
 /**
  *
- * @author giron
+ * @author Jorge Reyes
  */
-public class frmProcesoComisiones extends javax.swing.JFrame {
-comisionesVentasDAO dao = new comisionesVentasDAO();
+public class frmCalculoComisiones extends javax.swing.JInternalFrame {
+    comisionesVentasDAO dao = new comisionesVentasDAO();
+
     /**
-     * Creates new form frmProcesoComisiones
+     * Creates new form frmCalculoComisiones
      */
-    public frmProcesoComisiones() {
+    public frmCalculoComisiones() {
         initComponents();
     }
 
@@ -30,10 +30,6 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        IDEMPLEADO = new javax.swing.JTextField();
         NOMEMPLEADO = new javax.swing.JTextField();
         rdbvendedores = new javax.swing.JRadioButton();
         rdblinea = new javax.swing.JRadioButton();
@@ -42,17 +38,15 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
         btncargardatos = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabladatos = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         btncalcular = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         calcularcomisiones = new javax.swing.JTextField();
+        IDEMPLEADO = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setClosable(true);
 
-        jLabel1.setText("ID EMPLEADO");
-
-        jLabel2.setText("NOMBRE EMPLEADO");
-
-        buttonGroup1.add(rdbvendedores);
         rdbvendedores.setText("Vendedores");
         rdbvendedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -60,7 +54,6 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
             }
         });
 
-        buttonGroup1.add(rdblinea);
         rdblinea.setText("Linea");
         rdblinea.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -68,7 +61,6 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
             }
         });
 
-        buttonGroup1.add(rdbmarca);
         rdbmarca.setText("Marca");
         rdbmarca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -76,7 +68,6 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
             }
         });
 
-        buttonGroup1.add(rdbproducto);
         rdbproducto.setText("Producto");
         rdbproducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,7 +92,11 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
         ));
         jScrollPane1.setViewportView(tabladatos);
 
+        jLabel1.setText("ID EMPLEADO");
+
         btncalcular.setText("Calcular");
+
+        jLabel2.setText("NOMBRE EMPLEADO");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel3.setText("Comisiones Ventas");
@@ -131,7 +126,7 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
                             .addComponent(btncalcular))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 562, Short.MAX_VALUE)
                             .addComponent(NOMEMPLEADO))))
                 .addGap(14, 14, 14))
             .addGroup(layout.createSequentialGroup()
@@ -170,84 +165,11 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(calcularcomisiones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
-        // Inicia un bloque de seguridad para capturar cualquier error de conexión o base de datos
-    try {
-        // Solicita al DAO que traiga todos los registros de la base de datos y los guarde en una lista
-        List<clsComisionVentas> listaComisiones = dao.obtenerDatosComisiones();
-        
-        // Obtiene el modelo de la tabla visual para poder manipular sus filas y columnas
-        DefaultTableModel modelo = (DefaultTableModel) tabladatos.getModel();
-        
-        // Elimina todas las filas existentes en la tabla para no duplicar datos al recargar
-        modelo.setRowCount(0);
-
-        // Inicia un ciclo para recorrer uno por uno los objetos de la lista recibida
-        for (clsComisionVentas c : listaComisiones) {
-            // Crea un contenedor (arreglo) para representar una fila con 7 columnas
-            Object[] fila = new Object[7]; 
-            
-            // Asigna el ID del vendedor a la primera posición de la fila
-            fila[0] = c.getVenid();
-            // Asigna el nombre del vendedor a la segunda posición de la fila
-            fila[1] = c.getVennombre();
-            // Asigna el valor de la meta a la cuarta posición de la fila
-            fila[3] = c.getMeta();
-            // Asigna el monto de la comisión final a la séptima posición de la fila
-            fila[6] = c.getComision();
-
-            // Verifica si el botón de opción de "Marca" está seleccionado
-            if (rdbmarca.isSelected()) {
-                // Si es así, coloca el nombre de la marca en la quinta columna
-                fila[4] = c.getMarnombre(); 
-                // Limpia la columna de ventas para este modo de vista
-                fila[2] = ""; 
-                // Limpia la columna de metas adicionales para este modo de vista
-                fila[5] = ""; 
-            } 
-            // Si no es marca, verifica si el botón de "Producto" está seleccionado
-            else if (rdbproducto.isSelected()) {
-                // Coloca el nombre del producto en la quinta columna
-                fila[4] = c.getProdnombre(); 
-                // Coloca el monto de las ventas realizadas en la tercera columna
-                fila[2] = c.getMonto_ventas();
-                // Coloca las ventas adicionales en la sexta columna
-                fila[5] = c.getVentas_adicionales();
-            }
-            // Si no es producto, verifica si el botón de "Vendedores" está seleccionado
-            else if (rdbvendedores.isSelected()) {
-                // Muestra el total de ventas del vendedor en la tercera columna
-                fila[2] = c.getMonto_ventas();
-                // Indica que la vista es de tipo general en la quinta columna
-                fila[4] = "GENERAL";
-                // Muestra las ventas adicionales en la sexta columna
-                fila[5] = c.getVentas_adicionales();
-            }
-            // Si no es ninguno de los anteriores, verifica si es el botón de "Linea"
-            else if (rdblinea.isSelected()) {
-                // Coloca el nombre de la línea de productos en la quinta columna
-                fila[4] = c.getLinnombre();
-                // Limpia la columna de ventas
-                fila[2] = "";
-                // Muestra el porcentaje o monto de comisión de la línea en la sexta columna
-                fila[5] = c.getLincomision();
-            }
-
-            // Agrega la fila ya configurada al modelo de la tabla para que sea visible
-            modelo.addRow(fila);
-        }
-    // Captura cualquier excepción que ocurra durante el proceso
-    } catch (Exception e) {
-        // Imprime el mensaje de error en la consola para facilitar la corrección
-        System.out.println("Error: " + e.getMessage());
-    }
-    }//GEN-LAST:event_btncargardatosActionPerformed
 
     private void rdbvendedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbvendedoresActionPerformed
         btncargardatosActionPerformed(null);
@@ -265,47 +187,85 @@ comisionesVentasDAO dao = new comisionesVentasDAO();
         btncargardatosActionPerformed(null);
     }//GEN-LAST:event_rdbproductoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    private void btncargardatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncargardatosActionPerformed
+        // Inicia un bloque de seguridad para capturar cualquier error de conexión o base de datos
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmProcesoComisiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmProcesoComisiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmProcesoComisiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmProcesoComisiones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+            // Solicita al DAO que traiga todos los registros de la base de datos y los guarde en una lista
+            List<clsComisionVentas> listaComisiones = dao.obtenerDatosComisiones();
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new frmProcesoComisiones().setVisible(true);
+            // Obtiene el modelo de la tabla visual para poder manipular sus filas y columnas
+            DefaultTableModel modelo = (DefaultTableModel) tabladatos.getModel();
+
+            // Elimina todas las filas existentes en la tabla para no duplicar datos al recargar
+            modelo.setRowCount(0);
+
+            // Inicia un ciclo para recorrer uno por uno los objetos de la lista recibida
+            for (clsComisionVentas c : listaComisiones) {
+                // Crea un contenedor (arreglo) para representar una fila con 7 columnas
+                Object[] fila = new Object[7];
+
+                // Asigna el ID del vendedor a la primera posición de la fila
+                fila[0] = c.getVenid();
+                // Asigna el nombre del vendedor a la segunda posición de la fila
+                fila[1] = c.getVennombre();
+                // Asigna el valor de la meta a la cuarta posición de la fila
+                fila[3] = c.getMeta();
+                // Asigna el monto de la comisión final a la séptima posición de la fila
+                fila[6] = c.getComision();
+
+                // Verifica si el botón de opción de "Marca" está seleccionado
+                if (rdbmarca.isSelected()) {
+                    // Si es así, coloca el nombre de la marca en la quinta columna
+                    fila[4] = c.getMarnombre();
+                    // Limpia la columna de ventas para este modo de vista
+                    fila[2] = "";
+                    // Limpia la columna de metas adicionales para este modo de vista
+                    fila[5] = "";
+                }
+                // Si no es marca, verifica si el botón de "Producto" está seleccionado
+                else if (rdbproducto.isSelected()) {
+                    // Coloca el nombre del producto en la quinta columna
+                    fila[4] = c.getProdnombre();
+                    // Coloca el monto de las ventas realizadas en la tercera columna
+                    fila[2] = c.getMonto_ventas();
+                    // Coloca las ventas adicionales en la sexta columna
+                    fila[5] = c.getVentas_adicionales();
+                }
+                // Si no es producto, verifica si el botón de "Vendedores" está seleccionado
+                else if (rdbvendedores.isSelected()) {
+                    // Muestra el total de ventas del vendedor en la tercera columna
+                    fila[2] = c.getMonto_ventas();
+                    // Indica que la vista es de tipo general en la quinta columna
+                    fila[4] = "GENERAL";
+                    // Muestra las ventas adicionales en la sexta columna
+                    fila[5] = c.getVentas_adicionales();
+                }
+                // Si no es ninguno de los anteriores, verifica si es el botón de "Linea"
+                else if (rdblinea.isSelected()) {
+                    // Coloca el nombre de la línea de productos en la quinta columna
+                    fila[4] = c.getLinnombre();
+                    // Limpia la columna de ventas
+                    fila[2] = "";
+                    // Muestra el porcentaje o monto de comisión de la línea en la sexta columna
+                    fila[5] = c.getLincomision();
+                }
+
+                // Agrega la fila ya configurada al modelo de la tabla para que sea visible
+                modelo.addRow(fila);
             }
-        });
-    }
+            // Captura cualquier excepción que ocurra durante el proceso
+        } catch (Exception e) {
+            // Imprime el mensaje de error en la consola para facilitar la corrección
+            System.out.println("Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btncargardatosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField IDEMPLEADO;
     private javax.swing.JTextField NOMEMPLEADO;
     private javax.swing.JButton btncalcular;
     private javax.swing.JButton btncargardatos;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTextField calcularcomisiones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
