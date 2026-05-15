@@ -3,45 +3,45 @@ package Controlador.Compras;
 // JENNIFER BARRIOS, ENCARGADA DE PROVEEDORES.
 
 public class clsProveedor {
-    private int procodigo;
-    private String pronombre;
-    private String pronit;
-    private String procuentabancaria;
-    private String proestado;
-    private String procontacto;
-    private String prodepartamento;
+    private int Procodigo;
+    private String Pronombre;
+    private String Pronit;
+    private String Procuentabancaria;
+    private String Proestado;
+    private String Procontacto;
+    private String Prodepartamento;
 
     public clsProveedor() {
     }
 
-    public clsProveedor(int procodigo) {
-        this.procodigo = procodigo;
+    public clsProveedor(int Procodigo) {
+        this.Procodigo = Procodigo;
     }
 
     // Getters y Setters
-    public int getProcodigo() { return procodigo; }
-    public void setProcodigo(int procodigo) { this.procodigo = procodigo; }
+    public int getProcodigo() { return Procodigo; }
+    public void setProcodigo(int Procodigo) { this.Procodigo = Procodigo; }
 
-    public String getPronombre() { return pronombre; }
-    public void setPronombre(String pronombre) { this.pronombre = pronombre; }
+    public String getPronombre() { return Pronombre; }
+    public void setPronombre(String Pronombre) { this.Pronombre = Pronombre; }
 
-    public String getPronit() { return pronit; }
-    public void setPronit(String pronit) { this.pronit = pronit; }
+    public String getPronit() { return Pronit; }
+    public void setPronit(String Pronit) { this.Pronit = Pronit; }
 
-    public String getProcuentabancaria() { return procuentabancaria; }
-    public void setProcuentabancaria(String procuentabancaria) { this.procuentabancaria = procuentabancaria; }
+    public String getProcuentabancaria() { return Procuentabancaria; }
+    public void setProcuentabancaria(String Procuentabancaria) { this.Procuentabancaria = Procuentabancaria; }
 
-    public String getProestado() { return proestado; }
-    public void setProestado(String proestado) { this.proestado = proestado; }
+    public String getProestado() { return Proestado; }
+    public void setProestado(String Proestado) { this.Proestado = Proestado; }
 
-    public String getProcontacto() { return procontacto; }
-    public void setProcontacto(String procontacto) { this.procontacto = procontacto; }
+    public String getProcontacto() { return Procontacto; }
+    public void setProcontacto(String Procontacto) { this.Procontacto = Procontacto; }
 
-    public String getProdepartamento() { return prodepartamento; }
-    public void setProdepartamento(String prodepartamento) { this.prodepartamento = prodepartamento; }
+    public String getProdepartamento() { return Prodepartamento; }
+    public void setProdepartamento(String Prodepartamento) { this.Prodepartamento = Prodepartamento; }
 
     @Override
     public String toString() {
-        return "clsProveedor{" + "procodigo=" + procodigo + ", pronombre=" + pronombre + ", proestado=" + proestado + '}';
+        return "clsProveedor{" + "Procodigo=" + Procodigo + ", Pronombre=" + Pronombre + ", Proestado=" + Proestado + '}';
     }
 }
