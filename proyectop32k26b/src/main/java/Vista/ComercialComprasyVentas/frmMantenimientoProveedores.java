@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package Vista.ComercialComprayVentas;
+package Vista.ComercialComprasyVentas;
 
 import Controlador.Compras.clsProveedor;
 import Controlador.clsUsuarioConectado;
@@ -17,6 +17,11 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import java.io.File;
+
+import java.lang.Process;
+
+import java.lang.Runtime;
 
 /**
  *
@@ -189,6 +194,11 @@ public class frmMantenimientoProveedores extends javax.swing.JFrame{
         jLabel8.setText("ESTADO:");
 
         jButton6.setText("AYUDA");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
@@ -386,6 +396,31 @@ public class frmMantenimientoProveedores extends javax.swing.JFrame{
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
     limpiarCampos();        // TODO add your handling code here:
     }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+
+        try {
+    if ((new File("\"C:\\Users\\50240\\Documents\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Compras\\AyudaComprasHelp.chm\"")).exists()) {
+   
+        Process p = Runtime
+            .getRuntime()
+            .exec("rundll32 url.dll,FileProtocolHandler \"C:\\Users\\50240\\Documents\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Compras\\AyudaComprasHelp.chm\"");
+        p.waitFor();
+        
+    } else {
+        
+        System.out.println("La ayuda no fue encontrada");
+        
+    }
+    
+    System.out.println("Correcto");
+    
+} catch (Exception ex) {
+    ex.printStackTrace();
+}
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -6,10 +6,15 @@ package Vista.ComercialComprasyVentas;
 
 import java.awt.Dimension;
 import java.io.File;
+
+import java.lang.Process;
+
+import java.lang.Runtime;
+
 import javax.swing.JOptionPane;
 
 import Vista.ComercialComprasyVentas.frmVentas;
-import Vista.ComercialComprayVentas.frmMantenimientoProveedores; 
+import Vista.ComercialComprasyVentas.frmMantenimientoProveedores; 
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
