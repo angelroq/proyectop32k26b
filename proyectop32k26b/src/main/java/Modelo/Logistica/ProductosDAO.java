@@ -23,8 +23,8 @@ public class ProductosDAO {
 
         String sql = "INSERT INTO productos "
                 + "(Prodnombre, Prodstockactual, Prodpuntoreorden, "
-                + "Prodprecioventa, lineaid, marcaid) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+                + "Prodprecioventa, lineaid, marcaid, Prodcomision) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -35,6 +35,7 @@ public class ProductosDAO {
             ps.setBigDecimal(4, obj.getProdPrecioVenta());
             ps.setInt(5, obj.getLineaId());
             ps.setInt(6, obj.getMarcaId());
+            ps.setBigDecimal(7, obj.getProdcomision());
 
             boolean resultado = ps.executeUpdate() > 0;
 
@@ -59,7 +60,8 @@ public class ProductosDAO {
                 + "Prodpuntoreorden=?, "
                 + "Prodprecioventa=?, "
                 + "lineaid=?, "
-                + "marcaid=? "
+                + "marcaid=?, "
+                + "Prodcomision=? "
                 + "WHERE Prodid=?";
 
         try (Connection con = Conexion.getConnection();
@@ -71,7 +73,8 @@ public class ProductosDAO {
             ps.setBigDecimal(4, obj.getProdPrecioVenta());
             ps.setInt(5, obj.getLineaId());
             ps.setInt(6, obj.getMarcaId());
-            ps.setInt(7, obj.getProdId());
+            ps.setBigDecimal(7, obj.getProdcomision());
+            ps.setInt(8, obj.getProdId());
 
             boolean resultado = ps.executeUpdate() > 0;
 
@@ -133,6 +136,7 @@ public class ProductosDAO {
                 obj.setProdPrecioVenta(rs.getBigDecimal("Prodprecioventa"));
                 obj.setLineaId(rs.getInt("lineaid"));
                 obj.setMarcaId(rs.getInt("marcaid"));
+                obj.setProdcomision(rs.getBigDecimal("Prodcomision"));
 
                 lista.add(obj);
             }
@@ -169,6 +173,7 @@ public class ProductosDAO {
                 obj.setProdPrecioVenta(rs.getBigDecimal("Prodprecioventa"));
                 obj.setLineaId(rs.getInt("lineaid"));
                 obj.setMarcaId(rs.getInt("marcaid"));
+                obj.setProdcomision(rs.getBigDecimal("Prodcomision"));
             }
 
         } catch (Exception e) {
@@ -178,23 +183,17 @@ public class ProductosDAO {
         return obj;
     }
 
-    /**
-     * Registra una acción en la bitácora del sistema.
-     * 
-     * @param accion Descripción de la acción realizada
-     */
+    // BITACORA
     private void registrarBitacora(String accion) {
 
         int usuario = clsUsuarioConectado.getUsuId();
 
-        // Validación de usuario autenticado
         if (usuario == 0) {
             throw new RuntimeException("No hay usuario autenticado");
         }
 
         BitacoraDAO bitacora = new BitacoraDAO();
 
-        // ID de aplicación para bitácora (debe existir en la BD)
         int aplCodigoBitacora = 2000;
 
         bitacora.insert(usuario, aplCodigoBitacora, accion);

@@ -11,25 +11,35 @@ import java.util.*;
  * Autor: Anthony Hetzael Suc Gomez
  * Carné: 9959-24-389
  * Fecha de creación: 2026
- * 
- * Descripción:
+ *
  * DAO encargado de gestionar las operaciones CRUD de la tabla existencias.
- * Permite insertar, actualizar, eliminar, listar y buscar registros en la base de datos.
  */
 public class ExistenciasDAO {
 
     // INSERTAR
     public boolean insertar(clsExistencias obj) {
-        String sql = "INSERT INTO existencias (Prodid, bodegaid, Existock) VALUES (?, ?, ?)";
+
+        String sql = "INSERT INTO existencias "
+                + "(Prodid, Exnombreproducto, bodegaid, Existock, Exmarca, Exlinea) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, obj.getProdid());
-            ps.setInt(2, obj.getBodegaid());
-            ps.setInt(3, obj.getExistock());
+            ps.setString(2, obj.getExnombreproducto());
+            ps.setInt(3, obj.getBodegaid());
+            ps.setInt(4, obj.getExistock());
+            ps.setString(5, obj.getExmarca());
+            ps.setString(6, obj.getExlinea());
 
-            return ps.executeUpdate() > 0;
+            boolean resultado = ps.executeUpdate() > 0;
+
+            if (resultado) {
+                registrarBitacora("Insertó existencia ID: " + obj.getExistenciaid());
+            }
+
+            return resultado;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,17 +49,34 @@ public class ExistenciasDAO {
 
     // ACTUALIZAR
     public boolean actualizar(clsExistencias obj) {
-        String sql = "UPDATE existencias SET Prodid=?, bodegaid=?, Existock=? WHERE Existenciaid=?";
+
+        String sql = "UPDATE existencias SET "
+                + "Prodid=?, "
+                + "Exnombreproducto=?, "
+                + "bodegaid=?, "
+                + "Existock=?, "
+                + "Exmarca=?, "
+                + "Exlinea=? "
+                + "WHERE Existenciaid=?";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, obj.getProdid());
-            ps.setInt(2, obj.getBodegaid());
-            ps.setInt(3, obj.getExistock());
-            ps.setInt(4, obj.getExistenciaid());
+            ps.setString(2, obj.getExnombreproducto());
+            ps.setInt(3, obj.getBodegaid());
+            ps.setInt(4, obj.getExistock());
+            ps.setString(5, obj.getExmarca());
+            ps.setString(6, obj.getExlinea());
+            ps.setInt(7, obj.getExistenciaid());
 
-            return ps.executeUpdate() > 0;
+            boolean resultado = ps.executeUpdate() > 0;
+
+            if (resultado) {
+                registrarBitacora("Actualizó existencia ID: " + obj.getExistenciaid());
+            }
+
+            return resultado;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,6 +86,7 @@ public class ExistenciasDAO {
 
     // ELIMINAR
     public boolean eliminar(int id) {
+
         String sql = "DELETE FROM existencias WHERE Existenciaid=?";
 
         try (Connection con = Conexion.getConnection();
@@ -66,7 +94,13 @@ public class ExistenciasDAO {
 
             ps.setInt(1, id);
 
-            return ps.executeUpdate() > 0;
+            boolean resultado = ps.executeUpdate() > 0;
+
+            if (resultado) {
+                registrarBitacora("Eliminó existencia ID: " + id);
+            }
+
+            return resultado;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,7 +110,9 @@ public class ExistenciasDAO {
 
     // LISTAR
     public List<clsExistencias> listar() {
+
         List<clsExistencias> lista = new ArrayList<>();
+
         String sql = "SELECT * FROM existencias";
 
         try (Connection con = Conexion.getConnection();
@@ -84,12 +120,16 @@ public class ExistenciasDAO {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
+
                 clsExistencias obj = new clsExistencias();
 
                 obj.setExistenciaid(rs.getInt("Existenciaid"));
                 obj.setProdid(rs.getInt("Prodid"));
+                obj.setExnombreproducto(rs.getString("Exnombreproducto"));
                 obj.setBodegaid(rs.getInt("bodegaid"));
                 obj.setExistock(rs.getInt("Existock"));
+                obj.setExmarca(rs.getString("Exmarca"));
+                obj.setExlinea(rs.getString("Exlinea"));
 
                 lista.add(obj);
             }
@@ -103,22 +143,29 @@ public class ExistenciasDAO {
 
     // BUSCAR POR ID
     public clsExistencias buscarPorId(int id) {
+
         String sql = "SELECT * FROM existencias WHERE Existenciaid=?";
+
         clsExistencias obj = null;
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, id);
+
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+
                 obj = new clsExistencias();
 
                 obj.setExistenciaid(rs.getInt("Existenciaid"));
                 obj.setProdid(rs.getInt("Prodid"));
+                obj.setExnombreproducto(rs.getString("Exnombreproducto"));
                 obj.setBodegaid(rs.getInt("bodegaid"));
                 obj.setExistock(rs.getInt("Existock"));
+                obj.setExmarca(rs.getString("Exmarca"));
+                obj.setExlinea(rs.getString("Exlinea"));
             }
 
         } catch (Exception e) {
@@ -127,23 +174,20 @@ public class ExistenciasDAO {
 
         return obj;
     }
+
     /**
-     * Registra una acción en la bitácora del sistema.
-     * 
-     * @param accion Descripción de la acción realizada
+     * Registrar acción en bitácora
      */
     private void registrarBitacora(String accion) {
 
         int usuario = clsUsuarioConectado.getUsuId();
 
-        // Validación de usuario autenticado
         if (usuario == 0) {
             throw new RuntimeException("No hay usuario autenticado");
         }
 
         BitacoraDAO bitacora = new BitacoraDAO();
 
-        // ID de aplicación para bitácora (debe existir en la BD)
         int aplCodigoBitacora = 2000;
 
         bitacora.insert(usuario, aplCodigoBitacora, accion);

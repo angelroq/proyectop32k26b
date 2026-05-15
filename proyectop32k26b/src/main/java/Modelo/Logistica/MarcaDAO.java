@@ -21,13 +21,14 @@ public class MarcaDAO {
     // INSERTAR
     public boolean insertar(clsMarca obj) {
 
-        String sql = "INSERT INTO marcas (marnombre, marestado) VALUES (?, ?)";
+        String sql = "INSERT INTO marcas (marnombre, marestado, marcomision) VALUES (?, ?, ?)";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, obj.getMarnombre());
             ps.setInt(2, obj.getMarestado());
+            ps.setBigDecimal(3, obj.getMarcomision());
 
             boolean resultado = ps.executeUpdate() > 0;
 
@@ -46,14 +47,15 @@ public class MarcaDAO {
     // ACTUALIZAR
     public boolean actualizar(clsMarca obj) {
 
-        String sql = "UPDATE marcas SET marnombre=?, marestado=? WHERE marcaid=?";
+        String sql = "UPDATE marcas SET marnombre=?, marestado=?, marcomision=? WHERE marcaid=?";
 
         try (Connection con = Conexion.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, obj.getMarnombre());
             ps.setInt(2, obj.getMarestado());
-            ps.setInt(3, obj.getMarcaid());
+            ps.setBigDecimal(3, obj.getMarcomision());
+            ps.setInt(4, obj.getMarcaid());
 
             boolean resultado = ps.executeUpdate() > 0;
 
@@ -111,6 +113,7 @@ public class MarcaDAO {
                 obj.setMarcaid(rs.getInt("marcaid"));
                 obj.setMarnombre(rs.getString("marnombre"));
                 obj.setMarestado(rs.getInt("marestado"));
+                obj.setMarcomision(rs.getBigDecimal("marcomision"));
 
                 lista.add(obj);
             }
@@ -143,6 +146,7 @@ public class MarcaDAO {
                 obj.setMarcaid(rs.getInt("marcaid"));
                 obj.setMarnombre(rs.getString("marnombre"));
                 obj.setMarestado(rs.getInt("marestado"));
+                obj.setMarcomision(rs.getBigDecimal("marcomision"));
             }
 
         } catch (Exception e) {
