@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modelo;
-import Controlador.clsMovimientoTransacciones;
+package Modelo.modeloCuentasCorrientes;
+import Controlador.controladorCuentasCorrientes.clsMovimientoTransacciones;
+import Modelo.Conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -296,5 +297,39 @@ public class MovimientoTransaccionesDAO {
         }
         return saldo;
     }
+    
+    //Query para Conciliación
+    
+    public List<clsMovimientoTransacciones> queryParaConciliacion(int idBanco, String fechaInicio, String fechaFin) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        List<clsMovimientoTransacciones> lista = new ArrayList<>();
 
+        // Usamos LIKE 'BANCO%' para que acepte tanto "BANCO" como "BANCOS"
+        String SQL_CONCILIACION = "SELECT * FROM movimientoscc " +
+                                 "WHERE Acrecodigo = ? " +
+                                 "AND Mccmodulo LIKE 'BANCO%' " +
+                                 "AND Mccfecha BETWEEN ? AND ? ORDER BY Mccfecha";
+
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_CONCILIACION);
+            stmt.setInt(1, idBanco);
+            stmt.setString(2, fechaInicio);
+            stmt.setString(3, fechaFin);
+
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                lista.add(mapearMovimiento(rs));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        } finally {
+            Conexion.close(rs);
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+        return lista;
+    }
 }
