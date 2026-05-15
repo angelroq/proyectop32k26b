@@ -25,7 +25,7 @@ import javax.swing.JOptionPane;
 
 
 
-public class frmMantenimientoProveedores extends javax.swing.JFrame {
+public class frmMantenimientoProveedores extends javax.swing.JFrame{
     ProveedorDAO proveedorDAO = new ProveedorDAO();
     BitacoraDAO bitacoraDAO = new BitacoraDAO();
     PermisosDAO permisosDAO = new PermisosDAO();
