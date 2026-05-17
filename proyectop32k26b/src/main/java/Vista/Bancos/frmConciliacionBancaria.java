@@ -5,11 +5,14 @@ import Controlador.Bancos.clsConciliacionBancaria;
 import Modelo.Bancos.ConciliacionBancariaDAO;
 import java.io.File;
 import java.sql.Connection;
+<<<<<<< Updated upstream
 //import net.sf.jasperreports.engine.JasperCompileManager;
 //import net.sf.jasperreports.engine.JasperFillManager;
 //import net.sf.jasperreports.engine.JasperPrint;
 //import net.sf.jasperreports.engine.JasperReport;
 //import net.sf.jasperreports.view.JasperViewer;
+=======
+>>>>>>> Stashed changes
 
 
 public class frmConciliacionBancaria extends javax.swing.JInternalFrame {
@@ -414,16 +417,16 @@ try {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        Connection conn = null;
-        try {
-            conn = Modelo.Conexion.getConnection();
+Connection conn = null;
+    try {
+        conn = Modelo.Conexion.getConnection();
 
-            // Ruta corregida — faltaba el separador entre getAbsolutePath() y src
-            String ruta = new java.io.File("").getAbsolutePath()
+        String ruta = new java.io.File("").getAbsolutePath()
             + "\\src\\main\\java\\Reportes\\Bancos\\ConciliacionBancaria.jrxml";
 
-            System.out.println("Buscando reporte en: " + ruta); // Para verificar en consola
+        System.out.println("Buscando reporte en: " + ruta);
 
+<<<<<<< Updated upstream
             java.io.File archivo = new java.io.File(ruta);
             if (!archivo.exists()) {
                 javax.swing.JOptionPane.showMessageDialog(this,
@@ -452,14 +455,37 @@ try {
 
         } catch (Exception e) {
             e.printStackTrace();
+=======
+        java.io.File archivo = new java.io.File(ruta);
+        if (!archivo.exists()) {
+>>>>>>> Stashed changes
             javax.swing.JOptionPane.showMessageDialog(this,
-                "Error al generar el reporte:\n" + e.getMessage(),
-                "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-        } finally {
-            if (conn != null) {
-                try { conn.close(); } catch (Exception ex) { ex.printStackTrace(); }
-            }
+                "No se encontró el archivo del reporte en:\n" + ruta,
+                "Archivo no encontrado", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
         }
+
+        java.util.Map<String, Object> parametros = new java.util.HashMap<>();
+
+        net.sf.jasperreports.engine.JasperReport reporte =
+            net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
+
+        net.sf.jasperreports.engine.JasperPrint print =
+            net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
+
+        // ✅ Usar JasperViewer en vez de JRViewer — viene en la dependencia base
+        net.sf.jasperreports.view.JasperViewer.viewReport(print, false);
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Error al generar el reporte:\n" + e.getMessage(),
+            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (conn != null) {
+            try { conn.close(); } catch (Exception ex) { ex.printStackTrace(); }
+        }
+    }
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void cmbEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbEstadoActionPerformed
