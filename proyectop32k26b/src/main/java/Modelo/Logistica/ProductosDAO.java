@@ -194,7 +194,7 @@ public class ProductosDAO {
 
         BitacoraDAO bitacora = new BitacoraDAO();
 
-        int aplCodigoBitacora = 2000;
+        int aplCodigoBitacora = 2010;
 
         bitacora.insert(usuario, aplCodigoBitacora, accion);
     }

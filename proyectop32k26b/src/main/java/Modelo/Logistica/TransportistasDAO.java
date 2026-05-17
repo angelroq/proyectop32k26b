@@ -11,10 +11,10 @@ import java.util.*;
  * Autor: Anthony Hetzael Suc Gomez
  * Carné: 9959-24-389
  * Fecha de creación: 2026
- * 
- * Descripción:
+ * * Descripción:
  * DAO encargado de gestionar las operaciones CRUD de la tabla transportistas.
  * Permite insertar, actualizar, eliminar, listar y buscar registros en la base de datos.
+ * Ahora incluye registro automático en la Bitácora General del sistema.
  */
 public class TransportistasDAO {
 
@@ -28,7 +28,14 @@ public class TransportistasDAO {
             ps.setString(1, obj.getTrantipovehiculo());
             ps.setInt(2, obj.getEmpcodigo());
 
-            return ps.executeUpdate() > 0;
+            boolean exito = ps.executeUpdate() > 0;
+            
+            // Si se insertó con éxito, se envía el reporte a la bitácora general
+            if (exito) {
+                registrarBitacora("Insertó nuevo transportista: Vehículo=" + obj.getTrantipovehiculo() + ", EmpCódigo=" + obj.getEmpcodigo());
+            }
+            
+            return exito;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -47,7 +54,14 @@ public class TransportistasDAO {
             ps.setInt(2, obj.getEmpcodigo());
             ps.setInt(3, obj.getTranid());
 
-            return ps.executeUpdate() > 0;
+            boolean exito = ps.executeUpdate() > 0;
+            
+            // Si se actualizó con éxito, registramos el cambio en la bitácora general
+            if (exito) {
+                registrarBitacora("Modificó transportista ID: " + obj.getTranid() + " - Nuevo Vehículo=" + obj.getTrantipovehiculo() + ", Nuevo EmpCódigo=" + obj.getEmpcodigo());
+            }
+            
+            return exito;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,7 +77,15 @@ public class TransportistasDAO {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+            
+            boolean exito = ps.executeUpdate() > 0;
+            
+            // Si se eliminó correctamente, registramos la baja en la bitácora general
+            if (exito) {
+                registrarBitacora("Eliminó transportista ID: " + id);
+            }
+            
+            return exito;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,10 +144,10 @@ public class TransportistasDAO {
 
         return obj;
     }
+
     /**
      * Registra una acción en la bitácora del sistema.
-     * 
-     * @param accion Descripción de la acción realizada
+     * * @param accion Descripción de la acción realizada
      */
     private void registrarBitacora(String accion) {
 
