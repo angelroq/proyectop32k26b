@@ -19,25 +19,25 @@ import java.util.List;
 public class BitacoraComisionesDAO {
 
     private static final String SQL_SELECT =
-        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM bitacoracomisionventa";
+        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM BitacoraComisionVenta ORDER BY BCVid DESC";
 
     private static final String SQL_INSERT =
         "INSERT INTO BitacoraComisionVenta(BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVdescripcion) VALUES(?, ?, ?, ?, ?)";
 
     private static final String SQL_QUERY_POR_CODIGO =
-        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM bitacoracomisionventa WHERE BCVid=?";
+        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM BitacoraComisionVenta WHERE BCVid=?";
 
     private static final String SQL_QUERY_POR_USUARIO =
-        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM bitacoracomisionventa WHERE BCVusuarioaccion=?";
+        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM BitacoraComisionVenta WHERE BCVusuarioaccion=? ORDER BY BCVid DESC";
 
     private static final String SQL_QUERY_POR_APLICACION =
-        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM bitacoracomisionventa WHERE BCVtabla=?";
+        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM BitacoraComisionVenta WHERE BCVtabla=? ORDER BY BCVid DESC";
 
     private static final String SQL_QUERY_POR_FECHAS =
-        "SELECT BCVid,BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM bitacoracomisionventa WHERE BCVfecha BETWEEN ? AND ?";
+        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM BitacoraComisionVenta WHERE DATE(BCVfecha) BETWEEN ? AND ? ORDER BY BCVid DESC";
 
     private static final String SQL_QUERY_POR_ACCION =
-        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM bitacoracomisionventa WHERE BCVaccion=?";
+        "SELECT BCVid, BCVusuarioaccion, BCVaccion, BCVtabla, BCVregistroid, BCVfecha, BCVdescripcion FROM BitacoraComisionVenta WHERE BCVaccion=? ORDER BY BCVid DESC";
 
     // ---------------- FECHA ----------------
     public String fechaActual() {
@@ -59,25 +59,33 @@ public class BitacoraComisionesDAO {
     private String obtenerIP() throws UnknownHostException {
         return InetAddress.getLocalHost().getHostAddress();
     }
-
-    // ---------------- SELECT ----------------
-    public List<clsBitacoraComisionesVenta> select() {
+public List<clsBitacoraComisionesVenta> select() {
 
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
+        // Lista donde se guardarán los registros obtenidos
         List<clsBitacoraComisionesVenta> bitacoras = new ArrayList<>();
 
         try {
+
+            // Obtener conexión
             conn = Conexion.getConnection();
+
+            // Preparar consulta
             stmt = conn.prepareStatement(SQL_SELECT);
+
+            // Ejecutar consulta
             rs = stmt.executeQuery();
 
+            // Recorrer resultados
             while (rs.next()) {
 
+                // Crear objeto de bitácora
                 clsBitacoraComisionesVenta bitacora = new clsBitacoraComisionesVenta();
 
+                // Asignar valores obtenidos de la BD
                 bitacora.setBCVid(rs.getInt("BCVid"));
                 bitacora.setBCVusuarioaccion(rs.getInt("BCVusuarioaccion"));
                 bitacora.setBCVaccion(rs.getString("BCVaccion"));
@@ -86,12 +94,17 @@ public class BitacoraComisionesDAO {
                 bitacora.setBCVfecha(rs.getString("BCVfecha"));
                 bitacora.setBCVdescripcion(rs.getString("BCVdescripcion"));
 
+                // Agregar objeto a la lista
                 bitacoras.add(bitacora);
             }
 
         } catch (SQLException ex) {
+
             ex.printStackTrace(System.out);
+
         } finally {
+
+            // Cerrar conexiones
             Conexion.close(rs);
             Conexion.close(stmt);
             Conexion.close(conn);
@@ -100,252 +113,111 @@ public class BitacoraComisionesDAO {
         return bitacoras;
     }
 
-    // ---------------- INSERT ----------------
+    /**
+     * Método para insertar registros en la bitácora
+     *
+     * @param BCVusuarioaccion Usuario que realizó la acción
+     * @param BCVaccion Acción realizada
+     * @param BCVtabla Código de la aplicación
+     * @param BCVregistroid ID del registro afectado
+     * @param BCVdescripcion Descripción de la acción
+     * @return Cantidad de filas afectadas
+     */
     public int insert(int BCVusuarioaccion,
-                  String BCVaccion,
-                  int BCVtabla,
-                  int BCVregistroid,
-                  String BCVdescripcion) {
+                      String BCVaccion,
+                      int BCVtabla,
+                      int BCVregistroid,
+                      String BCVdescripcion) {
 
-    Connection conn = null;
-    PreparedStatement stmt = null;
-    int rows = 0;
+        Connection conn = null;
+        PreparedStatement stmt = null;
 
-    try {
+        int rows = 0;
 
-        conn = Conexion.getConnection();
-        stmt = conn.prepareStatement(SQL_INSERT);
+        try {
 
-        stmt.setInt(1, BCVusuarioaccion);
-        stmt.setString(2, BCVaccion);
-        stmt.setInt(3, BCVtabla);
-        stmt.setInt(4, BCVregistroid);
-        stmt.setString(5, BCVdescripcion);
+            // Obtener conexión
+            conn = Conexion.getConnection();
 
-        rows = stmt.executeUpdate();
+            // Preparar consulta
+            stmt = conn.prepareStatement(SQL_INSERT);
 
-        System.out.println("Bitacora insertada correctamente");
+            // Asignar parámetros
+            stmt.setInt(1, BCVusuarioaccion);
+            stmt.setString(2, BCVaccion);
+            stmt.setInt(3, BCVtabla);
+            stmt.setInt(4, BCVregistroid);
+            stmt.setString(5, BCVdescripcion);
 
-    } catch (SQLException ex) {
+            // Ejecutar INSERT
+            rows = stmt.executeUpdate();
 
-        ex.printStackTrace(System.out);
+            System.out.println("Bitácora insertada correctamente");
 
-    } finally {
+        } catch (SQLException ex) {
 
-        Conexion.close(stmt);
-        Conexion.close(conn);
+            ex.printStackTrace(System.out);
+
+        } finally {
+
+            // Cerrar conexiones
+            Conexion.close(stmt);
+            Conexion.close(conn);
+        }
+
+        return rows;
     }
 
-    return rows;
-}
-
-    // ---------------- POR CODIGO ----------------
+    /**
+     * Método para buscar un registro por código
+     *
+     * @param bitacora Objeto con el código a buscar
+     * @return Registro encontrado o null
+     */
     public clsBitacoraComisionesVenta queryPorCodigo(clsBitacoraComisionesVenta bitacora) {
 
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
 
+        clsBitacoraComisionesVenta resultado = null;
+
         try {
+
             conn = Conexion.getConnection();
+
             stmt = conn.prepareStatement(SQL_QUERY_POR_CODIGO);
 
             stmt.setInt(1, bitacora.getBCVid());
 
             rs = stmt.executeQuery();
 
-            while (rs.next()) {
+            // Si encuentra resultados
+            if (rs.next()) {
 
-                bitacora = new clsBitacoraComisionesVenta();
+                resultado = new clsBitacoraComisionesVenta();
 
-                bitacora.setBCVid(rs.getInt("BCVid"));
-                bitacora.setBCVusuarioaccion(rs.getInt("BCVusuarioaccion"));
-                bitacora.setBCVaccion(rs.getString("BCVaccion"));
-                bitacora.setBCVtabla(rs.getInt("BCVtabla"));
-                bitacora.setBCVregistroid(rs.getInt("BCVregistroid"));
-                bitacora.setBCVfecha(rs.getString("BCVfecha"));
-                bitacora.setBCVdescripcion(rs.getString("BCVdescripcion"));
+                resultado.setBCVid(rs.getInt("BCVid"));
+                resultado.setBCVusuarioaccion(rs.getInt("BCVusuarioaccion"));
+                resultado.setBCVaccion(rs.getString("BCVaccion"));
+                resultado.setBCVtabla(rs.getInt("BCVtabla"));
+                resultado.setBCVregistroid(rs.getInt("BCVregistroid"));
+                resultado.setBCVfecha(rs.getString("BCVfecha"));
+                resultado.setBCVdescripcion(rs.getString("BCVdescripcion"));
             }
 
         } catch (SQLException ex) {
+
             ex.printStackTrace(System.out);
+
         } finally {
+
             Conexion.close(rs);
             Conexion.close(stmt);
             Conexion.close(conn);
         }
 
-        return bitacora;
-    }
-
-    // ---------------- POR USUARIO ----------------
-    public List<clsBitacoraComisionesVenta> queryPorUsuario(int BCVusuarioaccion) {
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        List<clsBitacoraComisionesVenta> bitacoras = new ArrayList<>();
-
-        try {
-            conn = Conexion.getConnection();
-            stmt = conn.prepareStatement(SQL_QUERY_POR_USUARIO);
-            stmt.setInt(1, BCVusuarioaccion);
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-
-                clsBitacoraComisionesVenta bitacora = new clsBitacoraComisionesVenta();
-
-                bitacora.setBCVid(rs.getInt("BCVid"));
-                bitacora.setBCVusuarioaccion(rs.getInt("BCVusuarioaccion"));
-                bitacora.setBCVaccion(rs.getString("BCVaccion"));
-                bitacora.setBCVtabla(rs.getInt("BCVtabla"));
-                bitacora.setBCVregistroid(rs.getInt("BCVregistroid"));
-                bitacora.setBCVfecha(rs.getString("BCVfecha"));
-                bitacora.setBCVdescripcion(rs.getString("BCVdescripcion"));
-
-                bitacoras.add(bitacora);
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            Conexion.close(rs);
-            Conexion.close(stmt);
-            Conexion.close(conn);
-        }
-
-        return bitacoras;
-    }
-
-    // ---------------- POR APLICACION ----------------
-    public List<clsBitacoraComisionesVenta> queryPorAplicacion(int BCVtabla) {
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        List<clsBitacoraComisionesVenta> bitacoras = new ArrayList<>();
-
-        try {
-            conn = Conexion.getConnection();
-            stmt = conn.prepareStatement(SQL_QUERY_POR_APLICACION);
-            stmt.setInt(1, BCVtabla);
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-
-                clsBitacoraComisionesVenta bitacora = new clsBitacoraComisionesVenta();
-
-                bitacora.setBCVid(rs.getInt("BCVid"));
-                bitacora.setBCVusuarioaccion(rs.getInt("BCVusuarioaccion"));
-                bitacora.setBCVaccion(rs.getString("BCVaccion"));
-                bitacora.setBCVtabla(rs.getInt("BCVtabla"));
-                bitacora.setBCVregistroid(rs.getInt("BCVregistroid"));
-                bitacora.setBCVfecha(rs.getString("BCVfecha"));
-                bitacora.setBCVdescripcion(rs.getString("BCVdescripcion"));
-
-                bitacoras.add(bitacora);
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            Conexion.close(rs);
-            Conexion.close(stmt);
-            Conexion.close(conn);
-        }
-
-        return bitacoras;
-    }
-
-    // ---------------- POR FECHAS ----------------
-    public List<clsBitacoraComisionesVenta> queryPorFechas(String fechaInicio, String fechaFin) {
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        List<clsBitacoraComisionesVenta> bitacoras = new ArrayList<>();
-
-        try {
-            conn = Conexion.getConnection();
-            stmt = conn.prepareStatement(SQL_QUERY_POR_FECHAS);
-
-            stmt.setString(1, fechaInicio);
-            stmt.setString(2, fechaFin);
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-
-                clsBitacoraComisionesVenta bitacora = new clsBitacoraComisionesVenta();
-
-                bitacora.setBCVid(rs.getInt("BCVid"));
-                bitacora.setBCVusuarioaccion(rs.getInt("BCVusuarioaccion"));
-                bitacora.setBCVaccion(rs.getString("BCVaccion"));
-                bitacora.setBCVtabla(rs.getInt("BCVtabla"));
-                bitacora.setBCVregistroid(rs.getInt("BCVregistroid"));
-                bitacora.setBCVfecha(rs.getString("BCVfecha"));
-                bitacora.setBCVdescripcion(rs.getString("BCVdescripcion"));
-
-                bitacoras.add(bitacora);
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            Conexion.close(rs);
-            Conexion.close(stmt);
-            Conexion.close(conn);
-        }
-
-        return bitacoras;
-    }
-
-    // ---------------- POR ACCION ----------------
-    public List<clsBitacoraComisionesVenta> queryPorAccion(String BCVaccion) {
-
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-
-        List<clsBitacoraComisionesVenta> bitacoras = new ArrayList<>();
-
-        try {
-            conn = Conexion.getConnection();
-            stmt = conn.prepareStatement(SQL_QUERY_POR_ACCION);
-
-            stmt.setString(1, BCVaccion);
-
-            rs = stmt.executeQuery();
-
-            while (rs.next()) {
-
-                clsBitacoraComisionesVenta bitacora = new clsBitacoraComisionesVenta();
-
-                bitacora.setBCVid(rs.getInt("BCVid"));
-                bitacora.setBCVusuarioaccion(rs.getInt("BCVusuarioaccion"));
-                bitacora.setBCVaccion(rs.getString("BCVaccion"));
-                bitacora.setBCVtabla(rs.getInt("BCVtabla"));
-                bitacora.setBCVregistroid(rs.getInt("BCVregistroid"));
-                bitacora.setBCVfecha(rs.getString("BCVfecha"));
-                bitacora.setBCVdescripcion(rs.getString("BCVdescripcion"));
-
-                bitacoras.add(bitacora);
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace(System.out);
-        } finally {
-            Conexion.close(rs);
-            Conexion.close(stmt);
-            Conexion.close(conn);
-        }
-
-        return bitacoras;
+        return resultado;
     }
 }
+    
