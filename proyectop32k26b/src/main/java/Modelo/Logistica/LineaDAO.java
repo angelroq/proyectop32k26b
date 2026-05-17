@@ -173,7 +173,7 @@ public class LineaDAO {
         BitacoraDAO bitacora = new BitacoraDAO();
 
         // ID de aplicación para bitácora
-        int aplCodigoBitacora = 2000;
+        int aplCodigoBitacora = 2012;
 
         bitacora.insert(usuario, aplCodigoBitacora, accion);
     }

@@ -201,7 +201,7 @@ public class MovimientosInventarioDAO {
 
         BitacoraDAO bitacora = new BitacoraDAO();
 
-        int aplCodigoBitacora = 2000;
+        int aplCodigoBitacora = 2001;
 
         bitacora.insert(usuario, aplCodigoBitacora, accion);
     }
