@@ -3,8 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
 package Vista.ComisionVenta;
-import Controlador.clsBitacora;
-import Modelo.BitacoraDAO;
+        
+import Controlador.ComisionesVentas.clsBitacoraComisionesVenta;
+import Modelo.ComisionesVentas.BitacoraComisionesDAO;
 import Modelo.PermisosDAO;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -15,7 +16,7 @@ import java.io.File;
  */
 public class frmBitacoraComisionesVentas extends javax.swing.JInternalFrame {
 int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a llamar del clsUsuarioConectado
-    private static final int Aplcodigo = 10005; //Codigo de aplicacion dado en clase para bitacora
+    private static final int Aplcodigo = 7000; //Codigo de aplicacion dado en clase para bitacora
 
     /**
      * Creates new form frmBitacoraComisionesVentas
@@ -44,7 +45,7 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
     public void cargarPermisos() {
     PermisosDAO permisosDAO = new PermisosDAO();
 
-    boolean puedeBuscar = permisosDAO.puedeBuscar(idUsuario, 10005);
+    boolean puedeBuscar = permisosDAO.puedeBuscar(idUsuario, 7000);
 
     btnBuscar.setEnabled(puedeBuscar);
     cboxTipoBusqueda.setEnabled(puedeBuscar);
@@ -55,43 +56,52 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
     // Limpia la tabla antes de llenarla
     // Recorre la lista de bitácoras y agrega cada registro al JTable
     public void llenadoDeTabla() {
-        DefaultTableModel modelo = (DefaultTableModel) tablaBitacora.getModel();
+       DefaultTableModel modelo = (DefaultTableModel) tablaBitacora.getModel();
         modelo.setRowCount(0);
 
-        BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        List<clsBitacora> bitacoras = bitacoraDAO.select();
+        BitacoraComisionesDAO bitacoraDAO = new BitacoraComisionesDAO();
+        List<clsBitacoraComisionesVenta> bitacoras = bitacoraDAO.select();
 
-        String[] dato = new String[7];
+         String[] dato = new String[7];
+
         for (int i = 0; i < bitacoras.size(); i++) {
-            dato[0] = Integer.toString(bitacoras.get(i).getBitcodigo());
-            dato[1] = Integer.toString(bitacoras.get(i).getUsucodigo());
-            dato[2] = Integer.toString(bitacoras.get(i).getAplcodigo());
-            dato[3] = bitacoras.get(i).getBitfecha(); 
-            dato[4] = bitacoras.get(i).getBitip();
-            dato[5] = bitacoras.get(i).getBitequipo();
-            dato[6] = bitacoras.get(i).getBitaccion();
+
+            dato[0] = Integer.toString(bitacoras.get(i).getBCVid());
+            dato[1] = Integer.toString(bitacoras.get(i).getBCVusuarioaccion());
+            dato[2] = bitacoras.get(i).getBCVaccion();
+            dato[3] = Integer.toString(bitacoras.get(i).getBCVtabla());
+            dato[4] = Integer.toString(bitacoras.get(i).getBCVregistroid());
+            dato[5] = bitacoras.get(i).getBCVfecha();
+            dato[6] = bitacoras.get(i).getBCVdescripcion();
+
             modelo.addRow(dato);
         }
     }
     public void buscarPorCodigo() {
-        clsBitacora bitacora = new clsBitacora();
-        BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        bitacora.setBitcodigo(Integer.parseInt(txtBuscar.getText()));
+        clsBitacoraComisionesVenta bitacora = new clsBitacoraComisionesVenta();
+        BitacoraComisionesDAO bitacoraDAO = new BitacoraComisionesDAO();
+
+        bitacora.setBCVid(Integer.parseInt(txtBuscar.getText()));
+
         bitacora = bitacoraDAO.queryPorCodigo(bitacora);
 
         DefaultTableModel modelo = (DefaultTableModel) tablaBitacora.getModel();
         modelo.setRowCount(0);
-
+        
         if (bitacora != null) {
+
             String[] dato = new String[7];
-            dato[0] = Integer.toString(bitacora.getBitcodigo());
-            dato[1] = Integer.toString(bitacora.getUsucodigo());
-            dato[2] = Integer.toString(bitacora.getAplcodigo());
-            dato[3] = bitacora.getBitfecha().toString();
-            dato[4] = bitacora.getBitip();
-            dato[5] = bitacora.getBitequipo();
-            dato[6] = bitacora.getBitaccion();
+
+            dato[0] = Integer.toString(bitacora.getBCVid());
+            dato[1] = Integer.toString(bitacora.getBCVusuarioaccion());
+            dato[2] = bitacora.getBCVaccion();
+            dato[1] = Integer.toString(bitacora.getBCVtabla());
+            dato[4] = Integer.toString(bitacora.getBCVregistroid());
+            dato[5] = bitacora.getBCVfecha();
+            dato[6] = bitacora.getBCVdescripcion();
+
             modelo.addRow(dato);
+
         } else {
             javax.swing.JOptionPane.showMessageDialog(this,
                 "No se encontró el registro",
@@ -103,8 +113,8 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
     // Busca todos los registros de bitácora de un usuario específico
     // Muestra los resultados en la tabla
     public void buscarPorUsuario() {
-        BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        List<clsBitacora> bitacoras = bitacoraDAO.queryPorUsuario(
+        BitacoraComisionesDAO bitacoraDAO = new BitacoraComisionesDAO();
+        List<clsBitacoraComisionesVenta> bitacoras = bitacoraDAO.queryPorUsuario(
                 Integer.parseInt(txtBuscar.getText()));
 
         DefaultTableModel modelo = (DefaultTableModel) tablaBitacora.getModel();
@@ -120,13 +130,13 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
 
         String[] dato = new String[7];
         for (int i = 0; i < bitacoras.size(); i++) {
-            dato[0] = Integer.toString(bitacoras.get(i).getBitcodigo());
-            dato[1] = Integer.toString(bitacoras.get(i).getUsucodigo());
-            dato[2] = Integer.toString(bitacoras.get(i).getAplcodigo());
-            dato[3] = bitacoras.get(i).getBitfecha(); 
-            dato[4] = bitacoras.get(i).getBitip();
-            dato[5] = bitacoras.get(i).getBitequipo();
-            dato[6] = bitacoras.get(i).getBitaccion();
+            dato[0] = Integer.toString(bitacoras.get(i).getBCVid());
+            dato[1] = Integer.toString(bitacoras.get(i).getBCVusuarioaccion());
+            dato[2] = bitacoras.get(i).getBCVaccion();
+            dato[3] = Integer.toString(bitacoras.get(i).getBCVtabla());
+            dato[4] = Integer.toString(bitacoras.get(i).getBCVregistroid());
+            dato[5] = bitacoras.get(i).getBCVfecha();
+            dato[6] = bitacoras.get(i).getBCVdescripcion();
             modelo.addRow(dato);
         }
     }
@@ -134,8 +144,8 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
     // Busca registros de bitácora según la aplicación utilizada
     // Muestra los resultados en la tabla
     public void buscarPorAplicacion() {
-        BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        List<clsBitacora> bitacoras = bitacoraDAO.queryPorAplicacion(
+        BitacoraComisionesDAO bitacoraDAO = new BitacoraComisionesDAO();
+        List<clsBitacoraComisionesVenta> bitacoras = bitacoraDAO.queryPorAplicacion(
                 Integer.parseInt(txtBuscar.getText()));
 
         DefaultTableModel modelo = (DefaultTableModel) tablaBitacora.getModel();
@@ -151,13 +161,13 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
 
         String[] dato = new String[7];
         for (int i = 0; i < bitacoras.size(); i++) {
-            dato[0] = Integer.toString(bitacoras.get(i).getBitcodigo());
-            dato[1] = Integer.toString(bitacoras.get(i).getUsucodigo());
-            dato[2] = Integer.toString(bitacoras.get(i).getAplcodigo());
-            dato[3] = bitacoras.get(i).getBitfecha(); 
-            dato[4] = bitacoras.get(i).getBitip();
-            dato[5] = bitacoras.get(i).getBitequipo();
-            dato[6] = bitacoras.get(i).getBitaccion();
+            dato[0] = Integer.toString(bitacoras.get(i).getBCVid());
+            dato[1] = Integer.toString(bitacoras.get(i).getBCVusuarioaccion());
+            dato[2] = bitacoras.get(i).getBCVaccion();
+            dato[3] = Integer.toString(bitacoras.get(i).getBCVtabla());
+            dato[4] = Integer.toString(bitacoras.get(i).getBCVregistroid());
+            dato[5] = bitacoras.get(i).getBCVfecha();
+            dato[6] = bitacoras.get(i).getBCVdescripcion();
             modelo.addRow(dato);
         }
     }
@@ -165,8 +175,8 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
     // Busca registros de bitácora según la acción realizada
     // Ejemplo: INSERT, UPDATE, DELETE
     public void buscarPorAccion() {
-        BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        List<clsBitacora> bitacoras = bitacoraDAO.queryPorAccion(txtBuscar.getText());
+        BitacoraComisionesDAO bitacoraDAO = new BitacoraComisionesDAO();
+        List<clsBitacoraComisionesVenta> bitacoras = bitacoraDAO.queryPorAccion(txtBuscar.getText());
 
         DefaultTableModel modelo = (DefaultTableModel) tablaBitacora.getModel();
         modelo.setRowCount(0);
@@ -180,13 +190,13 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
         }
         String[] dato = new String[7];
         for (int i = 0; i < bitacoras.size(); i++) {
-            dato[0] = Integer.toString(bitacoras.get(i).getBitcodigo());
-            dato[1] = Integer.toString(bitacoras.get(i).getUsucodigo());
-            dato[2] = Integer.toString(bitacoras.get(i).getAplcodigo());
-            dato[3] = bitacoras.get(i).getBitfecha(); 
-            dato[4] = bitacoras.get(i).getBitip();
-            dato[5] = bitacoras.get(i).getBitequipo();
-            dato[6] = bitacoras.get(i).getBitaccion();
+            dato[0] = Integer.toString(bitacoras.get(i).getBCVid());
+            dato[1] = Integer.toString(bitacoras.get(i).getBCVusuarioaccion());
+            dato[2] = bitacoras.get(i).getBCVaccion();
+            dato[3] = Integer.toString(bitacoras.get(i).getBCVtabla());
+            dato[4] = Integer.toString(bitacoras.get(i).getBCVregistroid());
+            dato[5] = bitacoras.get(i).getBCVfecha();
+            dato[6] = bitacoras.get(i).getBCVdescripcion();
             modelo.addRow(dato);
         }
     }
@@ -203,7 +213,6 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
         fechaInicio = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
         cboxTipoBusqueda = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
         btnBuscar = new javax.swing.JButton();
         btnLimpiar = new javax.swing.JButton();
@@ -220,14 +229,6 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
         cboxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboxTipoBusquedaActionPerformed(evt);
-            }
-        });
-
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setText("Ayuda");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -260,7 +261,7 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
 
             },
             new String [] {
-                "Código", "Usuario", "Aplicación", "Fecha", "IP", "Equipo", "Acción"
+                "Id", "Usuario", "Accion", "Codigo", "Fecha", "Registro", "Descripcion"
             }
         ));
         jScrollPane2.setViewportView(tablaBitacora);
@@ -290,14 +291,9 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
                             .addComponent(fechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(124, 124, 124))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(14, 14, 14))))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(fechaFin, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(124, 124, 124))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -335,8 +331,7 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
                 .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnBuscar)
-                    .addComponent(btnLimpiar)
-                    .addComponent(jButton2))
+                    .addComponent(btnLimpiar))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -399,8 +394,8 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
     String fInicio = sdf.format(fechaInicio.getDate());
     String fFin = sdf.format(fechaFin.getDate());
 
-    BitacoraDAO bitacoraDAO = new BitacoraDAO();
-    List<clsBitacora> bitacoras = bitacoraDAO.queryPorFechas(fInicio, fFin);
+    BitacoraComisionesDAO bitacoraDAO = new BitacoraComisionesDAO();
+    List<clsBitacoraComisionesVenta> bitacoras = bitacoraDAO.queryPorFechas(fInicio, fFin);
 
     DefaultTableModel modelo = (DefaultTableModel) tablaBitacora.getModel();
     modelo.setRowCount(0);
@@ -415,13 +410,13 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
 
     String[] dato = new String[7];
     for (int i = 0; i < bitacoras.size(); i++) {
-        dato[0] = Integer.toString(bitacoras.get(i).getBitcodigo());
-        dato[1] = Integer.toString(bitacoras.get(i).getUsucodigo());
-        dato[2] = Integer.toString(bitacoras.get(i).getAplcodigo());
-        dato[3] = bitacoras.get(i).getBitfecha();
-        dato[4] = bitacoras.get(i).getBitip();
-        dato[5] = bitacoras.get(i).getBitequipo();
-        dato[6] = bitacoras.get(i).getBitaccion();
+        dato[0] = Integer.toString(bitacoras.get(i).getBCVid());
+            dato[1] = Integer.toString(bitacoras.get(i).getBCVusuarioaccion());
+            dato[2] = bitacoras.get(i).getBCVaccion();
+            dato[3] = Integer.toString(bitacoras.get(i).getBCVtabla());
+            dato[4] = Integer.toString(bitacoras.get(i).getBCVregistroid());
+            dato[5] = bitacoras.get(i).getBCVfecha();
+            dato[6] = bitacoras.get(i).getBCVdescripcion();
         modelo.addRow(dato);
     }
 }
@@ -439,23 +434,6 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
         btnBuscar.setVisible(false);
         llenadoDeTabla();
     }
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        try {
-            if ((new File("src\\main\\java\\ayudas\\ayudaBitacora.chm")).exists()) {
-                Process p = Runtime
-                .getRuntime()
-                .exec("rundll32 url.dll,FileProtocolHandler src\\main\\java\\ayudas\\ayudaBitacora.chm");
-                p.waitFor();
-            } else {
-                System.out.println("La ayuda no Fue encontrada");
-            }
-            System.out.println("Correcto");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarActionPerformed
@@ -518,8 +496,8 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
                 javax.swing.JOptionPane.WARNING_MESSAGE);
         }
         //Agruegué el Registro de la accion en bitacora - Astrid
-        BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        bitacoraDAO.insert(idUsuario, Aplcodigo, "CONSULTA");
+        BitacoraComisionesDAO bitacoraDAO = new BitacoraComisionesDAO();
+        bitacoraDAO.insert(idUsuario, "CONSULTA", Aplcodigo,0, "El usuario realizó una consulta en bitácora de comisiones");
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -534,7 +512,6 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
     private javax.swing.JComboBox<String> cboxTipoBusqueda;
     private com.toedter.calendar.JDateChooser fechaFin;
     private com.toedter.calendar.JDateChooser fechaInicio;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

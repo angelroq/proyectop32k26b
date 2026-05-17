@@ -10,54 +10,98 @@ import java.time.LocalDateTime;
  * @author Jorge Reyes
  */
 public class clsBitacoraComisionesVenta {
-    private int Bitcodigo;
-    private int Usucodigo;
-    private int Aplcodigo;
-    private String Bitfecha; //cambiar fecha a string
-    private String Bitip;
-    private String Bitequipo;
-    private String Bitaccion;
+    private int BCVid;
+    private int BCVusuarioaccion;
+    private String BCVaccion;
+    private int BCVtabla;
+    private int BCVregistroid;
+    private String BCVfecha;
+    private String BCVdescripcion;
 
     // Constructor vacío
     public clsBitacoraComisionesVenta() {
     }
 
     // Constructor con parámetros
-    public clsBitacoraComisionesVenta(int Usucodigo, int Aplcodigo, String Bitfecha,String Bitip, String Bitequipo, String Bitaccion) {
-        this.Usucodigo = Usucodigo;
-        this.Aplcodigo = Aplcodigo;
-        this.Bitfecha  = Bitfecha;
-        this.Bitip     = Bitip;
-        this.Bitequipo = Bitequipo;
-        this.Bitaccion = Bitaccion;
+    public clsBitacoraComisionesVenta(int BCVusuarioaccion,String BCVaccion, int BCVtabla, int BCVregistroid, String BCVfecha, String BCVdescripcion){
+        this.BCVusuarioaccion = BCVusuarioaccion;
+        this.BCVaccion = BCVaccion;
+        this.BCVtabla = BCVtabla;
+        this.BCVregistroid = BCVregistroid;
+        this.BCVfecha = BCVfecha;
+        this.BCVdescripcion = BCVdescripcion;
     }
 
     // Getters y Setters
-    public int getBitcodigo() { return Bitcodigo; }
-    public void setBitcodigo(int Bitcodigo) { this.Bitcodigo = Bitcodigo; }
 
-    public int getUsucodigo() { return Usucodigo; }
-    public void setUsucodigo(int Usucodigo) { this.Usucodigo = Usucodigo; }
+    public int getBCVid() {
+        return BCVid;
+    }
 
-    public int getAplcodigo() { return Aplcodigo; }
-    public void setAplcodigo(int Aplcodigo) { this.Aplcodigo = Aplcodigo; }
+    public void setBCVid(int BCVid) {
+        this.BCVid = BCVid;
+    }
 
-    public String getBitfecha() { return Bitfecha; }
-    public void setBitfecha(String Bitfecha) { this.Bitfecha = Bitfecha; }
-    
-    public String getBitip() { return Bitip; }
-    public void setBitip(String Bitip) { this.Bitip = Bitip; }
+    public int getBCVusuarioaccion() {
+        return BCVusuarioaccion;
+    }
 
-    public String getBitequipo() { return Bitequipo; }
-    public void setBitequipo(String Bitequipo) { this.Bitequipo = Bitequipo; }
+    public void setBCVusuarioaccion(int BCVusuarioaccion) {
+        this.BCVusuarioaccion = BCVusuarioaccion;
+    }
 
-    public String getBitaccion() { return Bitaccion; }
-    public void setBitaccion(String Bitaccion) { this.Bitaccion = Bitaccion; }
+    public String getBCVaccion() {
+        return BCVaccion;
+    }
+
+    public void setBCVaccion(String BCVaccion) {
+        this.BCVaccion = BCVaccion;
+    }
+
+    public int getBCVtabla() {
+        return BCVtabla;
+    }
+
+    public void setBCVtabla(int BCVtabla) {
+        this.BCVtabla = BCVtabla;
+    }
+
+    public int getBCVregistroid() {
+        return BCVregistroid;
+    }
+
+    public void setBCVregistroid(int BCVregistroid) {
+        this.BCVregistroid = BCVregistroid;
+    }
+
+    public String getBCVfecha() {
+        return BCVfecha;
+    }
+
+    public void setBCVfecha(String BCVfecha) {
+        this.BCVfecha = BCVfecha;
+    }
+
+    public String getBCVdescripcion() {
+        return BCVdescripcion;
+    }
+
+    public void setBCVdescripcion(String BCVdescripcion) {
+        this.BCVdescripcion = BCVdescripcion;
+    }
 
     @Override
     public String toString() {
-        return "Bitacora{" + "Bitcodigo=" + Bitcodigo + ", Usucodigo=" + Usucodigo + ", Aplcodigo=" + Aplcodigo + ", Bitfecha=" + Bitfecha + ", Bitip='" + Bitip + ", Bitequipo='" + Bitequipo + ", Bitaccion='" + Bitaccion + '}';
-    }
 
-    
+        return "BitacoraComisionVenta{"
+                + "BCVid=" + BCVid
+                + ", idUsuario=" + BCVusuarioaccion
+                + ", BCVaccion='" + BCVaccion + '\''
+                + ", Aplcodigo='" + BCVtabla + '\''
+                + ", BCVregistroid=" + BCVregistroid
+                + ", BCVfecha='" + BCVfecha + '\''
+                + ", BCVdescripcion='" + BCVdescripcion + '\''
+                + '}';
+    }
 }
+
