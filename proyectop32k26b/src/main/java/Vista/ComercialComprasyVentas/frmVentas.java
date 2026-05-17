@@ -527,7 +527,6 @@ public class frmVentas extends javax.swing.JInternalFrame {
     
     javax.swing.JOptionPane.showMessageDialog(this, "Venta registrada en la tabla exitosamente.");
 
-
  // TODO add your handling code here:
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

@@ -22,6 +22,9 @@ public class frmVendedores extends javax.swing.JInternalFrame {
      */
     public frmVendedores() {
         initComponents();
+        
+        llenarComboBoxBaseDatos();
+        actualizarTablaBaseDatos();
     }
 
     /**
@@ -56,7 +59,7 @@ public class frmVendedores extends javax.swing.JInternalFrame {
         limpiarCampos = new javax.swing.JButton();
         txtEmCodigo = new javax.swing.JComboBox<>();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("ID Vendedores ");
 
@@ -90,6 +93,11 @@ public class frmVendedores extends javax.swing.JInternalFrame {
         ));
         TablaV.setGridColor(new java.awt.Color(102, 204, 255));
         TablaV.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        TablaV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TablaVMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TablaV);
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -165,13 +173,14 @@ public class frmVendedores extends javax.swing.JInternalFrame {
                                         .addGap(38, 38, 38)
                                         .addComponent(jLabel7)
                                         .addGap(18, 18, 18)
-                                        .addComponent(txtVenComisiones, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(txtVenComisiones, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(3, 3, 3)
                                 .addComponent(jLabel8)
-                                .addGap(154, 154, 154)
-                                .addComponent(btnsalir)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnsalir)
+                                .addGap(32, 32, 32))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 635, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -184,9 +193,10 @@ public class frmVendedores extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel8)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8))
                     .addComponent(btnsalir))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -337,9 +347,84 @@ public class frmVendedores extends javax.swing.JInternalFrame {
         txtVenCorreo.setText("");
         txtVenComisiones.setText("");
         
+        // TODO add your handling code here:
+    }                                             
+
+    // =========================================================================
+    // NUEVOS MÉTODOS PARA CONECTAR A LA BASE DE DATOS
+    // =========================================================================
+    
+    public void llenarComboBoxBaseDatos() {
+        txtEmCodigo.removeAllItems();
+        txtEmCodigo.addItem("Seleccione un código");
+        
+        // Datos de conexión (Ajusta la URL, usuario y contraseña según tu entorno)
+        String url = "jdbc:mysql://localhost:3306/tu_base_de_datos";
+        String usuario = "root";
+        String password = "tu_password";
+        String sql = "SELECT codigo_empleado FROM empleados"; 
+        
+        try (java.sql.Connection con = java.sql.DriverManager.getConnection(url, usuario, password);
+             java.sql.PreparedStatement ps = con.prepareStatement(sql);
+             java.sql.ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                txtEmCodigo.addItem(rs.getString("codigo_empleado"));
+            }
+            
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar códigos de empleados: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void actualizarTablaBaseDatos() {
+        DefaultTableModel modelo = (DefaultTableModel) TablaV.getModel();
+        modelo.setRowCount(0); 
+        
+        String url = "jdbc:mysql://localhost:3306/tu_base_de_datos";
+        String usuario = "root";
+        String password = "tu_password";
+        String sql = "SELECT * FROM vendedores"; 
+        
+        try (java.sql.Connection con = java.sql.DriverManager.getConnection(url, usuario, password);
+             java.sql.PreparedStatement ps = con.prepareStatement(sql);
+             java.sql.ResultSet rs = ps.executeQuery()) {
+            
+            while (rs.next()) {
+                Object[] fila = {
+                    rs.getString("id_vendedor"),       // Cambia por el nombre de tu columna ID
+                    rs.getString("codigo_empleado"),   // Cambia por tu columna Código
+                    rs.getString("nombre_vendedor"),   // Cambia por tu columna Nombre
+                    rs.getString("telefono"),          // Cambia por tu columna Teléfono
+                    rs.getString("direccion"),         // Cambia por tu columna Dirección
+                    rs.getString("correo"),            // Cambia por tu columna Correo
+                    rs.getString("comisiones")         // Cambia por tu columna Comisiones
+                };
+                modelo.addRow(fila);
+            }
+            
+        } catch (java.sql.SQLException e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar la tabla de vendedores: " + e.getMessage(), "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
 
         // TODO add your handling code here:
     }//GEN-LAST:event_limpiarCamposActionPerformed
+
+    private void TablaVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TablaVMouseClicked
+                                   
+    int filaSeleccionada = TablaV.getSelectedRow();
+    if (filaSeleccionada >= 0) {
+        txtVenId.setText(TablaV.getValueAt(filaSeleccionada, 0).toString());
+        txtEmCodigo.setSelectedItem(TablaV.getValueAt(filaSeleccionada, 1).toString());
+        txtVenNombre.setText(TablaV.getValueAt(filaSeleccionada, 2).toString());
+        txtVenTelefono.setText(TablaV.getValueAt(filaSeleccionada, 3).toString());
+        txtVenDireccion.setText(TablaV.getValueAt(filaSeleccionada, 4).toString());
+        txtVenCorreo.setText(TablaV.getValueAt(filaSeleccionada, 5).toString());
+        txtVenComisiones.setText(TablaV.getValueAt(filaSeleccionada, 6).toString());
+    }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TablaVMouseClicked
 
     /**
      * @param args the command line arguments
