@@ -32,4 +32,8 @@ public class Conexion { //aquí se encuentra la conexion a la BD llamada proyect
         try { conn.close(); } 
         catch (SQLException ex){ ex.printStackTrace(System.out); }
     } 
+
+    public static Connection getConexion() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }

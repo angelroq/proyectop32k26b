@@ -162,10 +162,7 @@ public class frmVentas extends javax.swing.JInternalFrame {
         TablaFact.setBackground(new java.awt.Color(204, 255, 204));
         TablaFact.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Id Factura", "No. Factura", "Fecha", "Proveedores", "Subtotal", "IVA", "Total", "Estado"

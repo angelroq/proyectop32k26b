@@ -28,9 +28,9 @@ import Controlador.clsBitacora;
 /**
  *
  * @author JENNIFER BARRIOS 9959-24-10016 Modificacion:Roli Cedillo 9959-24-1672
+ * 
+ * ACTUALIZACIÓN: JENNIFER BARRIOS 
  */
-
-
 
 public class frmProcesoPerfilUsuario extends javax.swing.JInternalFrame {
 
@@ -45,8 +45,9 @@ public class frmProcesoPerfilUsuario extends javax.swing.JInternalFrame {
     public frmProcesoPerfilUsuario() {
         initComponents();
         
-        if (!permisosDAO.puedeBuscar(idUsuarioConectado, Aplcodigo)) {
-            JOptionPane.showMessageDialog(null, "No tiene acceso a este módulo");
+        // CORRECCIÓN LOCAL: Si es Administrador (ID 1) entra directo. Si no, debe tener al menos permiso de Buscar para VER la información.
+        if (idUsuarioConectado != 1 && !permisosDAO.puedeBuscar(idUsuarioConectado, Aplcodigo)) {
+            JOptionPane.showMessageDialog(null, "No tiene acceso a este módulo para visualizar datos.");
             this.dispose();
             return;
         }
@@ -67,18 +68,28 @@ public class frmProcesoPerfilUsuario extends javax.swing.JInternalFrame {
     }
 
     public void cargarPermisos() {
-        btnAsignarUno.setEnabled(permisosDAO.puedeInsertar(idUsuarioConectado, Aplcodigo));
-        btnAsignarTodos.setEnabled(permisosDAO.puedeInsertar(idUsuarioConectado, Aplcodigo));
-        btnQuitarUno.setEnabled(permisosDAO.puedeEliminar(idUsuarioConectado, Aplcodigo));
-        btnQuitarTodos.setEnabled(permisosDAO.puedeEliminar(idUsuarioConectado, Aplcodigo));
+        // Usa los métodos internos adaptados para habilitar/deshabilitar los controles de la interfaz gráfica
+        boolean flagInsertar = puedeInsertar();
+        boolean flagEliminar = puedeEliminar();
+
+        btnAsignarUno.setEnabled(flagInsertar);
+        btnAsignarTodos.setEnabled(flagInsertar);
+        btnQuitarUno.setEnabled(flagEliminar);
+        btnQuitarTodos.setEnabled(flagEliminar);
     }
 
-    // Métodos de validación para los eventos
+    // Métodos de validación locales con Bypass para el Administrador (ID 1) sin alterar el DAO original
     private boolean puedeInsertar() {
+        if (idUsuarioConectado == 1) {
+            return true; 
+        }
         return permisosDAO.puedeInsertar(idUsuarioConectado, Aplcodigo);
     }
 
     private boolean puedeEliminar() {
+        if (idUsuarioConectado == 1) {
+            return true;
+        }
         return permisosDAO.puedeEliminar(idUsuarioConectado, Aplcodigo);
     }
 
@@ -106,7 +117,6 @@ public class frmProcesoPerfilUsuario extends javax.swing.JInternalFrame {
 
         try {
             PerfilDAO daoPerfil = new PerfilDAO();
-            // CORRECCIÓN: Se envía un objeto bitacora vacío para cumplir con el parámetro requerido
             List<clsPerfil> perfiles = daoPerfil.obtenerPerfiles(new clsBitacora()); 
 
             for (clsPerfil perfil : perfiles) {
@@ -306,7 +316,7 @@ public class frmProcesoPerfilUsuario extends javax.swing.JInternalFrame {
         }
         bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "ASIGNÓ TODOS LOS PERFILES");
         llenarTablas(idUsuarioDestino);
-   
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAsignarTodosActionPerformed
 
@@ -333,7 +343,7 @@ public class frmProcesoPerfilUsuario extends javax.swing.JInternalFrame {
 
     private void cboUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboUsuarioActionPerformed
                                       
-if (!isSincronizando && cboUsuario.getSelectedIndex() != -1) {
+        if (!isSincronizando && cboUsuario.getSelectedIndex() != -1) {
             isSincronizando = true;
             cboUsuarioId.setSelectedIndex(cboUsuario.getSelectedIndex());
             llenarTablas(Integer.parseInt(cboUsuarioId.getSelectedItem().toString()));
