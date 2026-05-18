@@ -21,7 +21,20 @@ import java.io.File;
 
 import java.lang.Process;
 
+
 import java.lang.Runtime;
+
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
+
+import Modelo.Conexion;
+
 
 /**
  *
@@ -161,6 +174,7 @@ public class frmMantenimientoProveedores extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jButton6 = new javax.swing.JButton();
         btnSalida = new javax.swing.JButton();
+        btnReportes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -246,6 +260,13 @@ public class frmMantenimientoProveedores extends javax.swing.JFrame {
             }
         });
 
+        btnReportes.setText("REPORTES");
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
         jInternalFrame1Layout.setHorizontalGroup(
@@ -291,6 +312,8 @@ public class frmMantenimientoProveedores extends javax.swing.JFrame {
                         .addComponent(jButton6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnSalida)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReportes)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -344,7 +367,8 @@ public class frmMantenimientoProveedores extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton6)
-                            .addComponent(btnSalida))
+                            .addComponent(btnSalida)
+                            .addComponent(btnReportes))
                         .addGap(21, 21, 21))))
         );
 
@@ -521,6 +545,46 @@ if (!puedeEliminar()) {
     // TODO add your handling code here:
     }//GEN-LAST:event_btnSalidaActionPerformed
 
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+
+        Connection conn = null;
+    try {
+        
+        conn = Conexion.getConexion(); 
+        
+        String rutaReporte = "src/main/java/Reportes/ComprayVentas/reporteProveedores.jrxml";
+        
+        JasperReport jasperReport = JasperCompileManager.compileReport(rutaReporte);
+        
+        Map<String, Object> parametros = new HashMap<>();
+        
+        // 5. Llenar el reporte con los datos de la DB
+        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, conn);
+        
+        // 6. Mostrar el reporte en una ventana flotante (Viewer)
+        JasperViewer viewer = new JasperViewer(jasperPrint, false); // El 'false' evita que se cierre toda la app al cerrar el reporte
+        viewer.setTitle("Reporte de Proveedores");
+        viewer.setVisible(true);
+        
+        bitacoraDAO.insert(idUsuarioConectado, Aplcodigo, "Generó Reporte de Proveedores");
+
+    } catch (Exception ex) {
+        JOptionPane.showMessageDialog(null, "Error al generar el reporte de proveedores: " + ex.getMessage());
+        ex.printStackTrace();
+    } finally {
+      
+        try {
+            if (conn != null && !conn.isClosed()) {
+                conn.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -562,6 +626,7 @@ if (!puedeEliminar()) {
     private javax.swing.JButton btnLimpiar;
     private javax.swing.JButton btnModificarr;
     private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton btnReportes;
     private javax.swing.JButton btnSalida;
     private javax.swing.JButton jButton6;
     private javax.swing.JComboBox<String> jComboBox1;
