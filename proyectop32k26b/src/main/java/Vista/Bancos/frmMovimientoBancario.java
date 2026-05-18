@@ -264,6 +264,14 @@ private void configurarBotones() {
             "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             new clsMovimientoBancario().limpiarTabla();
+            frmBitacoraBancaria.registrarBitacora(
+            "DELETE ALL",
+            "MovimientoBancario",
+            null,
+            "Todos los registros de MovimientoBancario fueron borrados",
+            null,
+            "Limpieza total de la tabla MovimientoBancario"
+        );
             limpiarCampos();
             cargarDatos();
             JOptionPane.showMessageDialog(this, "Tabla limpiada correctamente.");
@@ -415,6 +423,11 @@ private void limpiarCampos() {
         btnLimpiar.setBackground(new java.awt.Color(204, 204, 204));
         btnLimpiar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         btnReporte.setBackground(new java.awt.Color(204, 204, 204));
         btnReporte.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -593,6 +606,10 @@ private void limpiarCampos() {
             ex.printStackTrace();
         }        // TODO add your handling code here:
     }//GEN-LAST:event_btnAyudaActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLimpiarActionPerformed
 
     /**
      * @param args the command line arguments

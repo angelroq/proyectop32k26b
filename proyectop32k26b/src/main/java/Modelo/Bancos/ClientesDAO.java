@@ -10,6 +10,15 @@ import java.util.List;
 
 public class ClientesDAO {
 
+    public void deleteAll() throws Exception {
+    try (Connection conn = Modelo.Conexion.getConnection()) {
+        conn.createStatement().executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+        conn.createStatement().executeUpdate("DELETE FROM cliente");
+        conn.createStatement().executeUpdate("ALTER TABLE cliente AUTO_INCREMENT = 1");
+        conn.createStatement().executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+    }
+}
+    
     private static final int APL_CODIGO = 5400;
 
     // ── LISTAR TODOS ────────────────────────────────────────────

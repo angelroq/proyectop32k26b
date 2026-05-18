@@ -153,7 +153,7 @@ public class frmBitacoraBancaria extends javax.swing.JInternalFrame {
         jLabel3.setText("Bitácora Bancaria ");
 
         cboxTipoBusqueda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        cboxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Código", "Usuario", "Accion", "Tabla", "Registro", "Valor Anterior", "Valor nuevo", "Fechas", "Descripción" }));
+        cboxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Usuario", "Acción", "Tabla", "Código", "Registro", "Valor Anterior", "Valor nuevo", "Fechas", "Descripción" }));
         cboxTipoBusqueda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboxTipoBusquedaActionPerformed(evt);
@@ -317,108 +317,110 @@ public class frmBitacoraBancaria extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-    String tipo   = (String) cboxTipoBusqueda.getSelectedItem();
-        String texto  = txtBuscar.getText().trim();
-        List<clsBitacoraBancaria> lista     = bitacoraDAO.listar();
-        List<clsBitacoraBancaria> resultado = new java.util.ArrayList<>();
+    String tipo  = (String) cboxTipoBusqueda.getSelectedItem();
+    String texto = txtBuscar.getText().trim();
+    List<clsBitacoraBancaria> lista     = bitacoraDAO.listar();
+    List<clsBitacoraBancaria> resultado = new java.util.ArrayList<>();
 
-        try {
-            switch (tipo) {
-                case "Código":
-                    if (!texto.isEmpty()) {
-                        clsBitacoraBancaria b = bitacoraDAO.query(Integer.parseInt(texto));
-                        if (b != null) resultado.add(b);
-                    } else {
-                        resultado = lista;
-                    }
-                    break;
-
-                case "Usuario":
-                    for (clsBitacoraBancaria b : lista)
-                        if (String.valueOf(b.getBBusuarioaccion()).contains(texto))
-                            resultado.add(b);
-                    break;
-
-                case "Accion":
-                    for (clsBitacoraBancaria b : lista)
-                        if (b.getBBaccion() != null &&
-                            b.getBBaccion().toLowerCase().contains(texto.toLowerCase()))
-                            resultado.add(b);
-                    break;
-
-                case "Tabla":
-                    resultado = bitacoraDAO.queryPorTabla(texto);
-                    break;
-
-                // ── NUEVO: buscar por código de tabla (ej: 5300) ──
-                case "Cod.Tabla":
-                    for (clsBitacoraBancaria b : lista) {
-                        int cod = obtenerCodigo(b.getBBtabla());
-                        if (String.valueOf(cod).contains(texto))
-                            resultado.add(b);
-                    }
-                    break;
-
-                case "Registro":
-                    for (clsBitacoraBancaria b : lista)
-                        if (b.getBBregistroid() != null &&
-                            String.valueOf(b.getBBregistroid()).contains(texto))
-                            resultado.add(b);
-                    break;
-
-                case "Valor Anterior":
-                    for (clsBitacoraBancaria b : lista)
-                        if (b.getBBvaloranterior() != null &&
-                            b.getBBvaloranterior().toLowerCase().contains(texto.toLowerCase()))
-                            resultado.add(b);
-                    break;
-
-                case "Valor nuevo":
-                    for (clsBitacoraBancaria b : lista)
-                        if (b.getBBvalornuevo() != null &&
-                            b.getBBvalornuevo().toLowerCase().contains(texto.toLowerCase()))
-                            resultado.add(b);
-                    break;
-
-                case "Fechas":
-                    Date inicio = fechaInicio.getDate();
-                    Date fin    = fechaFin.getDate();
-                    if (inicio == null || fin == null) {
-                        javax.swing.JOptionPane.showMessageDialog(this,
-                            "Seleccione ambas fechas.", "Aviso",
-                            javax.swing.JOptionPane.WARNING_MESSAGE);
-                        return;
-                    }
-                    for (clsBitacoraBancaria b : lista) {
-                        Date fa = b.getBBfechaaccion();
-                        if (fa != null && !fa.before(inicio) && !fa.after(fin))
-                            resultado.add(b);
-                    }
-                    break;
-
-                case "Descripción":
-                    for (clsBitacoraBancaria b : lista)
-                        if (b.getBBdescripcion() != null &&
-                            b.getBBdescripcion().toLowerCase().contains(texto.toLowerCase()))
-                            resultado.add(b);
-                    break;
-
-                default:
+    try {
+        switch (tipo) {
+            case "ID":
+                if (!texto.isEmpty()) {
+                    clsBitacoraBancaria b = bitacoraDAO.query(Integer.parseInt(texto));
+                    if (b != null) resultado.add(b);
+                } else {
                     resultado = lista;
-            }
+                }
+                break;
 
-            llenarTabla(resultado);
+            case "Usuario":
+                for (clsBitacoraBancaria b : lista)
+                    if (String.valueOf(b.getBBusuarioaccion()).toLowerCase().contains(texto.toLowerCase()))
+                        resultado.add(b);
+                break;
 
-            if (resultado.isEmpty())
-                javax.swing.JOptionPane.showMessageDialog(this,
-                    "No se encontraron registros.", "Información",
-                    javax.swing.JOptionPane.INFORMATION_MESSAGE);
+            case "Acción":  // ← con tilde, igual que el combo
+                for (clsBitacoraBancaria b : lista)
+                    if (b.getBBaccion() != null &&
+                        b.getBBaccion().toLowerCase().contains(texto.toLowerCase()))
+                        resultado.add(b);
+                break;
 
-        } catch (NumberFormatException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "Ingrese un número válido para buscar por Código o Registro.", "Error",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
+            case "Tabla":
+                for (clsBitacoraBancaria b : lista)
+                    if (b.getBBtabla() != null &&
+                        b.getBBtabla().toLowerCase().contains(texto.toLowerCase()))
+                        resultado.add(b);
+                break;
+
+            case "Código":  // ← busca por código numérico (5000, 5300, etc.)
+                for (clsBitacoraBancaria b : lista) {
+                    int cod = obtenerCodigo(b.getBBtabla());
+                    if (String.valueOf(cod).contains(texto))
+                        resultado.add(b);
+                }
+                break;
+
+            case "Registro":
+                for (clsBitacoraBancaria b : lista)
+                    if (b.getBBregistroid() != null &&
+                        String.valueOf(b.getBBregistroid()).contains(texto))
+                        resultado.add(b);
+                break;
+
+            case "Valor Anterior":
+                for (clsBitacoraBancaria b : lista)
+                    if (b.getBBvaloranterior() != null &&
+                        b.getBBvaloranterior().toLowerCase().contains(texto.toLowerCase()))
+                        resultado.add(b);
+                break;
+
+            case "Valor nuevo":
+                for (clsBitacoraBancaria b : lista)
+                    if (b.getBBvalornuevo() != null &&
+                        b.getBBvalornuevo().toLowerCase().contains(texto.toLowerCase()))
+                        resultado.add(b);
+                break;
+
+            case "Fechas":
+                Date inicio = fechaInicio.getDate();
+                Date fin    = fechaFin.getDate();
+                if (inicio == null || fin == null) {
+                    javax.swing.JOptionPane.showMessageDialog(this,
+                        "Seleccione ambas fechas.", "Aviso",
+                        javax.swing.JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+                for (clsBitacoraBancaria b : lista) {
+                    Date fa = b.getBBfechaaccion();
+                    if (fa != null && !fa.before(inicio) && !fa.after(fin))
+                        resultado.add(b);
+                }
+                break;
+
+            case "Descripción":
+                for (clsBitacoraBancaria b : lista)
+                    if (b.getBBdescripcion() != null &&
+                        b.getBBdescripcion().toLowerCase().contains(texto.toLowerCase()))
+                        resultado.add(b);
+                break;
+
+            default:
+                resultado = lista;
         }
+
+        llenarTabla(resultado);
+
+        if (resultado.isEmpty())
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No se encontraron registros.", "Información",
+                javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (NumberFormatException ex) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Ingrese un número válido para buscar por ID o Registro.", "Error",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed

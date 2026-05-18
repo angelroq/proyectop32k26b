@@ -1,5 +1,4 @@
 package Vista.Bancos;
-
 // Imports necesarios arriba del todo
 import Controlador.Bancos.clsCuentaBancaria;
 import java.io.File;
@@ -216,6 +215,14 @@ private void configurarBotones() {
             "Confirmar", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             new clsCuentaBancaria().limpiarTabla();
+            frmBitacoraBancaria.registrarBitacora(
+            "DELETE ALL",
+            "CuentaBancaria",
+            null,
+            "Todos los registros de CuentaBancaria fueron borrados",
+            null,
+            "Limpieza total de la tabla CuentaBancaria"
+        );
             limpiarCampos();
             cargarDatos();
             JOptionPane.showMessageDialog(this, "Tabla limpiada correctamente.");

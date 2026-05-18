@@ -15,6 +15,15 @@ import java.util.List;
 //Modificado por Angoly Camila Araujo Mayen 
 public class BancoDAO {
 
+ public void deleteAll() throws Exception {
+    try (Connection conn = Modelo.Conexion.getConnection()) {
+        conn.createStatement().executeUpdate("SET FOREIGN_KEY_CHECKS = 0");
+        conn.createStatement().executeUpdate("DELETE FROM banco");
+        conn.createStatement().executeUpdate("ALTER TABLE banco AUTO_INCREMENT = 1");
+        conn.createStatement().executeUpdate("SET FOREIGN_KEY_CHECKS = 1");
+    }
+}
+    
     private static final int APL_CODIGO = 5300; // Código módulo Bancos
 
     // ── LISTAR TODOS ────────────────────────────────────────────

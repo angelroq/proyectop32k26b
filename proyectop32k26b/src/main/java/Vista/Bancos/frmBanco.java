@@ -60,6 +60,7 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
         label4 = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         txtbuscado = new javax.swing.JTextField();
+        Limpiar = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -155,6 +156,14 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
             }
         });
 
+        Limpiar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
+        Limpiar.setText("Limpiar");
+        Limpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -197,7 +206,8 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
                         .addGap(56, 56, 56)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(reporte, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE))
+                            .addComponent(reporte, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE)
+                            .addComponent(Limpiar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22))
@@ -247,6 +257,8 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(Limpiar)
+                        .addGap(27, 27, 27)
                         .addComponent(reporte)
                         .addGap(34, 34, 34)
                         .addComponent(btnBuscar)
@@ -470,6 +482,39 @@ if (!camposCompletos()) return;
         }
     }
     }//GEN-LAST:event_reporteActionPerformed
+
+    private void LimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LimpiarActionPerformed
+         int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+        "¿Está seguro de que desea ELIMINAR TODOS los bancos de la base de datos?\n"
+        + "Esta acción no se puede deshacer.",
+        "Confirmar limpieza total",
+        javax.swing.JOptionPane.YES_NO_OPTION,
+        javax.swing.JOptionPane.WARNING_MESSAGE);
+
+    if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+
+    try {
+        bancoDAO.deleteAll();
+
+        // Registrar en bitácora
+        frmBitacoraBancaria.registrarBitacora(
+            "DELETE ALL", "Banco", null, null, null,
+            "Se eliminaron todos los registros de la tabla Banco"
+        );
+
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Todos los registros fueron eliminados.",
+            "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        cargarTabla();
+        limpiarCampos();
+
+    } catch (Exception e) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Error al limpiar la tabla: " + e.getMessage(),
+            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_LimpiarActionPerformed
  // ── Llena la tabla con todos los bancos ──────────────────────
 private void cargarTabla() {
     javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
@@ -576,6 +621,7 @@ private Controlador.Bancos.clsBanco getBancoDeFormulario() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Limpiar;
     private javax.swing.JButton actualizaar;
     private javax.swing.JButton agregar;
     private javax.swing.JButton btnBuscar;

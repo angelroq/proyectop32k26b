@@ -185,6 +185,14 @@ btnEliminar.addActionListener(e -> {
         "Confirmar", JOptionPane.YES_NO_OPTION);
     if (confirm == JOptionPane.YES_OPTION) {
         new clsTipoCuenta().limpiarTabla();
+        frmBitacoraBancaria.registrarBitacora(
+            "DELETE ALL",
+            "CatTipoCuenta",
+            null,
+            "Todos los registros de CatTipoCuenta fueron borrados",
+            null,
+            "Limpieza total de la tabla CatTipoCuenta"
+        );
         limpiarCampos();
         cargarDatos();
         JOptionPane.showMessageDialog(this, "Tabla limpiada correctamente.");
