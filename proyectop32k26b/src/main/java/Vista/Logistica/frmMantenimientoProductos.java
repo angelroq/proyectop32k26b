@@ -43,7 +43,7 @@ public class frmMantenimientoProductos extends javax.swing.JInternalFrame  {
 
         // Instrucciones para adaptarlo a otro formulario Cambiar el "2000" por el código de tu aplicación:
         //  Codigos de ejmplo utilizados de momento 2000 = Transportes | 2001 = Kardex | 2002 = Stock | 2003 = Pedidos
-        int codigoAplicacion = 2003; 
+        int codigoAplicacion = 2010; 
 
         btnRegistrar1.setEnabled(permisosDAO.puedeInsertar(usuId, codigoAplicacion));
         btnBuscar1.setEnabled(permisosDAO.puedeBuscar(usuId, codigoAplicacion));
@@ -737,10 +737,6 @@ Vista.Logistica.frmReportes ventana = new Vista.Logistica.frmReportes();
             JOptionPane.showMessageDialog(null, "Error: Verifica que los números no tengan letras o espacios vacíos.");
         
     }
-
-
-    JOptionPane.showMessageDialog(null, "Pedido agregado a la lista visual.");
-    limpiarCampos();
 
 
     }//GEN-LAST:event_btnRegistrar1ActionPerformed

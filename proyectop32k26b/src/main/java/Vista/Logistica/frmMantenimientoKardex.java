@@ -9,6 +9,8 @@
                               //09-05-2026  2. Implementacion de funcionalidad de botones
                               //11-05-2026  3. Implementacion Marca y Linea
                               //13-05-2023  4. Implementacion CRUD
+                              //14-05-2026  5. Implementacion con bitacora 
+                              //15-05-2026  6. Mantenimiento general
                               
 package Vista.Logistica;
 import Controlador.clsUsuarioConectado;
@@ -18,6 +20,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 import javax.swing.JOptionPane;
+import java.util.List;
 
 /**
  *
@@ -25,17 +28,20 @@ import javax.swing.JOptionPane;
  */
 public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
     private javax.swing.table.DefaultTableModel modeloKardex;
+    private Modelo.Logistica.MovimientosInventarioDAO daoKardex = new Modelo.Logistica.MovimientosInventarioDAO();
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(frmMantenimientoKardex.class.getName());
 
     /**
      * Creates new form frmMantenimientoKardex
      */
+    
+  
+
     public frmMantenimientoKardex() {
       initComponents();
-    cargarPermisos(); 
-
- 
+      cargarPermisos(); 
+      
        modeloKardex = new javax.swing.table.DefaultTableModel(
         new Object [][] {}, 
         new String [] { 
@@ -50,7 +56,9 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         }
     };
     tablaKardex.setModel(modeloKardex);
-    cargarDatosEjemplo();
+    txtIdMovimiento.setEditable(false);
+    txtIdMovimiento.setEnabled(false);
+    cargarDatosTablaKardex();
     this.setClosable(true);
     this.setIconifiable(true);
     this.setMaximizable(true);
@@ -63,8 +71,6 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         // 2001 es el código de la aplicación Mantenimiento Kardex
         int codigoAplicacion = 2001; 
 
-        // Como es un Kardex, por ahora solo validamos el botón Buscar
-     //   btnBuscar.setEnabled(permisosDAO.puedeBuscar(usuId, codigoAplicacion));
         btnBuscar.setEnabled(true); // Para consulta su puso directo en true
         
        
@@ -117,6 +123,7 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         label22 = new javax.swing.JLabel();
         label23 = new javax.swing.JLabel();
         txtMotivoMovimiento = new javax.swing.JTextField();
+        label19 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -143,6 +150,11 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        tablaKardex.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaKardexMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tablaKardex);
@@ -224,7 +236,7 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         });
 
         label16.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label16.setText("Marca");
+        label16.setText("ID Marca");
 
         label12.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         label12.setText("Cantidad");
@@ -236,10 +248,10 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         txtLineaPedido.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
         label14.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label14.setText("Producto");
+        label14.setText("ID Producto");
 
         label17.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label17.setText("Linea");
+        label17.setText("ID Linea");
 
         txtProducto.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txtProducto.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
@@ -272,108 +284,110 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         txtBodega.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
         label22.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label22.setText("Motivo Moviemiento");
+        label22.setText("Motivo Movimiento");
 
         label23.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label23.setText("Bodega ID");
+        label23.setText("ID Bodega");
 
         txtMotivoMovimiento.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txtMotivoMovimiento.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+
+        label19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        label19.setText("*Dar doble click a la fila deseada");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(54, 54, 54)
+                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnActualizar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(166, 166, 166)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(label23)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addComponent(label22)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(txtMotivoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(12, 12, 12))
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addComponent(label14)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
-                                                        .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                            .addComponent(label21)
-                                                            .addComponent(label15))
-                                                        .addGap(18, 18, 18)
-                                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                                            .addComponent(txtIdMovimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-                                                            .addComponent(txtTipoMovimiento)))))
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                                        .addComponent(label12)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(label13)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addComponent(label17)
-                                                    .addGap(26, 26, 26)
-                                                    .addComponent(txtLineaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                .addComponent(label16)
-                                                .addGroup(layout.createSequentialGroup()
-                                                    .addGap(60, 60, 60)
-                                                    .addComponent(txtMarcaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                                    .addGap(55, 55, 55)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnBuscar))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txtBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(label19)
+                                .addGap(352, 352, 352)
+                                .addComponent(btnAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnActualizar)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(label21)
+                                                    .addComponent(label15)
+                                                    .addComponent(label14))
+                                                .addGap(18, 18, 18))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(label22, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(11, 11, 11)))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(label23)
+                                            .addGap(61, 61, 61)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtMotivoMovimiento)
+                                            .addComponent(txtIdMovimiento, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
+                                            .addComponent(txtTipoMovimiento)
+                                            .addComponent(txtProducto)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(label17)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtLineaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(label16)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtMarcaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(label12)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(label13)
+                                            .addGap(41, 41, 41)
+                                            .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(37, 37, 37))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(34, 34, 34)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(cboxTipoBusqueda, 0, 0, Short.MAX_VALUE)
+                                        .addComponent(txtBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnBuscar)
+                                    .addGap(0, 0, Short.MAX_VALUE))))))
                 .addContainerGap(30, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btnAyuda, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(38, 38, 38)
+                        .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -388,7 +402,7 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(label21)
                             .addComponent(txtTipoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(label14)
                             .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -396,7 +410,7 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(label22)
                             .addComponent(txtMotivoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(label23)
                             .addComponent(txtBodega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -407,7 +421,7 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
                             .addComponent(btnRegistrar)
                             .addComponent(btnEliminar)
                             .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(80, 80, 80))
+                        .addGap(56, 56, 56))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -427,19 +441,21 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnReportes)
-                            .addComponent(btnAyuda))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                            .addComponent(btnAyuda)
+                            .addComponent(label19))))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(148, 148, 148))
+                .addGap(186, 186, 186))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-     txtIdMovimiento.setText("");
+  txtIdMovimiento.setText("");
     txtTipoMovimiento.setText("");
     txtProducto.setText("");
+    txtMotivoMovimiento.setText(""); // Agregado
+    txtBodega.setText("");           // Agregado
     txtFecha.setText("");
     txtCantidad.setText("");
     txtMarcaPedido.setText("");
@@ -520,14 +536,13 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         }
 
         try {
-            // (?i) hace que no importe mayúsculas o minúsculas
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + filtro, indiceColumna));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error en el filtro: " + e.getMessage());
         }
     
     }
-        //Registro de la accion en bitacora
+        
         //     BitacoraDAO bitacoraDAO = new BitacoraDAO();
         //    bitacoraDAO.insert(idUsuario, Aplcodigo, "CONSULTA");    
     }//GEN-LAST:event_btnBuscarActionPerformed
@@ -557,88 +572,108 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-   int filaVisual = tablaKardex.getSelectedRow();
-    if (filaVisual != -1) {
-        int respuesta = JOptionPane.showConfirmDialog(this, "¿Seguro que desea eliminar este registro?", "Confirmar", JOptionPane.YES_NO_OPTION);
-        if (respuesta == JOptionPane.YES_OPTION) {
-            int filaModelo = tablaKardex.convertRowIndexToModel(filaVisual);
-            modeloKardex.removeRow(filaModelo);
+
+        if (txtIdMovimiento.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe dar doble clic al registro de la tabla que desea eliminar.");
+            return;
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Seleccione la fila que desea eliminar.");
-    }
+        int respuesta = JOptionPane.showConfirmDialog(this, 
+                "¿Seguro que desea eliminar este registro de la Base de Datos?", 
+                "Confirmar Eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            try {
+                int idAEliminar = Integer.parseInt(txtIdMovimiento.getText().trim());
+                if (daoKardex.eliminar(idAEliminar)) {
+                  
+
+                    int filaModelo = -1;
+                    for (int i = 0; i < modeloKardex.getRowCount(); i++) {
+                        if (modeloKardex.getValueAt(i, 0).toString().equals(String.valueOf(idAEliminar))) {
+                            filaModelo = i;
+                            break;
+                        }
+                    }
+                    if (filaModelo != -1) {
+                        modeloKardex.removeRow(filaModelo);
+                    }
+
+                    JOptionPane.showMessageDialog(this, "Registro eliminado correctamente.");
+                    btnActualizarActionPerformed(null);
+                    
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error: No se pudo eliminar el registro en la base de datos.");
+                }
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Error: El ID del movimiento no es un número válido.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-    String id = txtIdMovimiento.getText();
-    String tipo = txtTipoMovimiento.getText();
-    String producto = txtProducto.getText();
-    String motivo = txtMotivoMovimiento.getText(); // Nuevo campo
-    String bodega = txtBodega.getText();           // Nuevo campo
-    String fecha = txtFecha.getText();
-    String cantidad = txtCantidad.getText();
-    String marca = txtMarcaPedido.getText();       // El que te falta
-    String linea = txtLineaPedido.getText();       // El que te falta
+try {
+            Controlador.Logistica.clsMovimientosInventario mov = new Controlador.Logistica.clsMovimientosInventario();
+            mov.setProdid(Integer.parseInt(txtProducto.getText().trim()));
+            mov.setBodegaid(Integer.parseInt(txtBodega.getText().trim()));
+            mov.setMovtipomovimiento(txtTipoMovimiento.getText().trim());
+            mov.setMovmotivo(txtMotivoMovimiento.getText().trim());
+            mov.setMovcantidad(Integer.parseInt(txtCantidad.getText().trim()));
+            mov.setMovmarca(txtMarcaPedido.getText().trim());
+            mov.setMovlinea(txtLineaPedido.getText().trim());
+            
+            mov.setMovfecha(new java.sql.Timestamp(System.currentTimeMillis()));
 
-    // 2. Crear el Object Array con las 9 posiciones EN ORDEN
-    // El orden debe ser idéntico al de los encabezados de tu tabla
-    Object[] nuevaFila = {
-        id,       // Columna 0
-        tipo,     // Columna 1
-        producto, // Columna 2
-        motivo,   // Columna 3
-        bodega,   // Columna 4
-        fecha,    // Columna 5
-        cantidad, // Columna 6
-        marca,    // Columna 7 -> ¡Ahora sí caerá en Marca!
-        linea     // Columna 8 -> ¡Ahora sí caerá en Línea!
-    };
+            if (daoKardex.insertar(mov)) {
+                cargarDatosTablaKardex();
 
-    // 3. Agregar al modelo
-    modeloKardex.addRow(nuevaFila);
-    
-    JOptionPane.showMessageDialog(this, "Registro exitoso");
+                JOptionPane.showMessageDialog(this, "Movimiento registrado y guardado en Bitácora.");
+                btnActualizarActionPerformed(null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: No se pudo guardar en la base de datos.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: Producto, Bodega y Cantidad deben ser números.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
 
-  int filaVisual = tablaKardex.getSelectedRow();
+  try {
+            if (txtIdMovimiento.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un registro de la tabla para modificar.");
+                return;
+            }
+            Controlador.Logistica.clsMovimientosInventario modKardex = new Controlador.Logistica.clsMovimientosInventario();
+            
+            modKardex.setMovimientoid(Integer.parseInt(txtIdMovimiento.getText().trim())); 
+            modKardex.setMovtipomovimiento(txtTipoMovimiento.getText().trim());
+            modKardex.setProdid(Integer.parseInt(txtProducto.getText().trim())); 
+            modKardex.setMovmotivo(txtMotivoMovimiento.getText().trim());
+            modKardex.setBodegaid(Integer.parseInt(txtBodega.getText().trim())); 
+            modKardex.setMovcantidad(Integer.parseInt(txtCantidad.getText().trim()));
+            modKardex.setMovmarca(txtMarcaPedido.getText().trim());
+            modKardex.setMovlinea(txtLineaPedido.getText().trim());
+            modKardex.setMovfecha(java.sql.Timestamp.valueOf(txtFecha.getText().trim()));
 
-    if (filaVisual != -1) {
-        int filaModelo = tablaKardex.convertRowIndexToModel(filaVisual);
 
-        if (!txtIdMovimiento.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtIdMovimiento.getText(), filaModelo, 0);
-            
-        if (!txtTipoMovimiento.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtTipoMovimiento.getText(), filaModelo, 1);
-            
-        if (!txtProducto.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtProducto.getText(), filaModelo, 2);
-            
-        if (!txtMotivoMovimiento.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtMotivoMovimiento.getText(), filaModelo, 3);
-            
-        if (!txtBodega.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtBodega.getText(), filaModelo, 4);
-            
-        if (!txtFecha.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtFecha.getText(), filaModelo, 5);
-            
-        if (!txtCantidad.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtCantidad.getText(), filaModelo, 6);
-            
-        if (!txtMarcaPedido.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtMarcaPedido.getText(), filaModelo, 7);
-            
-        if (!txtLineaPedido.getText().isEmpty()) 
-            modeloKardex.setValueAt(txtLineaPedido.getText(), filaModelo, 8);
-
-        JOptionPane.showMessageDialog(this, "Registro actualizado correctamente.");
-        btnLimpiarActionPerformed(null);
-    } else {
-        JOptionPane.showMessageDialog(this, "Seleccione una fila para modificar.");
-    }
+            if (daoKardex.actualizar(modKardex)) {
+                cargarDatosTablaKardex(); 
+                
+                JOptionPane.showMessageDialog(this, "¡Registro de Kardex actualizado con éxito!");            
+                btnActualizarActionPerformed(null); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: No se pudo actualizar en la base de datos.");
+            }
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Error: Asegúrate de que los campos numéricos (ID, Producto, Bodega, Cantidad) tengan formatos válidos.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error técnico: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
@@ -647,6 +682,10 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
         ventana.setLocationRelativeTo(null);
     }//GEN-LAST:event_btnReportesActionPerformed
 
+  
+    
+    
+    
     private void txtCantidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadActionPerformed
@@ -657,24 +696,48 @@ public class frmMantenimientoKardex extends javax.swing.JInternalFrame {
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
 
-    if (tablaKardex.getRowSorter() != null) {
-        tablaKardex.setRowSorter(null); 
-    }
-    txtBuscar.setText("");
-    cboxTipoBusqueda.setSelectedIndex(0);
-
-    txtIdMovimiento.setText("");
-    txtTipoMovimiento.setText("");
-    txtProducto.setText("");
-    txtFecha.setText("");
-    txtCantidad.setText("");
-    txtMarcaPedido.setText("");
-    txtLineaPedido.setText("");
-
-    tablaKardex.clearSelection();
-
-    JOptionPane.showMessageDialog(this, "Formulario restablecido correctamente.");
+        if (tablaKardex.getRowSorter() != null) {
+            tablaKardex.setRowSorter(null); 
+        }
+        txtBuscar.setText("");
+        cboxTipoBusqueda.setSelectedIndex(0);
+        txtIdMovimiento.setText("");
+        txtTipoMovimiento.setText("");
+        txtProducto.setText("");
+        txtMotivoMovimiento.setText("");
+        txtBodega.setText("");
+        txtFecha.setText("");
+        txtCantidad.setText("");
+        txtMarcaPedido.setText("");
+        txtLineaPedido.setText("");
+        txtIdMovimiento.setEditable(true);
+        tablaKardex.clearSelection();
     }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void tablaKardexMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaKardexMouseClicked
+       if (evt.getClickCount() == 2) { 
+        int filaVisual = tablaKardex.getSelectedRow();
+        
+        if (filaVisual != -1) {
+            try {
+                int filaModelo = tablaKardex.convertRowIndexToModel(filaVisual);
+                txtIdMovimiento.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 0)));
+                txtTipoMovimiento.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 1)));
+                txtProducto.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 2)));
+                txtMotivoMovimiento.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 3)));
+                txtBodega.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 4)));
+                txtFecha.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 5)));
+                txtCantidad.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 6)));
+                txtMarcaPedido.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 7)));
+                txtLineaPedido.setText(obtenerValor(modeloKardex.getValueAt(filaModelo, 8)));
+                txtIdMovimiento.setEditable(false);
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al capturar datos: " + e.getMessage());
+            }
+        }
+    }
+    }//GEN-LAST:event_tablaKardexMouseClicked
 private void buscarPorIDk() {
         System.out.println("Buscando por ID en la BD...");
     }
@@ -732,35 +795,46 @@ private void buscarPorIDk() {
         java.awt.EventQueue.invokeLater(() -> new frmMantenimientoKardex().setVisible(true));
     }
 
-private void cargarDatosEjemplo() {
-  modeloKardex.addRow(new Object[]{
-        "101", "Entrada", "Martillo", "Compra", "BOD-01", "24/04/2026", "50", "Truper", "Ferretería"
-    });
-    modeloKardex.addRow(new Object[]{
-        "102", "Salida", "Clavos", "Venta", "BOD-02", "25/04/2026", "200", "Standley", "Construcción"
-    });
-}
 
 public void registrarMovimientoExterno(Object[] fila) {
-    if (fila.length == 9) { // Cambiado a 9
+    if (fila.length == 9) { 
         modeloKardex.addRow(fila);
     } else {
         System.out.println("Error: El movimiento requiere 9 columnas.");
     }
 }
 
-private void tablaKardexMouseClicked(java.awt.event.MouseEvent evt) {                                         
-int filaVisual = tablaKardex.getSelectedRow();
-    if (filaVisual != -1) {
-        int filaModelo = tablaKardex.convertRowIndexToModel(filaVisual);
-        
-        txtIdMovimiento.setText(modeloKardex.getValueAt(filaModelo, 0).toString());
-        txtTipoMovimiento.setText(modeloKardex.getValueAt(filaModelo, 1).toString());
-        txtProducto.setText(modeloKardex.getValueAt(filaModelo, 2).toString());
-        // Agrega los demás campos según el orden de tus columnas...
-        txtFecha.setText(modeloKardex.getValueAt(filaModelo, 5).toString());
-        txtCantidad.setText(modeloKardex.getValueAt(filaModelo, 6).toString());
-    }
+
+    private String obtenerValor(Object objeto) {
+        return (objeto != null) ? objeto.toString() : "";
+}
+
+private void cargarDatosTablaKardex() {
+   modeloKardex.setRowCount(0);
+        try {
+            java.util.List<Controlador.Logistica.clsMovimientosInventario> lista = daoKardex.listar();
+            
+            if (lista != null) {
+                for (Controlador.Logistica.clsMovimientosInventario mov : lista) {
+                    Object[] fila = {
+                        mov.getMovimientoid(),
+                        mov.getMovtipomovimiento(),
+                        mov.getProdid(),
+                        mov.getMovmotivo(),
+                        mov.getBodegaid(),
+                        mov.getMovfecha(),
+                        mov.getMovcantidad(),
+                        mov.getMovmarca(),
+                        mov.getMovlinea()
+                    };
+                    modeloKardex.addRow(fila); 
+                }
+            }
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "Error al cargar datos desde la Base de Datos: " + e.getMessage(), 
+                "Error del Sistema", javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
 }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -781,6 +855,7 @@ int filaVisual = tablaKardex.getSelectedRow();
     private javax.swing.JLabel label15;
     private javax.swing.JLabel label16;
     private javax.swing.JLabel label17;
+    private javax.swing.JLabel label19;
     private javax.swing.JLabel label21;
     private javax.swing.JLabel label22;
     private javax.swing.JLabel label23;

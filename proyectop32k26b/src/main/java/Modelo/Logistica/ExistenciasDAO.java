@@ -188,7 +188,7 @@ public class ExistenciasDAO {
 
         BitacoraDAO bitacora = new BitacoraDAO();
 
-        int aplCodigoBitacora = 2000;
+        int aplCodigoBitacora = 2002;
 
         bitacora.insert(usuario, aplCodigoBitacora, accion);
     }

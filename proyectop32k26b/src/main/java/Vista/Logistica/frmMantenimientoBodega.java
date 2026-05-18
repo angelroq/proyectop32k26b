@@ -7,6 +7,8 @@
                               //13-05-2026  2. Implementacion de funcionalidad de botones
                               //13-05-2026  3. Implementacion Marca y Linea
                               //13-05-2023  4. Implementacion CRUD
+                              //14-05-2026  5. Implementacion con bitacora 
+                              //15-05-2026  6. Mantenimiento general
 
 
 
@@ -30,11 +32,21 @@ DefaultTableModel modeloBodega;
      */
     public frmMantenimientoBodega() {
        initComponents();
-        // Inicialización correcta del modelo
+
         modeloBodega = (DefaultTableModel) tablaStock.getModel();
-        // Evitar edición directa en las celdas de la tabla
         tablaStock.setDefaultEditor(Object.class, null);
+        
+        txtIdBodega.setEditable(false);
+    txtIdBodega.setEnabled(false); // Queda gris y protegido porque es autoincrementable
+    
+        cargarDatosTabla(); // L
+        
   
+         this.setClosable(true);
+        this.setIconifiable(true);
+        this.setMaximizable(true);
+        this.setResizable(true);
+        this.setDefaultCloseOperation(javax.swing.JInternalFrame.DISPOSE_ON_CLOSE);
     }
 
     /**
@@ -65,8 +77,12 @@ DefaultTableModel modeloBodega;
         btnRegistrar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
+        label19 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setClosable(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMaximizable(true);
+        setResizable(true);
 
         btnAdyda.setText("Ayuda");
         btnAdyda.addActionListener(new java.awt.event.ActionListener() {
@@ -113,6 +129,11 @@ DefaultTableModel modeloBodega;
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        tablaStock.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaStockMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tablaStock);
@@ -182,60 +203,66 @@ DefaultTableModel modeloBodega;
             }
         });
 
+        label19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        label19.setText("*Dar doble click a la fila deseada");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(45, 45, 45)
                         .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(164, 164, 164)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(label19)
+                                .addGap(221, 221, 221))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnBuscar))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(label15)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtIdBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(label14)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(txtUbicacionBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(label21)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtNombreBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(18, 18, 18)
+                                .addGap(45, 45, 45)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnBuscar))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                            .addComponent(label15)
+                                            .addGap(53, 53, 53)
+                                            .addComponent(txtIdBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(label14)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(txtUbicacionBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(label21)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(txtNombreBodega, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnActualizar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 80, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAdyda, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnModificar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnAdyda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                            .addComponent(btnReportes, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(0, 53, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -267,22 +294,23 @@ DefaultTableModel modeloBodega;
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEliminar)
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnReportes)
+                            .addComponent(btnAdyda)))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(label21)
                             .addComponent(txtNombreBodega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(label14)
-                            .addComponent(txtUbicacionBodega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(65, 65, 65))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEliminar)
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnAdyda, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtUbicacionBodega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(label14))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addComponent(label19)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                 .addGap(71, 71, 71))
         );
 
@@ -330,27 +358,20 @@ DefaultTableModel modeloBodega;
     }//GEN-LAST:event_tablaStockAncestorAdded
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-// 1. Quitar filtros de la tabla si existen para mostrar todos los datos de nuevo
+
     if (tablaStock.getRowSorter() != null) {
         tablaStock.setRowSorter(null);
     }
 
-    // 2. Limpiar el área de búsqueda
     txtBuscar.setText("");
     cboxTipoBusqueda.setSelectedIndex(0);
 
-    // 3. Limpiar los campos específicos de Bodega
     txtIdBodega.setText("");
     txtNombreBodega.setText("");
     txtUbicacionBodega.setText("");
 
-    // 4. Limpiar selección de la tabla y refrescar
     tablaStock.clearSelection();
-    
-    // Opcional: Si tienes un método para recargar datos desde la BD, llámalo aquí
-    // llenarTabla(); 
 
-    // 5. Notificar al usuario
     JOptionPane.showMessageDialog(this, "Formulario de Bodega restablecido correctamente.");
     }//GEN-LAST:event_btnActualizarActionPerformed
 
@@ -374,8 +395,6 @@ DefaultTableModel modeloBodega;
         */
         String seleccion = cboxTipoBusqueda.getSelectedItem().toString();
 
-        // Dependiendo del tipo de búsqueda se muestran
-        // los controles necesarios para ingresar los datos
         switch (seleccion) {
             case "ID Bodega":
             buscarPorIDbodega();
@@ -392,18 +411,37 @@ DefaultTableModel modeloBodega;
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-       int filaSeleccionada = tablaStock.getSelectedRow();
+    int filaVisual = tablaStock.getSelectedRow();
 
-        if (filaSeleccionada != -1) {
-            int respuesta = JOptionPane.showConfirmDialog(this, "¿Desea eliminar esta bodega?", "Confirmación", JOptionPane.YES_NO_OPTION);
-            if (respuesta == JOptionPane.YES_OPTION) {
-                int filaModelo = tablaStock.convertRowIndexToModel(filaSeleccionada);
-                modeloBodega.removeRow(filaModelo);
-                btnLimpiarActionPerformed(null);
+    if (filaVisual != -1) {
+        int respuesta = JOptionPane.showConfirmDialog(this, 
+                "¿Seguro que desea eliminar esta bodega?", 
+                "Confirmación", JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            try {
+                int filaModelo = tablaStock.convertRowIndexToModel(filaVisual);
+
+                Object valorId = modeloBodega.getValueAt(filaModelo, 0);
+                int idBodega = Integer.parseInt(valorId.toString());
+
+                Modelo.Logistica.BodegasDAO dao = new Modelo.Logistica.BodegasDAO();
+
+                if (dao.eliminar(idBodega)) {
+                    modeloBodega.removeRow(filaModelo);
+                    
+                    JOptionPane.showMessageDialog(this, "Bodega eliminada exitosamente.");
+                    btnLimpiarActionPerformed(null);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error: No se pudo eliminar en la base de datos.");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
+    }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
@@ -415,9 +453,7 @@ DefaultTableModel modeloBodega;
         if (filtro.isEmpty()) {
             sorter.setRowFilter(null);
         } else {
-            // 0 = ID, 1 = Nombre, 2 = Ubicación (según el JComboBox)
             int columnaIndex = cboxTipoBusqueda.getSelectedIndex();
-            // Evitar error si el índice del combo no coincide con las columnas de la tabla
             if(columnaIndex > 2) columnaIndex = 0; 
             
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + filtro, columnaIndex));
@@ -425,19 +461,42 @@ DefaultTableModel modeloBodega;
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-       String id = txtIdBodega.getText().trim();
-        String nombre = txtNombreBodega.getText().trim();
-        String ubicacion = txtUbicacionBodega.getText().trim();
 
-        if (id.isEmpty() || nombre.isEmpty() || ubicacion.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
-            return;
+   String nombre = txtNombreBodega.getText().trim();
+    String ubicacion = txtUbicacionBodega.getText().trim();
+    String idStr = txtIdBodega.getText().trim();
+    
+    if (nombre.isEmpty() || ubicacion.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Debe llenar el Nombre y la Ubicación.");
+        return;
+    }
+
+    try {
+        Controlador.Logistica.clsBodegas bodega = new Controlador.Logistica.clsBodegas();
+        bodega.setBodnombre(nombre);
+        bodega.setBodubicacion(ubicacion);
+
+        if (!idStr.isEmpty()) {
+            bodega.setBodegaid(Integer.parseInt(idStr));
+        }
+        
+        Modelo.Logistica.BodegasDAO dao = new Modelo.Logistica.BodegasDAO();
+
+        if (dao.insertar(bodega)) {
+            // Refrescamos la tabla trayendo los datos reales y actualizados desde MySQL
+            cargarDatosTabla(); 
+
+            JOptionPane.showMessageDialog(this, "Registro guardado exitosamente.");
+            btnLimpiarActionPerformed(null); 
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: El DAO no pudo insertar el registro.");
         }
 
-        Object[] nuevaFila = {id, nombre, ubicacion};
-        modeloBodega.addRow(nuevaFila);
-        JOptionPane.showMessageDialog(this, "Bodega registrada exitosamente.");
-        btnLimpiarActionPerformed(null);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Error: El ID debe ser un número válido.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
@@ -454,7 +513,6 @@ DefaultTableModel modeloBodega;
     String seleccion = cboxTipoBusqueda.getSelectedItem().toString();
     int columnaIndex = 0;
 
-    // Ajustado exactamente a los nombres de tu ComboBox y columnas de tabla
     switch (seleccion) {
         case "ID Bodega": 
             columnaIndex = 0; 
@@ -471,7 +529,6 @@ DefaultTableModel modeloBodega;
     }
 
     try {
-        // (?i) hace que la búsqueda ignore mayúsculas y minúsculas
         sorter.setRowFilter(RowFilter.regexFilter("(?i)" + filtro, columnaIndex));
 
         if (tablaStock.getRowCount() == 0) {
@@ -481,29 +538,99 @@ DefaultTableModel modeloBodega;
         System.err.println("Error en filtro: " + e.getMessage());
     
         }
-        //Registro de la accion en bitacora
-        //     BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        //    bitacoraDAO.insert(idUsuario, Aplcodigo, "CONSULTA");
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    private void cargarDatosTabla() {
+    // Limpiamos el modelo por si acaso tuviera filas previas
+    modeloBodega.setRowCount(0);
+    
+    try {
+        Modelo.Logistica.BodegasDAO dao = new Modelo.Logistica.BodegasDAO();
+        // Nota: Asumo que tu DAO tiene un método 'listar' o 'seleccionar' que devuelve un List.
+        // Si se llama diferente (ej. obtenerBodegas()), cambia .listar() por el nombre real.
+        java.util.List<Controlador.Logistica.clsBodegas> listaBodegas = dao.listar(); 
+        
+        if (listaBodegas != null) {
+            for (Controlador.Logistica.clsBodegas bodega : listaBodegas) {
+                Object[] fila = {
+                    bodega.getBodegaid(),
+                    bodega.getBodnombre(),
+                    bodega.getBodubicacion()
+                };
+                modeloBodega.addRow(fila);
+            }
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error al cargar los datos de las bodegas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    
+    
+    
+    
+    
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
 
-       int filaSeleccionada = tablaStock.getSelectedRow();
+      int filaVisual = tablaStock.getSelectedRow();
 
-        if (filaSeleccionada != -1) {
-            // Convertir índice por si la tabla está filtrada
-            int filaModelo = tablaStock.convertRowIndexToModel(filaSeleccionada);
+    if (filaVisual != -1) {
+        try {
+            String idStr = txtIdBodega.getText().trim();
+            String nombre = txtNombreBodega.getText().trim();
+            String ubicacion = txtUbicacionBodega.getText().trim();
 
-            modeloBodega.setValueAt(txtIdBodega.getText(), filaModelo, 0);
-            modeloBodega.setValueAt(txtNombreBodega.getText(), filaModelo, 1);
-            modeloBodega.setValueAt(txtUbicacionBodega.getText(), filaModelo, 2);
+            if (idStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El ID no puede estar vacío para modificar.");
+                return;
+            }
+            Controlador.Logistica.clsBodegas bodega = new Controlador.Logistica.clsBodegas();
+            bodega.setBodegaid(Integer.parseInt(idStr));
+            bodega.setBodnombre(nombre);
+            bodega.setBodubicacion(ubicacion);
 
-            JOptionPane.showMessageDialog(this, "Registro actualizado correctamente.");
-            btnLimpiarActionPerformed(null);
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila de la tabla para modificar.");
+            Modelo.Logistica.BodegasDAO dao = new Modelo.Logistica.BodegasDAO();
+            if (dao.actualizar(bodega)) {
+                int filaModelo = tablaStock.convertRowIndexToModel(filaVisual);
+                
+                modeloBodega.setValueAt(idStr, filaModelo, 0);
+                modeloBodega.setValueAt(nombre, filaModelo, 1);
+                modeloBodega.setValueAt(ubicacion, filaModelo, 2);
+
+                JOptionPane.showMessageDialog(this, "Bodega actualizada correctamente.");
+                btnLimpiarActionPerformed(null);
+            } else {
+                JOptionPane.showMessageDialog(this, "Error: No se encontró el registro en la BD.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: El ID debe ser numérico.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "Seleccione una fila de la tabla para modificar.");
+    }
+    
+    
     }//GEN-LAST:event_btnModificarActionPerformed
+
+    private void tablaStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaStockMouseClicked
+       if (evt.getClickCount() == 2) {
+        int filaVisual = tablaStock.getSelectedRow();
+        
+        if (filaVisual != -1) {
+            // Traduce el índice por si se usó el buscador/filtro
+            int filaModelo = tablaStock.convertRowIndexToModel(filaVisual);
+            
+            // Pasamos los datos de la fila a los JTextFields correspondientes de Bodega
+            txtIdBodega.setText(modeloBodega.getValueAt(filaModelo, 0).toString());
+            txtNombreBodega.setText(modeloBodega.getValueAt(filaModelo, 1).toString());
+            txtUbicacionBodega.setText(modeloBodega.getValueAt(filaModelo, 2).toString());
+            
+            // Aseguramos que permanezca bloqueado el ID
+            txtIdBodega.setEditable(false);
+        }
+    }
+    }//GEN-LAST:event_tablaStockMouseClicked
 
     private void buscarPorIDbodega() {
 
@@ -514,10 +641,6 @@ DefaultTableModel modeloBodega;
     private void buscarPorUbicacion() {
 
     }
-    
-   
-    
-    
     
     /**
      * @param args the command line arguments
@@ -558,6 +681,7 @@ DefaultTableModel modeloBodega;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel label14;
     private javax.swing.JLabel label15;
+    private javax.swing.JLabel label19;
     private javax.swing.JLabel label21;
     private javax.swing.JTable tablaStock;
     private javax.swing.JTextField txtBuscar;

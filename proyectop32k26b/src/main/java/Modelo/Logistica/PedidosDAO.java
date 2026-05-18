@@ -188,7 +188,7 @@ public class PedidosDAO {
 
         BitacoraDAO bitacora = new BitacoraDAO();
 
-        int aplCodigoBitacora = 2000;
+        int aplCodigoBitacora = 2003;
 
         bitacora.insert(usuario, aplCodigoBitacora, accion);
     }

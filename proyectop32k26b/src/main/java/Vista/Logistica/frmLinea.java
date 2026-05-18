@@ -38,7 +38,7 @@ public class frmLinea extends javax.swing.JInternalFrame {
         Modelo.PermisosDAO permisosDAO = new Modelo.PermisosDAO();
 
         // CÓDIGO DE APLICACIÓN: Cambiar este número por el código exacto de "Marcas" en BD
-        int codigoAplicacion = 2003; 
+        int codigoAplicacion = 2012; 
 
         // Bloqueo o desbloqueo de botones según la base de datos
         btnRegistrar1.setEnabled(permisosDAO.puedeInsertar(usuId, codigoAplicacion));
