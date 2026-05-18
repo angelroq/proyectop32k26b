@@ -7,7 +7,6 @@ import Modelo.Bancos.CatEstadoConciliacionDAO;
 import java.io.File;
 import java.sql.Connection;
 
-
 public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
 
     private final CatEstadoConciliacionDAO dao = new CatEstadoConciliacionDAO();

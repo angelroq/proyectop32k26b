@@ -7,7 +7,6 @@ import Modelo.Bancos.ConciliacionBancariaDAO;
 import java.io.File;
 import java.sql.Connection;
 
-
 public class frmConciliacionBancaria extends javax.swing.JInternalFrame {
 
     private final ConciliacionBancariaDAO dao = new ConciliacionBancariaDAO();
@@ -18,7 +17,7 @@ public class frmConciliacionBancaria extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setIconifiable(true);
         setResizable(true);
-        setTitle("Cat. Estado Conciliación");
+        setTitle("Cat. Conciliación Bancaria");
         cargarTabla();
         configurarSeleccionTabla();
         setDefaultCloseOperation(javax.swing.JInternalFrame.DISPOSE_ON_CLOSE);
@@ -293,10 +292,10 @@ if (!camposCompletos()) return;
 
 try {
     // Obtiene los datos ingresados en el formulario
-    clsConciliacionBancaria cates = getConciliacionBancariaDeFormulario();
+    clsConciliacionBancaria cb = getConciliacionBancariaDeFormulario();
 
     // Inserta la conciliación bancaria en la base de datos
-    dao.insert(cates);
+    dao.insert(cb);
 
     // Muestra un mensaje de éxito al usuario
     javax.swing.JOptionPane.showMessageDialog(this,
@@ -415,13 +414,13 @@ if (!camposCompletos()) return;
 try {
 
     // Obtiene los datos ingresados en el formulario
-    clsConciliacionBancaria cates = getConciliacionBancariaDeFormulario();
+    clsConciliacionBancaria cb = getConciliacionBancariaDeFormulario();
 
     // Asigna el ID del registro que se va a actualizar
-    cates.setCatesid(Integer.parseInt(txtid.getText().trim()));
+    cb.setCBANid(Integer.parseInt(txtid.getText().trim()));
 
     // Actualiza el registro en la base de datos
-    dao.update(cates);
+    dao.update(cb);
 
     // Muestra un mensaje de éxito
     javax.swing.JOptionPane.showMessageDialog(this,
@@ -519,7 +518,7 @@ try {
         jTextField4.setText(String.valueOf(cb.getCBANid()));
 
         // Selecciona el estado correspondiente en el JComboBox
-        cmbEstado.setSelectedIndex(cb.getCatesid());
+        cmbEstado.setSelectedIndex(cb.getCBANid());
 
     } else {
 
@@ -692,8 +691,7 @@ private void cargarTabla() {
             cb.getConbsaldosistema(),
             cb.getConbsaldobanco(),
             cb.getConbdiferencia(),
-            cb.getCBANid(),
-            cb.getCatesid()
+            cb.getCBANid()
         });
     }
     jTable1.setModel(modelo);
