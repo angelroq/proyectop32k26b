@@ -64,13 +64,13 @@ public class frmReportes extends javax.swing.JInternalFrame {
 
         tblReporte.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "# Vendedor", "Vendedor", "Fecha de Registro", "Comisión"
+                "Id Reporte", "# Vendedor", "Vendedor", "Fecha de Registro", "Hora", "Comisión"
             }
         ));
         jScrollPane1.setViewportView(tblReporte);
@@ -96,9 +96,9 @@ public class frmReportes extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(130, 130, 130)
                         .addComponent(jButton4)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 354, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 676, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,10 +161,12 @@ public class frmReportes extends javax.swing.JInternalFrame {
         for (clsReportes r : lista) {
             // Crea un arreglo de objetos con los datos que se mostrarán en las columnas
             Object[] fila = {
-                r.getVenid(),        // ID del vendedor
-                r.getVen_nombre(),   // Nombre obtenido mediante el JOIN en SQL
-                r.getComfecha(),     // Fecha del registro (Comfecha)
-                r.getComcomision()   // Monto de la comisión
+                r.getRepid(),        // 1. Id Reporte
+                r.getVenid(),        // 2. # Vendedor
+                r.getVen_nombre(),   // 3. Vendedor
+                r.getRepfecha(),     // 4. Fecha de Registro
+                r.getRephora(),      // 5. Hora
+                r.getComcomision()   // 6. Comisión
             };
             modelo.addRow(fila); // Agrega la fila al modelo de la tabla
             sumaComisiones += r.getComcomision(); // Suma el valor al total acumulado
@@ -193,9 +195,6 @@ public class frmReportes extends javax.swing.JInternalFrame {
     private javax.swing.JTextField FechaFinal;
     private javax.swing.JTextField FechaInicial;
     private javax.swing.JTextField IdVendedor;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

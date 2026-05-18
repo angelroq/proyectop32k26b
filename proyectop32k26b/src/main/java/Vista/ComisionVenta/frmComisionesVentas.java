@@ -149,7 +149,7 @@ public class frmComisionesVentas extends javax.swing.JFrame {
 
         jMenu2.setText("Ayudas");
 
-        jMenuItem2.setText("jMenuItem2");
+        jMenuItem2.setText("VerAyudas");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -233,6 +233,21 @@ public class frmComisionesVentas extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
+    try {
+        // Buscamos el archivo en la raíz del proyecto
+        java.nio.file.Path rutaCompilada = java.nio.file.Path.of("ayudaComisionReporte.chm");
+        
+        if (java.nio.file.Files.exists(rutaCompilada)) {
+            // "hh.exe" es el visor de Windows para archivos CHM
+            new ProcessBuilder("hh.exe", rutaCompilada.toAbsolutePath().toString()).start();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, 
+                "No se encontró el archivo en:\n" + rutaCompilada.toAbsolutePath(), 
+                "Error de Ruta", javax.swing.JOptionPane.WARNING_MESSAGE);
+        }
+    } catch (java.io.IOException e) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Error al abrir ayuda: " + e.getMessage());
+    }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**

@@ -15,83 +15,106 @@ import javax.swing.JOptionPane;
  *
  * @author xander reyes
  */
+/**
+ * ReportesDAO: Objeto de Acceso a Datos.
+ * Esta clase centraliza todas las operaciones de lectura y escritura en la base de datos
+ * específicamente para la tabla de reportes de comisiones.
+ */
 public class ReportesDAO {
 
-     /**
- * Esta clase maneja toda la comunicación entre la aplicación y la base de datos
- * para el módulo de comisiones y reportes.
- */
-
-    // Método para obtener el nombre de un vendedor buscando por su ID único
+    /**
+     * Obtiene el nombre de un vendedor buscando por su ID único.
+     * @param id Identificador del vendedor.
+     * @return String con el nombre del vendedor o vacío si no se encuentra.
+     */
+    
     public String obtenerNombreVendedor(int id) {
         String nombre = ""; 
-        String sql = "SELECT Vennombre FROM Vendedores WHERE Venid = ?"; // Consulta SQL parametrizada
+        // Consulta SQL parametrizada para evitar ataques de Inyección SQL
+        String sql = "SELECT Vennombre FROM vendedores WHERE Venid = ?"; 
         
-        // El bloque try-with-resources gestiona la apertura y cierre automático de la conexión
         try (Connection conn = Conexion.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) { // Prepara la consulta para evitar SQL Injection
+             PreparedStatement ps = conn.prepareStatement(sql)) { 
             
-            ps.setInt(1, id); // Sustituye el primer signo '?' por el ID recibido
+            ps.setInt(1, id); // Asigna el ID al parámetro de la consulta
             
-            try (ResultSet rs = ps.executeQuery()) { // Ejecuta la consulta y obtiene el set de resultados
-                if (rs.next()) { // Verifica si existe al menos un registro en el resultado
-                    nombre = rs.getString("Vennombre"); // Extrae el valor de la columna Vennombre
+            try (ResultSet rs = ps.executeQuery()) { 
+                if (rs.next()) { 
+                    // Extrae el nombre directamente de la columna de la base de datos
+                    nombre = rs.getString("Vennombre"); 
                 }
             }
-        } catch (SQLException e) { // Captura posibles errores de comunicación con la DB
-            System.err.println("Error de consulta: " + e.getMessage());
+        } catch (SQLException e) { 
+            System.err.println("Error al obtener nombre del vendedor: " + e.getMessage());
         }
-        return nombre; // Retorna el nombre o una cadena vacía si no hubo éxito
+        return nombre;
     }
 
-    // Método para filtrar comisiones por un vendedor específico en un rango de fechas
+    /**
+     * Recupera una lista de objetos clsReportes filtrados por vendedor y rango de fechas.
+     * Utiliza la tabla 'reportescomisionventa' que ya contiene la información consolidada.
+     */
     public List<clsReportes> listarPorFiltro(int idVen, String fInicial, String fFinal) {
-        List<clsReportes> lista = new ArrayList<>(); // Crea la lista donde se guardarán los objetos encontrados
-        // Consulta SQL con INNER JOIN para unir tablas y BETWEEN para el rango de fechas
-        String sql = "SELECT c.Venid, v.Vennombre, c.Comcomision, c.Comfecha " +
-                     "FROM comisionesvendedores c " +
-                     "INNER JOIN Vendedores v ON c.Venid = v.Venid " +
-                     "WHERE c.Venid = ? AND c.Comfecha BETWEEN ? AND ?";
+        List<clsReportes> lista = new ArrayList<>(); 
+        // Seleccionamos todos los campos requeridos, incluyendo los nuevos: Repid y Rephora
+        String sql = "SELECT Repid, Repfecha, Rephora, Venid, Vennombre, Comcomision " +
+                     "FROM reportescomisionventa " +
+                     "WHERE Venid = ? AND Repfecha BETWEEN ? AND ?";
 
-        try (Connection conn = Conexion.getConnection(); // Establece el enlace con MySQL
-             PreparedStatement ps = conn.prepareStatement(sql)) { // Prepara la sentencia SQL
+        try (Connection conn = Conexion.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql)) { 
             
-            ps.setInt(1, idVen); // Asigna el ID del vendedor al primer parámetro
-            ps.setString(2, fInicial); // Asigna la fecha inicial al segundo parámetro
-            ps.setString(3, fFinal); // Asigna la fecha final al tercer parámetro
+            // Configuración de parámetros para el filtro
+            ps.setInt(1, idVen); 
+            ps.setString(2, fInicial); 
+            ps.setString(3, fFinal); 
             
-            try (ResultSet rs = ps.executeQuery()) { // Ejecuta la petición al servidor
-                while (rs.next()) { // Itera mientras existan filas en el resultado
-                    clsReportes rep = new clsReportes(); // Instancia un nuevo objeto de reporte
-                    rep.setVenid(rs.getInt("Venid")); // Llena el ID desde la DB
-                    rep.setVen_nombre(rs.getString("Vennombre")); // Llena el nombre desde la DB
-                    rep.setComcomision(rs.getDouble("Comcomision")); // Llena la comisión desde la DB
-                    rep.setComfecha(rs.getString("Comfecha")); // Llena la fecha desde la DB
-                    lista.add(rep); // Agrega el objeto completo a la lista de resultados
+            try (ResultSet rs = ps.executeQuery()) { 
+                while (rs.next()) { 
+                    // Se crea una nueva instancia de la entidad por cada fila encontrada
+                    clsReportes rep = new clsReportes(); 
+                    
+                    // Llenado de los atributos del objeto con los datos de la base de datos
+                    rep.setRepid(rs.getInt("Repid"));           // Nuevo: ID autoincremental del reporte
+                    rep.setRephora(rs.getString("Rephora"));     // Nuevo: Hora del registro
+                    rep.setVenid(rs.getInt("Venid"));            // ID del vendedor
+                    rep.setVen_nombre(rs.getString("Vennombre"));// Nombre del vendedor
+                    rep.setComcomision(rs.getDouble("Comcomision")); // Monto de comisión
+                    rep.setRepfecha(rs.getString("Repfecha"));   // Fecha del registro
+                    
+                    lista.add(rep); // Se añade el objeto a la colección
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error en ejecución de filtro: " + e.getMessage());
+            System.err.println("Error en la consulta de filtrado: " + e.getMessage());
         }
-        return lista; // Retorna la colección de reportes filtrados
+        return lista; 
     }
 
-    // Método para insertar un nuevo registro de comisión
+    /**
+     * Inserta un nuevo registro de reporte en la base de datos.
+     * @param reporte Objeto de tipo clsReportes con la información a guardar.
+     * @return boolean True si la inserción fue exitosa, False en caso contrario.
+     */
     public boolean insertar(clsReportes reporte) {
-        // SQL para insertar datos; CURDATE() inserta la fecha actual del sistema automáticamente
-        String sql = "INSERT INTO comisionesvendedores (Venid, Commontoventas, Comcomision, Comfecha) " +
-                     "VALUES (?, ?, ?, CURDATE())";
+        // SQL para insertar en reportescomisionventa. 
+        // Se usa CURDATE() y CURTIME() para registrar el momento exacto de la operación.
+        String sql = "INSERT INTO reportescomisionventa (Repfecha, Rephora, Venid, Vennombre, Comcomision) " +
+                     "VALUES (CURDATE(), CURTIME(), ?, ?, ?)";
         
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             
-            ps.setInt(1, reporte.getVenid()); // Pasa el ID del objeto al SQL
-            ps.setDouble(2, 0.0); // Envía un valor por defecto para el monto de ventas
-            ps.setDouble(3, reporte.getComcomision()); // Pasa el valor de la comisión al SQL
+            // Mapeo de los atributos del objeto a los parámetros del SQL
+            ps.setInt(1, reporte.getVenid()); 
+            ps.setString(2, reporte.getVen_nombre());
+            ps.setDouble(3, reporte.getComcomision()); 
             
-            return ps.executeUpdate() > 0; // Ejecuta la inserción y retorna true si se afectó al menos una fila
+            // Retorna true si se insertó al menos un registro (executeUpdate devuelve filas afectadas)
+            return ps.executeUpdate() > 0; 
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error de persistencia: " + e.getMessage());
+            // Notifica al usuario en caso de un error crítico de persistencia
+            JOptionPane.showMessageDialog(null, "Error al guardar el reporte: " + e.getMessage());
             return false;
         }
     }
