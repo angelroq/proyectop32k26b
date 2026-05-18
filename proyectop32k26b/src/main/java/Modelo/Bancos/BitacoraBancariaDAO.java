@@ -11,6 +11,19 @@ import java.util.List;
 public class BitacoraBancariaDAO {
 
     private static final int APL_CODIGO = 5800;
+    
+public boolean deleteAll() {
+    String sql = "DELETE FROM BitacoraBancaria";
+    try (Connection conn = Conexion.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.executeUpdate();
+        return true;
+    } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+    }
+}
+    
 
     // ── LISTAR TODOS ────────────────────────────────────────────
     public List<clsBitacoraBancaria> listar() {
@@ -24,7 +37,7 @@ public class BitacoraBancariaDAO {
             while (rs.next()) {
                 clsBitacoraBancaria b = new clsBitacoraBancaria();
                 b.setBBid(rs.getInt("BBid"));
-                b.setBBusuarioaccion(rs.getInt("BBusuarioaccion"));
+                b.setBBusuarioaccion(rs.getString("BBusuarioaccion"));
                 b.setBBaccion(rs.getString("BBaccion"));
                 b.setBBtabla(rs.getString("BBtabla"));
                 b.setBBregistroid(rs.getObject("BBregistroid") != null ? rs.getInt("BBregistroid") : null);
@@ -50,7 +63,7 @@ public class BitacoraBancariaDAO {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, bitacora.getBBusuarioaccion());
+            ps.setString(1, bitacora.getBBusuarioaccion());
             ps.setString(2, bitacora.getBBaccion());
             ps.setString(3, bitacora.getBBtabla());
             if (bitacora.getBBregistroid() != null)
@@ -79,7 +92,7 @@ public class BitacoraBancariaDAO {
         try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, bitacora.getBBusuarioaccion());
+            ps.setString(1, bitacora.getBBusuarioaccion());
             ps.setString(2, bitacora.getBBaccion());
             ps.setString(3, bitacora.getBBtabla());
             if (bitacora.getBBregistroid() != null)
@@ -136,7 +149,7 @@ public class BitacoraBancariaDAO {
                 if (rs.next()) {
                     bitacora = new clsBitacoraBancaria();
                     bitacora.setBBid(rs.getInt("BBid"));
-                    bitacora.setBBusuarioaccion(rs.getInt("BBusuarioaccion"));
+                    bitacora.setBBusuarioaccion(rs.getString("BBusuarioaccion"));
                     bitacora.setBBaccion(rs.getString("BBaccion"));
                     bitacora.setBBtabla(rs.getString("BBtabla"));
                     bitacora.setBBregistroid(rs.getObject("BBregistroid") != null ? rs.getInt("BBregistroid") : null);
@@ -168,7 +181,7 @@ public class BitacoraBancariaDAO {
                 while (rs.next()) {
                     clsBitacoraBancaria b = new clsBitacoraBancaria();
                     b.setBBid(rs.getInt("BBid"));
-                    b.setBBusuarioaccion(rs.getInt("BBusuarioaccion"));
+                    b.setBBusuarioaccion(rs.getString("BBusuarioaccion"));
                     b.setBBaccion(rs.getString("BBaccion"));
                     b.setBBtabla(rs.getString("BBtabla"));
                     b.setBBregistroid(rs.getObject("BBregistroid") != null ? rs.getInt("BBregistroid") : null);
@@ -186,5 +199,10 @@ public class BitacoraBancariaDAO {
         }
         return lista;
     }
+
+    private Connection getConexion() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
 }
 

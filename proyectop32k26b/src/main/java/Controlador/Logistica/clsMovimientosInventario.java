@@ -1,10 +1,8 @@
-//Ferdynand Monroy mayo 2026
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+ //Ferdynand Monroy mayo 2026
 package Controlador.Logistica;
+
 import java.sql.Timestamp;
+
 /**
  *
  * @author ferito
@@ -14,33 +12,36 @@ public class clsMovimientosInventario {
     private int Movimientoid;
     private int Prodid;
     private int bodegaid;
-    private String Movtipomovimiento; //entradas y salidas
-    private String Movmotivo; //compra, venta, merca, etc
+    private String Movtipomovimiento;
+    private String Movmotivo;
     private int Movcantidad;
+    private String Movmarca;
+    private String Movlinea;
     private Timestamp Movfecha;
-    private String Movtiporeferencia;
-    private int Movreferenciaid;
-    private String Movobservacion;
-    
-     // Constructor vacío
+
+    // Constructor vacío
     public clsMovimientosInventario() {
     }
-    
-    //constructor con parametros
-    public clsMovimientosInventario(int Movimientoid, int Prodid, int bodegaid, String Movtipomovimiento, String Movmotivo, int Movcantidad, Timestamp Movfecha, String Movtiporeferencia, int Movreferenciaid, String Movobservacion) {
+
+    // Constructor lleno
+    public clsMovimientosInventario(int Movimientoid, int Prodid, int bodegaid,
+            String Movtipomovimiento, String Movmotivo,
+            int Movcantidad, String Movmarca,
+            String Movlinea, Timestamp Movfecha) {
+
         this.Movimientoid = Movimientoid;
         this.Prodid = Prodid;
         this.bodegaid = bodegaid;
         this.Movtipomovimiento = Movtipomovimiento;
         this.Movmotivo = Movmotivo;
         this.Movcantidad = Movcantidad;
+        this.Movmarca = Movmarca;
+        this.Movlinea = Movlinea;
         this.Movfecha = Movfecha;
-        this.Movtiporeferencia = Movtiporeferencia;
-        this.Movreferenciaid = Movreferenciaid;
-        this.Movobservacion = Movobservacion;
     }
-    
-    //getters y setters
+
+    // GETTERS Y SETTERS
+
     public int getMovimientoid() {
         return Movimientoid;
     }
@@ -89,6 +90,22 @@ public class clsMovimientosInventario {
         this.Movcantidad = Movcantidad;
     }
 
+    public String getMovmarca() {
+        return Movmarca;
+    }
+
+    public void setMovmarca(String Movmarca) {
+        this.Movmarca = Movmarca;
+    }
+
+    public String getMovlinea() {
+        return Movlinea;
+    }
+
+    public void setMovlinea(String Movlinea) {
+        this.Movlinea = Movlinea;
+    }
+
     public Timestamp getMovfecha() {
         return Movfecha;
     }
@@ -97,33 +114,18 @@ public class clsMovimientosInventario {
         this.Movfecha = Movfecha;
     }
 
-    public String getMovtiporeferencia() {
-        return Movtiporeferencia;
-    }
-
-    public void setMovtiporeferencia(String Movtiporeferencia) {
-        this.Movtiporeferencia = Movtiporeferencia;
-    }
-
-    public int getMovreferenciaid() {
-        return Movreferenciaid;
-    }
-
-    public void setMovreferenciaid(int Movreferenciaid) {
-        this.Movreferenciaid = Movreferenciaid;
-    }
-
-    public String getMovobservacion() {
-        return Movobservacion;
-    }
-
-    public void setMovobservacion(String Movobservacion) {
-        this.Movobservacion = Movobservacion;
-    }
-
     @Override
     public String toString() {
-        return "clsMovimientosInventario{" + "Movimientoid=" + Movimientoid + ", Prodid=" + Prodid + ", bodegaid=" + bodegaid + ", Movtipomovimiento=" + Movtipomovimiento + ", Movmotivo=" + Movmotivo + ", Movcantidad=" + Movcantidad + ", Movfecha=" + Movfecha + ", Movtiporeferencia=" + Movtiporeferencia + ", Movreferenciaid=" + Movreferenciaid + ", Movobservacion=" + Movobservacion + '}';
+        return "clsMovimientosInventario{" +
+                "Movimientoid=" + Movimientoid +
+                ", Prodid=" + Prodid +
+                ", bodegaid=" + bodegaid +
+                ", Movtipomovimiento=" + Movtipomovimiento +
+                ", Movmotivo=" + Movmotivo +
+                ", Movcantidad=" + Movcantidad +
+                ", Movmarca=" + Movmarca +
+                ", Movlinea=" + Movlinea +
+                ", Movfecha=" + Movfecha +
+                '}';
     }
-    
 }

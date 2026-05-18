@@ -1,33 +1,38 @@
-//Ferdynan Monroy abril 2026
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+ //Ferdynan Monroy abril 2026
 package Controlador.Logistica;
-import java.sql.Timestamp;
+
 /**
  *
  * @author ferito
  */
 public class clsPedidos {
-    
+
     private int Pedid;
     private int Cliid;
-    private Timestamp Pedfecha;
+    private int Prodid;
+    private int Pedcantidad;
+    private String Pedmarca;
+    private String Pedlinea;
     private String Pedestado;
-    
-    //constructor vacio
-    public clsPedidos(){
+
+    // Constructor vacío
+    public clsPedidos() {
     }
 
-    //constructor vacio
-    public clsPedidos(int Pedid, int Cliid, Timestamp Pedfecha, String Pedestado) {
+    // Constructor lleno
+    public clsPedidos(int Pedid, int Cliid, int Prodid, int Pedcantidad,
+                      String Pedmarca, String Pedlinea, String Pedestado) {
         this.Pedid = Pedid;
         this.Cliid = Cliid;
-        this.Pedfecha = Pedfecha;
+        this.Prodid = Prodid;
+        this.Pedcantidad = Pedcantidad;
+        this.Pedmarca = Pedmarca;
+        this.Pedlinea = Pedlinea;
         this.Pedestado = Pedestado;
     }
-    //getters y setters
+
+    // GETTERS Y SETTERS
+
     public int getPedid() {
         return Pedid;
     }
@@ -44,12 +49,36 @@ public class clsPedidos {
         this.Cliid = Cliid;
     }
 
-    public Timestamp getPedfecha() {
-        return Pedfecha;
+    public int getProdid() {
+        return Prodid;
     }
 
-    public void setPedfecha(Timestamp Pedfecha) {
-        this.Pedfecha = Pedfecha;
+    public void setProdid(int Prodid) {
+        this.Prodid = Prodid;
+    }
+
+    public int getPedcantidad() {
+        return Pedcantidad;
+    }
+
+    public void setPedcantidad(int Pedcantidad) {
+        this.Pedcantidad = Pedcantidad;
+    }
+
+    public String getPedmarca() {
+        return Pedmarca;
+    }
+
+    public void setPedmarca(String Pedmarca) {
+        this.Pedmarca = Pedmarca;
+    }
+
+    public String getPedlinea() {
+        return Pedlinea;
+    }
+
+    public void setPedlinea(String Pedlinea) {
+        this.Pedlinea = Pedlinea;
     }
 
     public String getPedestado() {
@@ -62,7 +91,14 @@ public class clsPedidos {
 
     @Override
     public String toString() {
-        return "clsPedidos{" + "Pedid=" + Pedid + ", Cliid=" + Cliid + ", Pedfecha=" + Pedfecha + ", Pedestado=" + Pedestado + '}';
+        return "clsPedidos{" +
+                "Pedid=" + Pedid +
+                ", Cliid=" + Cliid +
+                ", Prodid=" + Prodid +
+                ", Pedcantidad=" + Pedcantidad +
+                ", Pedmarca=" + Pedmarca +
+                ", Pedlinea=" + Pedlinea +
+                ", Pedestado=" + Pedestado +
+                '}';
     }
-
 }

@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Controlador.controladorPlanilla;
-
+import java.sql.Date;
 /**
  *
  * @author meilyn garcia
@@ -11,7 +11,7 @@ package Controlador.controladorPlanilla;
 public class clsPlanillaEncabezado {
     
     private int placodigo;
-    private String plafecha;
+    private Date plafecha;
     private double platotal;
     private int plaestado;
     private int movbid;
@@ -19,13 +19,14 @@ public class clsPlanillaEncabezado {
     public clsPlanillaEncabezado() {
     }
 
-    public clsPlanillaEncabezado(int placodigo, String plafecha, double platotal, int plaestado, int movbid) {
+    public clsPlanillaEncabezado(int placodigo, Date plafecha, double platotal, int plaestado, int movbid) {
         this.placodigo = placodigo;
         this.plafecha = plafecha;
         this.platotal = platotal;
         this.plaestado = plaestado;
         this.movbid = movbid;
     }
+
 
     public int getPlacodigo() {
         return placodigo;
@@ -35,11 +36,11 @@ public class clsPlanillaEncabezado {
         this.placodigo = placodigo;
     }
 
-    public String getPlafecha() {
+    public Date getPlafecha() {
         return plafecha;
     }
 
-    public void setPlafecha(String plafecha) {
+    public void setPlafecha(Date plafecha) {
         this.plafecha = plafecha;
     }
 

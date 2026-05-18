@@ -27,13 +27,14 @@ public class PlanillaEncabezadoDAO {
 
     // INSERTAR
     public boolean insertar(clsPlanillaEncabezado p) {
+
         String sql = "INSERT INTO planillaencabezado (Plafecha, Platotal, Plaestado, Movbid) VALUES (?, ?, ?, ?)";
 
         try {
             con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
 
-            ps.setString(1, p.getPlafecha());
+            ps.setDate(1, p.getPlafecha());   // MEJORA: Date real
             ps.setDouble(2, p.getPlatotal());
             ps.setInt(3, p.getPlaestado());
 
@@ -52,11 +53,10 @@ public class PlanillaEncabezadoDAO {
         }
     }
 
-    // LISTAR TODO
+    // LISTAR
     public List<clsPlanillaEncabezado> listar() {
 
         List<clsPlanillaEncabezado> lista = new ArrayList<>();
-
         String sql = "SELECT * FROM planillaencabezado";
 
         try {
@@ -65,13 +65,20 @@ public class PlanillaEncabezadoDAO {
             rs = ps.executeQuery();
 
             while (rs.next()) {
+
                 clsPlanillaEncabezado p = new clsPlanillaEncabezado();
 
                 p.setPlacodigo(rs.getInt("Placodigo"));
-                p.setPlafecha(rs.getString("Plafecha"));
+                p.setPlafecha(rs.getDate("Plafecha")); // MEJORA
                 p.setPlatotal(rs.getDouble("Platotal"));
                 p.setPlaestado(rs.getInt("Plaestado"));
-                p.setMovbid(rs.getInt("Movbid"));
+
+                int mov = rs.getInt("Movbid");
+                if (rs.wasNull()) {
+                    p.setMovbid(0);
+                } else {
+                    p.setMovbid(mov);
+                }
 
                 lista.add(p);
             }
@@ -83,10 +90,10 @@ public class PlanillaEncabezadoDAO {
         return lista;
     }
 
-    // BUSCAR POR ID
+    // BUSCAR
     public clsPlanillaEncabezado buscar(int id) {
 
-        String sql = "SELECT * FROM planillaencabezado WHERE Placodigo = ?";
+        String sql = "SELECT * FROM planillaencabezado WHERE Placodigo=?";
 
         try {
             con = Conexion.getConnection();
@@ -95,13 +102,20 @@ public class PlanillaEncabezadoDAO {
             rs = ps.executeQuery();
 
             if (rs.next()) {
+
                 clsPlanillaEncabezado p = new clsPlanillaEncabezado();
 
                 p.setPlacodigo(rs.getInt("Placodigo"));
-                p.setPlafecha(rs.getString("Plafecha"));
+                p.setPlafecha(rs.getDate("Plafecha")); // MEJORA
                 p.setPlatotal(rs.getDouble("Platotal"));
                 p.setPlaestado(rs.getInt("Plaestado"));
-                p.setMovbid(rs.getInt("Movbid"));
+
+                int mov = rs.getInt("Movbid");
+                if (rs.wasNull()) {
+                    p.setMovbid(0);
+                } else {
+                    p.setMovbid(mov);
+                }
 
                 return p;
             }
@@ -122,7 +136,7 @@ public class PlanillaEncabezadoDAO {
             con = Conexion.getConnection();
             ps = con.prepareStatement(sql);
 
-            ps.setString(1, p.getPlafecha());
+            ps.setDate(1, p.getPlafecha()); // MEJORA
             ps.setDouble(2, p.getPlatotal());
             ps.setInt(3, p.getPlaestado());
 

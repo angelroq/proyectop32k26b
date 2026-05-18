@@ -3,6 +3,10 @@ package Controlador.Bancos;
 import Modelo.Bancos.MovimientoBancarioDAO;
 import java.util.List;
 
+ /* @author Angel Méndez
+ * @carnet 9959-24-6845
+  @since 2026-05-10*/
+
 public class clsMovimientoBancario {
 
     // ── Atributos ─────────────────────────────────────────────────────────

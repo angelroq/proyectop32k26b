@@ -9,12 +9,20 @@ import Controlador.clsBitacora;
 import Modelo.BitacoraDAO; //se haran los registros de bitacora DAO
 import Modelo.AplicacionesDAO; //conexión DAO ya que de aqui se tomaran los datos para mostrar en la bitacora
 import Controlador.clsAplicaciones;
+import Modelo.Conexion;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.JOptionPane;
 import java.io.File;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -312,6 +320,22 @@ AplicacionesDAO dao = new AplicacionesDAO(); //inicializar llamada al DAO
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
+        //Reporte de Ferdynand Monroy mayo 2026
+        Connection conn = null;
+    Map p = new HashMap();
+    net.sf.jasperreports.engine.JasperReport report;
+    JasperPrint print;
+        try {
+            conn = Conexion.getConnection();
+            report = JasperCompileManager.compileReport(new File("").getAbsolutePath()
+                + "/src/main/java/Reportes/reporteApp.jrxml");
+                print = JasperFillManager.fillReport(report, p, conn);
+            JasperViewer view = new JasperViewer(print, false);
+                view.setTitle("Reporte Prueba");
+            view.setVisible(true);
+        } catch (Exception e) {
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminar1ActionPerformed

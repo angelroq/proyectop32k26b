@@ -3,20 +3,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vista.Bancos;
-import Controlador.Bancos.clsBanco;
-import Controlador.clsUsuarioConectado;
-import Modelo.BitacoraDAO;
-import Modelo.Bancos.BancoDAO;
-import Modelo.Conexion;
-import java.sql.Connection;
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-//import net.sf.jasperreports.engine.JasperCompileManager;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperPrint;
-//import net.sf.jasperreports.engine.JasperReport;
-//import net.sf.jasperreports.view.JasperViewer;
+import java.sql.Connection;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 /**
  *
  * @Angoly Camila Araujo Mayen 9959 - 24 - 17623
@@ -81,8 +74,9 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jTable2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -94,7 +88,7 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
         jScrollPane2.setViewportView(jTable2);
 
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
-        jLabel1.setText("Nombre ");
+        jLabel1.setText("Nombre");
 
         jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         jLabel2.setText("Dirección:");
@@ -105,11 +99,12 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
         jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         jLabel4.setText("Correo");
 
-        jLabel5.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(153, 0, 0));
-        jLabel5.setText("BANCOS");
+        jLabel5.setFont(new java.awt.Font("Swis721 Blk BT", 0, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(0, 51, 153));
+        jLabel5.setText("Bancos");
         jLabel5.setToolTipText("");
 
+        agregar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         agregar.setText("Agregar");
         agregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,6 +112,7 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
             }
         });
 
+        eliminar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         eliminar.setText("Eliminar");
         eliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -124,6 +120,7 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
             }
         });
 
+        actualizaar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         actualizaar.setText("Actualizar");
         actualizaar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,6 +128,7 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
             }
         });
 
+        buscar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         buscar.setText("Buscar");
         buscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -138,6 +136,7 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
             }
         });
 
+        reporte.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         reporte.setText("Reportes");
         reporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -148,6 +147,7 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
         label4.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         label4.setText("ID:");
 
+        btnBuscar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 12)); // NOI18N
         btnBuscar.setText("Ayudas");
         btnBuscar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,9 +160,9 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(78, 78, 78)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(85, 85, 85)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(agregar)
@@ -170,22 +170,21 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
                                 .addComponent(jLabel1))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(eliminar)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(label4)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtbuscado, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(txtbuscado, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(buscar))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING)))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(actualizaar)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(actualizaar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                                    .addComponent(eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(buscar)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(jLabel4)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -195,11 +194,12 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
                                 .addComponent(jTextField3)
                                 .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 446, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(reporte)
-                            .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 137, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(56, 56, 56)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(reporte, javax.swing.GroupLayout.DEFAULT_SIZE, 84, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 553, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(22, 22, 22))
         );
         layout.setVerticalGroup(
@@ -213,23 +213,25 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
                     .addComponent(jLabel1)
                     .addComponent(agregar))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(eliminar))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addComponent(buscar))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)))
+                            .addComponent(jLabel3))
+                        .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(label4)
                             .addComponent(txtbuscado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(buscar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(eliminar)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
@@ -239,28 +241,36 @@ private final Modelo.Bancos.BancoDAO bancoDAO = new Modelo.Bancos.BancoDAO();
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(actualizaar)))
-                .addGap(12, 12, 12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 20, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(reporte)
-                        .addGap(18, 18, 18)
+                        .addGap(34, 34, 34)
                         .addComponent(btnBuscar)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(159, 159, 159))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-      javax.swing.JOptionPane.showMessageDialog(this,
-        "Módulo de Ayuda en construcción.",
-        "Próximamente", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        try {
+    String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
 
+    File archivo = new File(ruta);
+
+    if (archivo.exists()) {
+        Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
+    } else {
+        System.out.println("La ayuda no fue encontrada");
+    }
+
+} catch (Exception ex) {
+    ex.printStackTrace();
+}
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarActionPerformed
@@ -272,6 +282,15 @@ if (!camposCompletos()) return;
         javax.swing.JOptionPane.showMessageDialog(this,
             "Banco registrado correctamente.",
             "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        // ← AQUÍ se registra en la bitácora
+        frmBitacoraBancaria.registrarBitacora(
+            "INSERT", "Banco", null, null,
+            "Nombre: " + jTextField1.getText().trim() +
+            " | Dirección: " + jTextField2.getText().trim() +
+            " | Teléfono: " + jTextField3.getText().trim() +
+            " | Correo: " + jTextField4.getText().trim(),
+            "Banco registrado"
+        );
         cargarTabla();
         limpiarCampos();
     } catch (Exception e) {
@@ -300,6 +319,14 @@ if (!camposCompletos()) return;
         javax.swing.JOptionPane.showMessageDialog(this,
             "Banco eliminado correctamente.",
             "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        frmBitacoraBancaria.registrarBitacora(
+    "DELETE",
+    "Banco",
+    Integer.parseInt(txtbuscado.getText().trim()),
+    "Nombre: " + jTextField1.getText().trim(),
+    null,
+    "Banco eliminado"
+);
         cargarTabla();
         limpiarCampos();
     } catch (NumberFormatException ex) {
@@ -330,6 +357,14 @@ if (!camposCompletos()) return;
             jTextField2.setText(banco.getBandireccion());
             jTextField3.setText(banco.getBantelefono());
             jTextField4.setText(banco.getBancorreo());
+            frmBitacoraBancaria.registrarBitacora(
+    "SELECT",
+    "Banco",
+    Integer.parseInt(txtbuscado.getText().trim()),
+    null,
+    null,
+    "Consulta de banco por ID"
+);
         } else {
             javax.swing.JOptionPane.showMessageDialog(this,
                 "No se encontró un banco con ID: " + id,
@@ -363,6 +398,17 @@ if (!camposCompletos()) return;
         javax.swing.JOptionPane.showMessageDialog(this,
             "Banco actualizado correctamente.",
             "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        frmBitacoraBancaria.registrarBitacora(
+    "UPDATE",
+    "Banco",
+    Integer.parseInt(txtbuscado.getText().trim()),
+    null,
+    "Nombre: " + jTextField1.getText().trim() +
+    " | Dirección: " + jTextField2.getText().trim() +
+    " | Teléfono: " + jTextField3.getText().trim() +
+    " | Correo: " + jTextField4.getText().trim(),
+    "Banco actualizado"
+);
         cargarTabla();
         limpiarCampos();
     } catch (NumberFormatException ex) {
@@ -397,20 +443,20 @@ if (!camposCompletos()) return;
         
         java.util.Map<String, Object> parametros = new java.util.HashMap<>();
         
-        //net.sf.jasperreports.engine.JasperReport reporte =
-         //   net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
+        net.sf.jasperreports.engine.JasperReport reporte =
+           net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
         
-        //net.sf.jasperreports.engine.JasperPrint print =
-        //    net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
+        net.sf.jasperreports.engine.JasperPrint print =
+           net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
         
-        //net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
-        //net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
+        net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
+        net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
         
         javax.swing.JFrame frame = new javax.swing.JFrame("Reporte de Clientes");
         frame.setSize(800, 600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        //frame.add(viewer);
+        frame.add(viewer);
         frame.setVisible(true);
         
     } catch (Exception e) {

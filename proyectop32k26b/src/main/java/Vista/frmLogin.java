@@ -11,7 +11,7 @@ import Modelo.BitacoraDAO;
 import Controlador.clsSeguridad;
 import Controlador.clsUsuario;
 import Controlador.clsUsuarioConectado;
-import Vista.ComisionesVentas.frmComisionesVentas;
+import Vista.ComisionVenta.frmComisionesVentas;
 
 import Vista.vistaCuentasCorrientes.MdiGeneralCC;
 
@@ -24,7 +24,7 @@ import java.awt.HeadlessException;
 import java.util.HashSet;
 
 import javax.swing.JOptionPane;
-
+import Vista.ComercialComprasyVentas.MdiComercio;
 /**
  *
  * @author visitante
@@ -95,7 +95,7 @@ public class frmLogin extends javax.swing.JFrame {
 
         jLabel4.setText("Departamento");
 
-        cboOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Compras", "Cuentas Corrientes", "Inventarios", "Seguridad", "Ventas", "Comisiones de ventas", "Planillas", "Logistica", " " }));
+        cboOpciones.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bancos", "Cuentas Corrientes", "Inventarios", "Seguridad", "Comercio", "Comisiones de ventas", "Planillas", "Logistica", " " }));
         cboOpciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cboOpcionesActionPerformed(evt);
@@ -221,16 +221,7 @@ public class frmLogin extends javax.swing.JFrame {
     }
     break;
 
-case "Compras":
-    try {
-        JOptionPane.showMessageDialog(null, 
-            "Módulo de Compras aún no disponible", 
-            "Información", 
-            JOptionPane.INFORMATION_MESSAGE);
-    } catch (Exception e) {
-        System.out.println(e);
-    }
-    break;
+
 
 case "Cuentas Corrientes":
     try {
@@ -263,12 +254,11 @@ case "Seguridad":
     }
     break;
 
-case "Ventas":
+case "Comercio":
     try {
-        JOptionPane.showMessageDialog(null, 
-            "Módulo de Ventas aún no disponible", 
-            "Información", 
-            JOptionPane.INFORMATION_MESSAGE);
+        MdiComercio menu = new MdiComercio();
+        menu.setVisible(true);
+        this.dispose();
     } catch (Exception e) {
         System.out.println(e);
     }

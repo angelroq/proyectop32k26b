@@ -8,6 +8,7 @@ import Controlador.controladorPlanilla.clsDepartamento;
 import Modelo.modeloPlanilla.DepartamentoDAO;
 import Controlador.clsBitacora;
 import javax.swing.JOptionPane;
+import java.io.File;
 /**
  *
  * @author Meilyn Garcia 9959-23-17838
@@ -51,7 +52,7 @@ public class frmMantenimientoDepartamento extends javax.swing.JFrame {
         btnSalir = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnayuda = new javax.swing.JButton();
         txtBuscar = new javax.swing.JTextField();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -117,10 +118,10 @@ public class frmMantenimientoDepartamento extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setText("?");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
+        btnayuda.setText("?");
+        btnayuda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
+                btnayudaActionPerformed(evt);
             }
         });
 
@@ -198,7 +199,7 @@ public class frmMantenimientoDepartamento extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(267, 267, 267)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27))))
         );
         layout.setVerticalGroup(
@@ -207,7 +208,7 @@ public class frmMantenimientoDepartamento extends javax.swing.JFrame {
                 .addGap(10, 10, 10)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnayuda, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -284,9 +285,33 @@ public class frmMantenimientoDepartamento extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void btnayudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnayudaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        try {
+
+            File archivo = new File(
+                    "src/main/java/Ayudas/Planillas/AyudasPlanilla.chm");
+
+            if (archivo.exists()) {
+
+                Runtime.getRuntime().exec(
+                        "rundll32 url.dll,FileProtocolHandler "
+                        + archivo.getAbsolutePath());
+
+            } else {
+
+                JOptionPane.showMessageDialog(this,
+                        "No se encontró el archivo de ayuda.");
+
+            }
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Error al abrir ayuda: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnayudaActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
@@ -457,8 +482,8 @@ public class frmMantenimientoDepartamento extends javax.swing.JFrame {
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnNuevo;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JButton btnayuda;
     private javax.swing.JCheckBox chkEstado;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

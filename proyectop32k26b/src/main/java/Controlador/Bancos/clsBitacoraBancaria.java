@@ -6,7 +6,7 @@ import java.util.Date;
 public class clsBitacoraBancaria {
 
     private int     BBid;
-    private int     BBusuarioaccion;
+    private String     BBusuarioaccion;
     private String  BBaccion;
     private String  BBtabla;
     private Integer BBregistroid;      // Nullable → DEFAULT NULL en BD
@@ -19,7 +19,7 @@ public class clsBitacoraBancaria {
     public clsBitacoraBancaria() { }
 
     // Constructor completo
-    public clsBitacoraBancaria(int BBid, int BBusuarioaccion, String BBaccion,
+    public clsBitacoraBancaria(int BBid, String BBusuarioaccion, String BBaccion,
                                 String BBtabla, Integer BBregistroid,
                                 String BBvaloranterior, String BBvalornuevo,
                                 Date BBfechaaccion, String BBdescripcion) {
@@ -35,7 +35,7 @@ public class clsBitacoraBancaria {
     }
 
     // Constructor sin ID — para INSERT (AUTO_INCREMENT genera el ID)
-    public clsBitacoraBancaria(int BBusuarioaccion, String BBaccion,
+    public clsBitacoraBancaria(String BBusuarioaccion, String BBaccion,
                                 String BBtabla, Integer BBregistroid,
                                 String BBvaloranterior, String BBvalornuevo,
                                 String BBdescripcion) {
@@ -53,8 +53,8 @@ public class clsBitacoraBancaria {
     public int     getBBid()                          { return BBid; }
     public void    setBBid(int BBid)                  { this.BBid = BBid; }
 
-    public int     getBBusuarioaccion()                             { return BBusuarioaccion; }
-    public void    setBBusuarioaccion(int BBusuarioaccion)          { this.BBusuarioaccion = BBusuarioaccion; }
+    public String  getBBusuarioaccion()                             { return BBusuarioaccion; }
+    public void    setBBusuarioaccion(String BBusuarioaccion)          { this.BBusuarioaccion = BBusuarioaccion; }
 
     public String  getBBaccion()                      { return BBaccion; }
     public void    setBBaccion(String BBaccion)        { this.BBaccion = BBaccion; }

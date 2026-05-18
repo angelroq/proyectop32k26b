@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.SQLException;
 
 /**
  *
@@ -25,9 +26,7 @@ public class DetalleConceptosPlanillaDAO {
     // INSERTAR
     public boolean insertar(clsDetalleConceptosPlanilla d) {
 
-        String sql = "INSERT INTO detalleconceptosplanilla "
-                + "(Detcodigo, Concodigo, Monto) "
-                + "VALUES (?,?,?)";
+        String sql = "INSERT INTO detalleconceptosplanilla (Detcodigo, Concodigo, Monto) VALUES (?,?,?)";
 
         try {
             con = cn.getConnection();
@@ -40,7 +39,7 @@ public class DetalleConceptosPlanillaDAO {
             ps.executeUpdate();
             return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error INSERT detalle conceptos: " + e.getMessage());
             return false;
         }
@@ -70,7 +69,7 @@ public class DetalleConceptosPlanillaDAO {
                 lista.add(d);
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error LISTAR detalle conceptos: " + e.getMessage());
         }
 
@@ -85,7 +84,6 @@ public class DetalleConceptosPlanillaDAO {
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-
             ps.setInt(1, id);
             rs = ps.executeQuery();
 
@@ -101,7 +99,7 @@ public class DetalleConceptosPlanillaDAO {
                 return d;
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error BUSCAR detalle conceptos: " + e.getMessage());
         }
 
@@ -111,9 +109,7 @@ public class DetalleConceptosPlanillaDAO {
     // ACTUALIZAR
     public boolean actualizar(clsDetalleConceptosPlanilla d) {
 
-        String sql = "UPDATE detalleconceptosplanilla SET "
-                + "Detcodigo=?, Concodigo=?, Monto=? "
-                + "WHERE Detconcodigo=?";
+        String sql = "UPDATE detalleconceptosplanilla SET Detcodigo=?, Concodigo=?, Monto=? WHERE Detconcodigo=?";
 
         try {
             con = cn.getConnection();
@@ -127,7 +123,7 @@ public class DetalleConceptosPlanillaDAO {
             ps.executeUpdate();
             return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error UPDATE detalle conceptos: " + e.getMessage());
             return false;
         }
@@ -147,7 +143,7 @@ public class DetalleConceptosPlanillaDAO {
 
             return true;
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println("Error DELETE detalle conceptos: " + e.getMessage());
             return false;
         }

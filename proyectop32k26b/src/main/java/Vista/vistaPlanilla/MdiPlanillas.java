@@ -306,6 +306,8 @@ public class MdiPlanillas extends javax.swing.JFrame {
 
     private void frmMantenimientoPerfiles6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles6ActionPerformed
         // TODO add your handling code here:
+         frmMantenimientoEmpleado vista = new frmMantenimientoEmpleado();
+        vista.setVisible(true);
     }//GEN-LAST:event_frmMantenimientoPerfiles6ActionPerformed
 
     private void frmMantenimientoPerfiles5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_frmMantenimientoPerfiles5ActionPerformed

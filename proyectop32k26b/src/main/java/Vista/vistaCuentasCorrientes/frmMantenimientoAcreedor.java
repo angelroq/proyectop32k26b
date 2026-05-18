@@ -24,6 +24,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 
 /**
@@ -466,14 +471,30 @@ int idUsuario = Controlador.clsUsuarioConectado.getUsuId(); //este se mandó a l
         // TODO add your handling code here:
         llenadoDeTablas();
     }//GEN-LAST:event_btnActualizarActionPerformed
-
+    private Connection connectio = null;
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
         // TODO add your handling code here:
-
+        Map p = new HashMap();
+        JasperReport report;
+        JasperPrint print; 
+        
+        try{
+            connectio = Modelo.Conexion.getConnection();
+            report = JasperCompileManager.compileReport(new File("").getAbsolutePath()
+            +"\\src\\main\\java\\Reportes.CuentasCorrientes\\pruebaReporteAcree.jrxml");
+            print = JasperFillManager.fillReport(report, p, connectio);
+            
+            JasperViewer view = new JasperViewer(print, false);
+            
+            view.setTitle("ReporteGeneralCobros");
+            view.setVisible(true);
+        } catch (Exception e){}
+        
+    
     }//GEN-LAST:event_btnReportesActionPerformed
-
+    
     private void txtCuentaBancariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCuentaBancariaActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtCuentaBancariaActionPerformed
 
 

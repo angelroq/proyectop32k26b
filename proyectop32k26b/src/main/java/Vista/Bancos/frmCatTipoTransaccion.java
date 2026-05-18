@@ -3,6 +3,13 @@ package Vista.Bancos;
 
 import Controlador.Bancos.clsCatTipoTransaccion;
 import Modelo.Bancos.CatTipoTransaccionDAO;
+import java.io.File;
+import java.sql.Connection;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class frmCatTipoTransaccion extends javax.swing.JInternalFrame {
 
@@ -224,6 +231,14 @@ if (txtid.getText().trim().isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this,
             "Tipo de transacción eliminado correctamente.",
             "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        frmBitacoraBancaria.registrarBitacora(
+    "DELETE",
+    "CatTipoTransaccion",
+    Integer.parseInt(txtid.getText().trim()),
+    "Nombre: " + jTextField1.getText().trim(),
+    null,
+    "Tipo de transacción eliminado"
+);
         cargarTabla();
         limpiarCampos();
     } catch (NumberFormatException ex) {
@@ -252,6 +267,14 @@ if (txtid.getText().trim().isEmpty()) {
         if (tt != null) {
             jTextField1.setText(tt.getTTnombretipo());
             txtid.setText(tt.getTTdescripcion());
+            frmBitacoraBancaria.registrarBitacora(
+    "SELECT",
+    "CatTipoTransaccion",
+    Integer.parseInt(txtid.getText().trim()),
+    null,
+    null,
+    "Consulta de tipo de transacción por ID"
+);
         } else {
             javax.swing.JOptionPane.showMessageDialog(this,
                 "No se encontró un tipo de transacción con ID: " + id,
@@ -270,11 +293,69 @@ if (txtid.getText().trim().isEmpty()) {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
-        // TODO add your handling code here:
+Connection conn = null;
+    try {
+        conn = Modelo.Conexion.getConnection();
+        
+        // Ruta corregida — faltaba el separador entre getAbsolutePath() y src
+        String ruta = new java.io.File("").getAbsolutePath() 
+                    + "\\src\\main\\java\\Reportes\\Bancos\\CatTT.jrxml";
+        
+        System.out.println("Buscando reporte en: " + ruta); // Para verificar en consola
+        
+        java.io.File archivo = new java.io.File(ruta);
+        if (!archivo.exists()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "No se encontró el archivo del reporte en:\n" + ruta,
+                "Archivo no encontrado", javax.swing.JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        java.util.Map<String, Object> parametros = new java.util.HashMap<>();
+        
+        net.sf.jasperreports.engine.JasperReport reporte =
+            net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
+        
+        net.sf.jasperreports.engine.JasperPrint print =
+            net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
+        
+        net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
+        net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
+        
+        javax.swing.JFrame frame = new javax.swing.JFrame("Reporte de Tipo Transacción");
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
+        frame.add(viewer);
+        frame.setVisible(true);
+        
+    } catch (Exception e) {
+        e.printStackTrace();
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "Error al generar el reporte:\n" + e.getMessage(),
+            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+    } finally {
+        if (conn != null) {
+            try { conn.close(); } catch (Exception ex) { ex.printStackTrace(); }
+        }
+    }        // TODO add your handling code here:
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
-        // TODO add your handling code here:
+        try {
+            String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
+
+            File archivo = new File(ruta);
+
+            if (archivo.exists()) {
+                Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
+            } else {
+                System.out.println("La ayuda no fue encontrada");
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }        // TODO add your handling code here:
     }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -286,6 +367,15 @@ if (!camposCompletos()) return;
         javax.swing.JOptionPane.showMessageDialog(this,
             "Tipo de transacción registrado correctamente.",
             "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        frmBitacoraBancaria.registrarBitacora(
+    "INSERT",
+    "CatTipoTransaccion",
+    null,
+    null,
+    "Nombre: " + jTextField1.getText().trim() +
+    " | Descripción: " + jTextField3.getText().trim(),
+    "Tipo de transacción registrado"
+);
         cargarTabla();
         limpiarCampos();
     } catch (Exception e) {
@@ -311,6 +401,15 @@ if (!camposCompletos()) return;
         javax.swing.JOptionPane.showMessageDialog(this,
             "Tipo de transacción actualizado correctamente.",
             "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+        frmBitacoraBancaria.registrarBitacora(
+    "UPDATE",
+    "CatTipoTransaccion",
+    Integer.parseInt(txtid.getText().trim()),
+    null,
+    "Nombre: " + jTextField1.getText().trim() +
+    " | Descripción: " + jTextField3.getText().trim(),
+    "Tipo de transacción actualizado"
+);
         cargarTabla();
         limpiarCampos();
     } catch (NumberFormatException ex) {
@@ -381,6 +480,7 @@ private clsCatTipoTransaccion getTipoTransaccionDeFormulario() {
     );
     return tt;
 }
+
     
     /**
      * @param args the command line arguments

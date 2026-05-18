@@ -5,6 +5,8 @@
  */
 package Controlador.Logistica;
 
+import java.math.BigDecimal; //para private marcomision
+
 /**
  *
  * @author ferito
@@ -13,6 +15,7 @@ public class clsMarca {
     private int marcaid;
     private String marnombre;
     private int marestado;
+    private BigDecimal marcomision;
     
     //constructor vacio
     public clsMarca(){
@@ -20,10 +23,11 @@ public class clsMarca {
     }
     
     //constructor con parametros
-    public clsMarca(int marcaid, String marnombre, int marestado) {
+    public clsMarca(int marcaid, String marnombre, int marestado, BigDecimal marcomision) {
         this.marcaid = marcaid;
         this.marnombre = marnombre;
         this.marestado = marestado;
+        this.marcomision = marcomision;
     }
 
     //getters y setters
@@ -50,12 +54,19 @@ public class clsMarca {
     public void setMarestado(int marestado) {
         this.marestado = marestado;
     }
+    
+    public BigDecimal getMarcomision() {
+        return marcomision;
+    }
+
+    public void setMarcomision(BigDecimal marcomision) {
+        this.marcomision = marcomision;
+    }
 
     //to string
     @Override
     public String toString() {
-        return "clsMarca{" + "marcaid=" + marcaid + ", marnombre=" + marnombre + ", marestado=" + marestado + '}';
+        return "clsMarca{" + "marcaid=" + marcaid + ", marnombre=" + marnombre + ", marestado=" + marestado + ", marcomision=" + marcomision + '}';
     }
-    
     
 }

@@ -7,7 +7,9 @@
 //Marco. Hernandez 9959-24-6291 24-04-2026  1. Creacion frmMantenimientStock, implementaciones basicas
                               //09-05-2026  2. Implementacion de funcionalidad de botones
                               //11-05-2026  3. Implementacion Marca y Linea
-                              //13-05-2023  4. Implementacion CRUD
+                              //13-05-2026  4. Implementacion CRUD
+                              //14-05-2026  5. Implementacion con bitacora 
+                              //15-05-2026  6. Mantenimiento general
 package Vista.Logistica;
 import Controlador.clsUsuarioConectado;
 import Modelo.PermisosDAO;
@@ -17,6 +19,8 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.RowFilter;
 import java.util.List;
 import javax.swing.JOptionPane;
+import Modelo.Logistica.ExistenciasDAO;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -39,8 +43,12 @@ public frmMantenimientoStock() {
         
         modeloStock = (DefaultTableModel) tablaStock.getModel();
         tablaStock.setDefaultEditor(Object.class, null);
+        
+        txtIdExistencias.setEditable(false);
+        txtIdExistencias.setEnabled(false);
+        
   
-        cargarDatosPrueba();
+      actualizarTabla();
     }
 
     private void cargarDatosPrueba() {
@@ -86,7 +94,7 @@ public frmMantenimientoStock() {
         label17 = new javax.swing.JLabel();
         txtStockActual = new javax.swing.JTextField();
         label15 = new javax.swing.JLabel();
-        txtIdProducto = new javax.swing.JTextField();
+        txtIdExistencias = new javax.swing.JTextField();
         txtBodegaId = new javax.swing.JTextField();
         label13 = new javax.swing.JLabel();
         btnActualizar = new javax.swing.JButton();
@@ -101,6 +109,9 @@ public frmMantenimientoStock() {
         txtLineaPedido = new javax.swing.JTextField();
         label14 = new javax.swing.JLabel();
         btnReportes = new javax.swing.JButton();
+        txtIdProducto1 = new javax.swing.JTextField();
+        label18 = new javax.swing.JLabel();
+        label19 = new javax.swing.JLabel();
 
         jButton3.setText("Ayuda");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -116,7 +127,7 @@ public frmMantenimientoStock() {
 
             },
             new String [] {
-                "ID Producto", "Nombrer", "Stock Actual", "Bodega Id", "Marca", "Linea"
+                "existenciasID", "ID Producto", "Nombrer", "Stock Actual", "Bodega Id", "Marca", "Linea"
             }
         ));
         tablaStock.addAncestorListener(new javax.swing.event.AncestorListener() {
@@ -126,6 +137,11 @@ public frmMantenimientoStock() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        tablaStock.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaStockMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(tablaStock);
@@ -165,16 +181,21 @@ public frmMantenimientoStock() {
         });
 
         label17.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label17.setText("Linea");
+        label17.setText("ID Linea");
 
         txtStockActual.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txtStockActual.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
 
         label15.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label15.setText("ID Producto");
+        label15.setText("ID Existencias");
 
-        txtIdProducto.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
-        txtIdProducto.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        txtIdExistencias.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtIdExistencias.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+        txtIdExistencias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtIdExistenciasActionPerformed(evt);
+            }
+        });
 
         txtBodegaId.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txtBodegaId.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
@@ -185,7 +206,7 @@ public frmMantenimientoStock() {
         });
 
         label13.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label13.setText("Bodega Id");
+        label13.setText("ID Bodega ");
 
         btnActualizar.setText("Actualizar");
         btnActualizar.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +251,7 @@ public frmMantenimientoStock() {
         label21.setText("Nombre Producto");
 
         label16.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
-        label16.setText("Marca");
+        label16.setText("ID Marca");
 
         txtMarcaPedido.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         txtMarcaPedido.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
@@ -248,6 +269,15 @@ public frmMantenimientoStock() {
             }
         });
 
+        txtIdProducto1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        txtIdProducto1.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 0, 1, 0, new java.awt.Color(204, 204, 204)));
+
+        label18.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        label18.setText("ID Producto");
+
+        label19.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        label19.setText("*Dar doble click a la fila deseada");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -256,117 +286,140 @@ public frmMantenimientoStock() {
                 .addGap(45, 45, 45)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(164, 164, 164)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(label15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtIdProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(label14)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtStockActual, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(label21)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(label13)
+                                .addComponent(label17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtBodegaId, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
+                                .addComponent(txtLineaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(82, 82, 82)))
+                        .addComponent(btnAdyda, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(label16)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtMarcaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btnBuscar))
+                                    .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(label17)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(txtLineaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(20, 20, 20)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGap(122, 122, 122)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtIdProducto1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtIdExistencias, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(label21)
+                                    .addGap(18, 18, 18)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtNombreProducto)
+                                        .addComponent(txtStockActual)))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(label13)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtBodegaId, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(btnActualizar)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAdyda, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(label16)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(txtMarcaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(label15)
+                            .addComponent(label18))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(27, 27, 27))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19))
+                .addContainerGap(27, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(label19)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(200, 200, 200))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 692, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(49, 49, 49)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel3)
+                        .addGap(69, 69, 69))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(61, 61, 61)
-                        .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(label15)
-                    .addComponent(txtIdProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(label21)
-                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRegistrar)
-                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(label14)
-                    .addComponent(txtStockActual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnModificar)
-                    .addComponent(btnActualizar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnEliminar)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtBodegaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label13))
+                        .addComponent(cboxTipoBusqueda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMarcaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(label16, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnBuscar))
+                        .addGap(12, 12, 12)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtLineaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(5, 5, 5)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnAdyda)
-                            .addComponent(btnReportes)))
-                    .addComponent(label17))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btnReportes))
+                        .addGap(27, 27, 27))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtIdExistencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(label15))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(label18)
+                                    .addComponent(txtIdProducto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnRegistrar)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(label21)
+                                    .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(label14)
+                                    .addComponent(txtStockActual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtBodegaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(label13))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtMarcaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(label16, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(txtLineaPedido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(label17)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnActualizar)
+                                    .addComponent(btnModificar))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnEliminar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                        .addComponent(label19)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17))
+                .addGap(47, 47, 47))
         );
 
         pack();
@@ -389,9 +442,6 @@ public frmMantenimientoStock() {
         btnBuscar.setVisible(false);
         */
         String seleccion = cboxTipoBusqueda.getSelectedItem().toString();
-
-        // Dependiendo del tipo de búsqueda se muestran
-        // los controles necesarios para ingresar los datos
         switch (seleccion) {
             case "ID":
             buscarPorIDS();
@@ -433,26 +483,24 @@ public frmMantenimientoStock() {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-     String filtro = txtBuscar.getText().trim();
-    
+    String filtro = txtBuscar.getText().trim();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) tablaStock.getModel());
+    tablaStock.setRowSorter(sorter);
     if (filtro.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Ingrese un valor para buscar", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
+        sorter.setRowFilter(null);
         return;
     }
-    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modeloStock);
-    tablaStock.setRowSorter(sorter);
-
-    String seleccion = cboxTipoBusqueda.getSelectedItem().toString();
+    int seleccion = cboxTipoBusqueda.getSelectedIndex();
     int columnaIndex = 0;
 
-    switch (seleccion) {
-        case "ID Producto": columnaIndex = 0; break;
-        case "Nombre":      columnaIndex = 1; break;
-        case "Marca":       columnaIndex = 4; break;
-        case "Linea":       columnaIndex = 5; break;
-        default: columnaIndex = 0; break;
+    if (seleccion == 0) {
+        columnaIndex = 0;
+        columnaIndex = 1;
+    } else if (seleccion == 2) {
+        columnaIndex = 2;
+    } else {
+        columnaIndex = 0;
     }
-
     try {
         sorter.setRowFilter(RowFilter.regexFilter("(?i)" + filtro, columnaIndex));
         
@@ -462,9 +510,7 @@ public frmMantenimientoStock() {
     } catch (Exception e) {
         System.err.println("Error en filtro: " + e.getMessage());
     }
-        //Registro de la accion en bitacora
-        //     BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        //    bitacoraDAO.insert(idUsuario, Aplcodigo, "CONSULTA");
+        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -478,9 +524,8 @@ public frmMantenimientoStock() {
     ventanaAyuda.setLocationRelativeTo(null);
     
     //Ferdynand Monroy mayo 2026: agregue la ayuda junto al archivo .chm
-        
         try {
-        String ruta = "C:\\Users\\ferit\\Desktop\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
+        String ruta = "C:\\Users\\ferit\\Desktop\\proyFinalP32K26b\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Logistica\\Logistica.chm";
 
         File archivo = new File(ruta);
 
@@ -494,7 +539,7 @@ public frmMantenimientoStock() {
 
     } catch (Exception e) {
         e.printStackTrace();
-    }
+        }
     }//GEN-LAST:event_btnAdydaActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -506,7 +551,7 @@ public frmMantenimientoStock() {
         txtBuscar.setText("");
         cboxTipoBusqueda.setSelectedIndex(0);
 
-        txtIdProducto.setText("");
+        txtIdExistencias.setText("");
         txtNombreProducto.setText("");
         txtStockActual.setText("");
         txtBodegaId.setText("");
@@ -521,71 +566,113 @@ public frmMantenimientoStock() {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
 
-        int filaSeleccionada = tablaStock.getSelectedRow();
+    int filaSeleccionada = tablaStock.getSelectedRow();
+    
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(this, "Debe seleccionar una fila de la tabla para eliminar.");
+        return;
+    }
+    int filaModelo = tablaStock.convertRowIndexToModel(filaSeleccionada);
+    String idEliminarStr = modeloStock.getValueAt(filaModelo, 0).toString();
+    String nombreProducto = modeloStock.getValueAt(filaModelo, 2).toString();
 
-        if (filaSeleccionada != -1) {
-            int filaModelo = tablaStock.convertRowIndexToModel(filaSeleccionada);
-            int respuesta = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro de eliminar este movimiento?",
-                "Confirmación de eliminación",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE);
+    int respuesta = JOptionPane.showConfirmDialog(this, 
+        "¿Está seguro de eliminar el producto: " + nombreProducto + "?\nEsta acción no se puede deshacer.", 
+        "Confirmar Eliminación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
-            if (respuesta == JOptionPane.YES_OPTION) {
-                modeloStock.removeRow(filaModelo);
+    if (respuesta == JOptionPane.YES_OPTION) {
+        try {
+            int idEliminar = Integer.parseInt(idEliminarStr);
+            
+            ExistenciasDAO dao = new ExistenciasDAO();
+            
+            if (dao.eliminar(idEliminar)) {
+                actualizarTabla(); 
+                
                 btnLimpiarActionPerformed(null);
-
                 JOptionPane.showMessageDialog(this, "Registro eliminado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar el registro en la base de datos.");
             }
-        } else {
-            JOptionPane.showMessageDialog(this, "Por favor, seleccione una fila de la tabla para eliminar.");
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error: El ID seleccionado no es un número válido.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar: " + e.getMessage());
         }
+    }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-        String id = txtIdProducto.getText();
-        String tipo = txtNombreProducto.getText();
-        String producto = txtStockActual.getText();
-        String fecha = txtBodegaId.getText();
-       String cantidad = txtBodegaId.getText();
-        String marca = txtMarcaPedido.getText();
-        String linea = txtLineaPedido.getText();
-
-        if (id.isEmpty() || producto.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Complete los campos básicos (ID y Producto)");
+    try {
+        if (txtIdProducto1.getText().isEmpty() || txtNombreProducto.getText().isEmpty() || txtBodegaId.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Por favor complete los campos obligatorios (ID Producto, Nombre y Bodega).");
             return;
         }
 
-        Object[] nuevaFila = {id, tipo, producto, fecha, cantidad, marca, linea};
-        modeloStock.addRow(nuevaFila);
-        JOptionPane.showMessageDialog(this, "Registro agregado exitosamente.");
-        btnLimpiarActionPerformed(null);
+        Controlador.Logistica.clsExistencias nuevaExistencia = new Controlador.Logistica.clsExistencias();
+        
+        nuevaExistencia.setProdid(Integer.parseInt(txtIdProducto1.getText()));
+        nuevaExistencia.setExnombreproducto(txtNombreProducto.getText());
+        nuevaExistencia.setExistock(Integer.parseInt(txtStockActual.getText()));
+        nuevaExistencia.setBodegaid(Integer.parseInt(txtBodegaId.getText()));
+        nuevaExistencia.setExmarca(txtMarcaPedido.getText());
+        nuevaExistencia.setExlinea(txtLineaPedido.getText());
+
+        ExistenciasDAO dao = new ExistenciasDAO();
+        
+        if (dao.insertar(nuevaExistencia)) {
+            actualizarTabla();    
+            JOptionPane.showMessageDialog(this, "Registro guardado exitosamente en la base de datos.");      
+            btnLimpiarActionPerformed(null);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al intentar guardar en la base de datos.");
+        }
+
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this, "Error: Asegúrese de ingresar números válidos en ID, Stock y Bodega.");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-
-        int filaVisual = tablaStock.getSelectedRow();
-
-        if (filaVisual != -1) {
-            int filaModelo = tablaStock.convertRowIndexToModel(filaVisual);
-
-            // Modificamos el MODELO directamente
-            modeloStock.setValueAt(txtIdProducto.getText(), filaModelo, 0);
-            modeloStock.setValueAt(txtNombreProducto.getText(), filaModelo, 1);
-            modeloStock.setValueAt(txtStockActual.getText(), filaModelo, 2);
-          modeloStock.setValueAt(txtBodegaId.getText(), filaModelo, 3);
-            
-            modeloStock.setValueAt(txtMarcaPedido.getText(), filaModelo, 4);
-            modeloStock.setValueAt(txtLineaPedido.getText(), filaModelo, 5);
-
-            JOptionPane.showMessageDialog(this, "Registro actualizado correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un registro de la lista filtrada.");
+try {
+        // Validamos que el ID no esté vacío
+        if (txtIdExistencias.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un registro de la tabla para modificar.");
+            return;
         }
+
+        Controlador.Logistica.clsExistencias modExistencia = new Controlador.Logistica.clsExistencias();
+        
+        
+        modExistencia.setExistenciaid(Integer.parseInt(txtIdExistencias.getText())); 
+        modExistencia.setProdid(Integer.parseInt(txtIdProducto1.getText()));
+        modExistencia.setExnombreproducto(txtNombreProducto.getText());
+        modExistencia.setExistock(Integer.parseInt(txtStockActual.getText()));
+        modExistencia.setBodegaid(Integer.parseInt(txtBodegaId.getText()));
+        modExistencia.setExmarca(txtMarcaPedido.getText());
+        modExistencia.setExlinea(txtLineaPedido.getText());
+
+        ExistenciasDAO dao = new ExistenciasDAO();
+        if (dao.actualizar(modExistencia)) {
+
+            actualizarTabla(); 
+            
+            JOptionPane.showMessageDialog(this, "¡Registro actualizado con éxito!");
+            btnLimpiarActionPerformed(null); 
+            txtIdExistencias.setEditable(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: No se pudo actualizar en la base de datos.");
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error técnico: " + e.getMessage());
+    }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-        txtIdProducto.setText("");
+        txtIdExistencias.setText("");
         txtNombreProducto.setText("");
         txtStockActual.setText("");
        txtBodegaId.setText("");
@@ -606,6 +693,32 @@ public frmMantenimientoStock() {
     private void txtBodegaIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBodegaIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBodegaIdActionPerformed
+
+    private void txtIdExistenciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdExistenciasActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIdExistenciasActionPerformed
+
+    private void tablaStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaStockMouseClicked
+        if (evt.getClickCount() == 2) {
+        
+        int filaVisual = tablaStock.getSelectedRow();
+        
+        if (filaVisual != -1) {
+            int filaModelo = tablaStock.convertRowIndexToModel(filaVisual);
+            
+            txtIdExistencias.setText(modeloStock.getValueAt(filaModelo, 0).toString());
+            txtIdProducto1.setText(modeloStock.getValueAt(filaModelo, 1).toString());
+            txtNombreProducto.setText(modeloStock.getValueAt(filaModelo, 2).toString());
+            txtStockActual.setText(modeloStock.getValueAt(filaModelo, 3).toString());
+            txtBodegaId.setText(modeloStock.getValueAt(filaModelo, 4).toString());
+            txtMarcaPedido.setText(modeloStock.getValueAt(filaModelo, 5).toString());
+            txtLineaPedido.setText(modeloStock.getValueAt(filaModelo, 6).toString());
+ 
+            txtIdExistencias.setEditable(false);
+            txtIdExistencias.setEnabled(false); 
+        }
+    }
+    }//GEN-LAST:event_tablaStockMouseClicked
 private void buscarPorIDS() {
         System.out.println("Buscando por ID en la BD...");
     }
@@ -655,18 +768,30 @@ private void buscarPorLinea() {
     modeloStock.addRow(new Object[]{"P002", "Clavos 2 pulg", "500", "Bolsas"});
 }
     
-    private void tablaStockMouseClicked(java.awt.event.MouseEvent evt) {                                         
- int filaVisual = tablaStock.getSelectedRow();
     
-    if (filaVisual != -1) {
-        int filaModelo = tablaStock.convertRowIndexToModel(filaVisual);
-        txtIdProducto.setText(modeloStock.getValueAt(filaModelo, 0).toString());
-        txtNombreProducto.setText(modeloStock.getValueAt(filaModelo, 1).toString());
-        txtStockActual.setText(modeloStock.getValueAt(filaModelo, 2).toString());
-        txtBodegaId.setText(modeloStock.getValueAt(filaModelo, 3).toString());
-        txtMarcaPedido.setText(modeloStock.getValueAt(filaModelo, 4).toString());
-         txtLineaPedido.setText(modeloStock.getValueAt(filaModelo, 5).toString());
-       
+
+    
+   
+public void actualizarTabla() {
+    // 1. Limpiar la tabla visual para no duplicar datos
+    modeloStock.setRowCount(0);
+
+    // 2. Instanciar el DAO y obtener la lista real de la base de datos
+    ExistenciasDAO dao = new ExistenciasDAO();
+    List<Controlador.Logistica.clsExistencias> listaExistencias = dao.listar();
+
+    // 3. Llenar el modelo de la tabla con los datos reales
+    for (Controlador.Logistica.clsExistencias existencia : listaExistencias) {
+        Object[] fila = {
+            existencia.getExistenciaid(), // Aquí aparecerá el ID real de SQL
+            existencia.getProdid(),
+            existencia.getExnombreproducto(),
+            existencia.getExistock(),
+            existencia.getBodegaid(),
+            existencia.getExmarca(),
+            existencia.getExlinea()
+        };
+        modeloStock.addRow(fila);
     }
 }
 
@@ -688,11 +813,14 @@ private void buscarPorLinea() {
     private javax.swing.JLabel label15;
     private javax.swing.JLabel label16;
     private javax.swing.JLabel label17;
+    private javax.swing.JLabel label18;
+    private javax.swing.JLabel label19;
     private javax.swing.JLabel label21;
     private javax.swing.JTable tablaStock;
     private javax.swing.JTextField txtBodegaId;
     private javax.swing.JTextField txtBuscar;
-    private javax.swing.JTextField txtIdProducto;
+    private javax.swing.JTextField txtIdExistencias;
+    private javax.swing.JTextField txtIdProducto1;
     private javax.swing.JTextField txtLineaPedido;
     private javax.swing.JTextField txtMarcaPedido;
     private javax.swing.JTextField txtNombreProducto;

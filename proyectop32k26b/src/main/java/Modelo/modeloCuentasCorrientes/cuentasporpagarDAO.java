@@ -48,8 +48,8 @@ public class cuentasporpagarDAO {
                 int Acrecodigo       = rs.getInt("Acrecodigo");
                 int Venid            = rs.getInt("Venid");
                 String Cppfechaemision = rs.getString("Cppfechaemision");
-                float Cppmontototal  = rs.getFloat("Cppmontotal");
-                float Cppsaldopendiente = rs.getFloat("Cppsaldopendiente");
+                double Cppmontototal  = rs.getFloat("Cppmontotal");
+                double Cppsaldopendiente = rs.getFloat("Cppsaldopendiente");
                 char Cppestado       = rs.getString("Cppestado").charAt(0);
                 int TTid             = rs.getInt("TTid");
                 int Cpporigenid      = rs.getInt("Cpporigenid");
@@ -90,8 +90,8 @@ public class cuentasporpagarDAO {
             stmt.setInt(1, cxp.getProcodigo());
             stmt.setInt(2, cxp.getAcrecodigo());
             stmt.setInt(3, cxp.getVenid());
-            stmt.setFloat(4, cxp.getCppcmontototal());
-            stmt.setFloat(5, cxp.getCppsaldopendiente());
+            stmt.setDouble(4, cxp.getCppcmontototal());
+            stmt.setDouble(5, cxp.getCppsaldopendiente());
             stmt.setString(6, String.valueOf(cxp.getCppestado()));
             stmt.setInt(7, cxp.getTTid());
             stmt.setInt(8, cxp.getCpporigenid());
@@ -121,8 +121,8 @@ public class cuentasporpagarDAO {
             stmt.setInt(2, cxp.getAcrecodigo());
             stmt.setInt(3, cxp.getVenid());
             stmt.setString(4, cxp.getCppfechaemision());
-            stmt.setFloat(5, cxp.getCppcmontototal());
-            stmt.setFloat(6, cxp.getCppsaldopendiente());
+            stmt.setDouble(5, cxp.getCppcmontototal());
+            stmt.setDouble(6, cxp.getCppsaldopendiente());
             stmt.setString(7, String.valueOf(cxp.getCppestado()));
             stmt.setInt(8, cxp.getTTid());
             stmt.setInt(9, cxp.getCpporigenid());
@@ -378,7 +378,7 @@ public class cuentasporpagarDAO {
     }
 
     // Query por monto total
-    public List<clscuentasporpagar> queryPorMonto(float Cppmontototal) {
+    public List<clscuentasporpagar> queryPorMonto(double Cppmontototal) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -388,7 +388,7 @@ public class cuentasporpagarDAO {
         try {
             conn = Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_QUERY_POR_MONTO);
-            stmt.setFloat(1, Cppmontototal);
+            stmt.setDouble(1, Cppmontototal);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 cxp = new clscuentasporpagar();
@@ -415,7 +415,7 @@ public class cuentasporpagarDAO {
     }
 
     // Query por saldo pendiente
-    public List<clscuentasporpagar> queryPorSaldo(float Cppsaldopendiente) {
+    public List<clscuentasporpagar> queryPorSaldo(double Cppsaldopendiente) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -425,7 +425,7 @@ public class cuentasporpagarDAO {
         try {
             conn = Conexion.getConnection();
             stmt = conn.prepareStatement(SQL_QUERY_POR_SALDO);
-            stmt.setFloat(1, Cppsaldopendiente);
+            stmt.setDouble(1, Cppsaldopendiente);
             rs = stmt.executeQuery();
             while (rs.next()) {
                 cxp = new clscuentasporpagar();

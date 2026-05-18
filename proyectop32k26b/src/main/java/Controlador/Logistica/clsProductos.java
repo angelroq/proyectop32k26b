@@ -12,6 +12,7 @@ import java.math.BigDecimal; //import para prodPrecioVenta
  * @author ferito
  */
 public class clsProductos {
+
     private int prodId;                    
     private String prodNombre;             
     private int prodStockActual;           
@@ -19,13 +20,14 @@ public class clsProductos {
     private BigDecimal prodPrecioVenta;    
     private int lineaId;                   
     private int marcaId; 
+    private BigDecimal Prodcomision;
     
     //constructor vacio
     public clsProductos(){
     }
 
     //constructor con parametros
-    public clsProductos(int prodId, String prodNombre, int prodStockActual, int prodPuntoReorden, BigDecimal prodPrecioVenta, int lineaId, int marcaId) {
+    public clsProductos(int prodId, String prodNombre, int prodStockActual, int prodPuntoReorden, BigDecimal prodPrecioVenta, int lineaId, int marcaId, BigDecimal Prodcomision) {
         this.prodId = prodId;
         this.prodNombre = prodNombre;
         this.prodStockActual = prodStockActual;
@@ -33,6 +35,7 @@ public class clsProductos {
         this.prodPrecioVenta = prodPrecioVenta;
         this.lineaId = lineaId;
         this.marcaId = marcaId;
+        this.Prodcomision = Prodcomision;
     }
 
     //getters y setters
@@ -91,11 +94,19 @@ public class clsProductos {
     public void setMarcaId(int marcaId) {
         this.marcaId = marcaId;
     }
+    
+    public BigDecimal getProdcomision() {
+        return Prodcomision;
+    }
+
+    public void setProdcomision(BigDecimal Prodcomision) {
+        this.Prodcomision = Prodcomision;
+    }
 
     //to string
-    @Override
+     @Override
     public String toString() {
-        return "clsProductos{" + "prodId=" + prodId + ", prodNombre=" + prodNombre + ", prodStockActual=" + prodStockActual + ", prodPuntoReorden=" + prodPuntoReorden + ", prodPrecioVenta=" + prodPrecioVenta + ", lineaId=" + lineaId + ", marcaId=" + marcaId + '}';
+        return "clsProductos{" + "prodId=" + prodId + ", prodNombre=" + prodNombre + ", prodStockActual=" + prodStockActual + ", prodPuntoReorden=" + prodPuntoReorden + ", prodPrecioVenta=" + prodPrecioVenta + ", lineaId=" + lineaId + ", marcaId=" + marcaId + ", Prodcomision=" + Prodcomision + '}';
     }
 
 }

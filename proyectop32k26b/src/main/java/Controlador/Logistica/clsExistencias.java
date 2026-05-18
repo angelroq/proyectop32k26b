@@ -1,8 +1,4 @@
-//Ferdynand Monroy mayo 2026
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+ //Ferdynand Monroy mayo 2026
 package Controlador.Logistica;
 
 /**
@@ -10,24 +6,35 @@ package Controlador.Logistica;
  * @author ferito
  */
 public class clsExistencias {
-    
+
     private int Existenciaid;
     private int Prodid;
+    private String Exnombreproducto;
     private int bodegaid;
     private int Existock;
-    
-    //constructor vacio
-    public clsExistencias(){
+    private String Exmarca;
+    private String Exlinea;
+
+    // Constructor vacío
+    public clsExistencias() {
     }
 
-    //constructor con parametros
-    public clsExistencias(int Existenciaid, int Prodid, int bodegaid, int Existock) {
+    // Constructor lleno
+    public clsExistencias(int Existenciaid, int Prodid, String Exnombreproducto,
+                          int bodegaid, int Existock,
+                          String Exmarca, String Exlinea) {
+
         this.Existenciaid = Existenciaid;
         this.Prodid = Prodid;
+        this.Exnombreproducto = Exnombreproducto;
         this.bodegaid = bodegaid;
         this.Existock = Existock;
+        this.Exmarca = Exmarca;
+        this.Exlinea = Exlinea;
     }
-    //getters y setters
+
+    // GETTERS Y SETTERS
+
     public int getExistenciaid() {
         return Existenciaid;
     }
@@ -42,6 +49,14 @@ public class clsExistencias {
 
     public void setProdid(int Prodid) {
         this.Prodid = Prodid;
+    }
+
+    public String getExnombreproducto() {
+        return Exnombreproducto;
+    }
+
+    public void setExnombreproducto(String Exnombreproducto) {
+        this.Exnombreproducto = Exnombreproducto;
     }
 
     public int getBodegaid() {
@@ -60,9 +75,32 @@ public class clsExistencias {
         this.Existock = Existock;
     }
 
+    public String getExmarca() {
+        return Exmarca;
+    }
+
+    public void setExmarca(String Exmarca) {
+        this.Exmarca = Exmarca;
+    }
+
+    public String getExlinea() {
+        return Exlinea;
+    }
+
+    public void setExlinea(String Exlinea) {
+        this.Exlinea = Exlinea;
+    }
+
     @Override
     public String toString() {
-        return "clsExistencias{" + "Existenciaid=" + Existenciaid + ", Prodid=" + Prodid + ", bodegaid=" + bodegaid + ", Existock=" + Existock + '}';
+        return "clsExistencias{" +
+                "Existenciaid=" + Existenciaid +
+                ", Prodid=" + Prodid +
+                ", Exnombreproducto=" + Exnombreproducto +
+                ", bodegaid=" + bodegaid +
+                ", Existock=" + Existock +
+                ", Exmarca=" + Exmarca +
+                ", Exlinea=" + Exlinea +
+                '}';
     }
-    
 }
