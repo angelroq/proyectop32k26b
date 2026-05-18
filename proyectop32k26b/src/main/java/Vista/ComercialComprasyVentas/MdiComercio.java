@@ -93,7 +93,7 @@ public class MdiComercio extends javax.swing.JFrame {
         mnuSalirSistema = new javax.swing.JCheckBoxMenuItem();
         mnuAyudas = new javax.swing.JMenu();
         ventasmenu = new javax.swing.JMenu();
-        menudelasventas = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnuCompras = new javax.swing.JMenuItem();
         proveedor = new javax.swing.JMenuItem();
@@ -159,13 +159,13 @@ public class MdiComercio extends javax.swing.JFrame {
             }
         });
 
-        menudelasventas.setText("Ventas");
-        menudelasventas.addActionListener(new java.awt.event.ActionListener() {
+        jMenuItem1.setText("Ventas");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menudelasventasActionPerformed(evt);
+                jMenuItem1ActionPerformed(evt);
             }
         });
-        ventasmenu.add(menudelasventas);
+        ventasmenu.add(jMenuItem1);
 
         mnuGeneral.add(ventasmenu);
 
@@ -245,24 +245,6 @@ public class MdiComercio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_mnuArchivoActionPerformed
 
-    private void mnuAyudasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAyudasActionPerformed
-
-        try {
-            if ((new File("src\\main\\java\\ayudas\\ProcesoMayor.chm")).exists()) {
-                Process p = Runtime
-                        .getRuntime()
-                        .exec("rundll32 url.dll,FileProtocolHandler src\\main\\java\\ayudas\\ProcesoMayor.chm");
-                p.waitFor();
-            } else {
-                System.out.println("La ayuda no Fue encontrada");
-            }
-            System.out.println("Correcto");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }                   
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mnuAyudasActionPerformed
-
     private void mnuComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuComprasActionPerformed
         frmCompras ventana = new frmCompras(); 
         ventana.setVisible(true);
@@ -296,25 +278,6 @@ public class MdiComercio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ventasmenuActionPerformed
 
-    private void menudelasventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-                                                    
-    if (jDesktopPane1.getParent() == null) {
-        this.getContentPane().add(jDesktopPane1, java.awt.BorderLayout.CENTER);
-        this.validate();
-    }
-
-    frmVentas ventana = new frmVentas();
-    jDesktopPane1.add(ventana);
-    
-    Dimension desktopSize = jDesktopPane1.getSize();
-    Dimension frameSize = ventana.getSize();
-    ventana.setLocation((desktopSize.width - frameSize.width) / 2, (desktopSize.height - frameSize.height) / 2);
-    
-    ventana.setVisible(true);
-    ventana.toFront();
-
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void proveedoresMantenimientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_proveedoresMantenimientoActionPerformed
         frmMantenimientoProveedores ventana = new frmMantenimientoProveedores(); 
         ventana.setVisible(true);
@@ -343,6 +306,39 @@ public class MdiComercio extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_vendedoresActionPerformed
+
+    private void mnuAyudasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAyudasActionPerformed
+
+        try {
+            if ((new File("src\\main\\java\\ayudas\\ProcesoMayor.chm")).exists()) {
+                Process p = Runtime
+                .getRuntime()
+                .exec("rundll32 url.dll,FileProtocolHandler src\\main\\java\\ayudas\\ProcesoMayor.chm");
+                p.waitFor();
+            } else {
+                System.out.println("La ayuda no Fue encontrada");
+            }
+            System.out.println("Correcto");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuAyudasActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+
+        System.out.println("Ventas");
+        frmVentas ventana = new frmVentas();
+        jDesktopPane1.add(ventana);
+        Dimension desktopSize = jDesktopPane1.getSize();
+        Dimension FrameSize = ventana.getSize();
+        ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+        ventana.setVisible(true);
+       
+        
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -385,7 +381,7 @@ public class MdiComercio extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuItem menudelasventas;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu mnuArchivo;
     private javax.swing.JMenu mnuAyudas;
     private javax.swing.JMenuItem mnuCompras;
