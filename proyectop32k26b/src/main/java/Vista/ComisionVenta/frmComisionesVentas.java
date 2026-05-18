@@ -71,6 +71,8 @@ public class frmComisionesVentas extends javax.swing.JFrame {
 
         ComisionesEscritorio = new javax.swing.JDesktopPane();
         MenuComisionVen = new javax.swing.JMenuBar();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
         PComision = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         CReporte = new javax.swing.JMenu();
@@ -83,6 +85,18 @@ public class frmComisionesVentas extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         ComisionesEscritorio.setLayout(new java.awt.BorderLayout());
+
+        jMenu3.setText("Archivo");
+
+        jMenuItem3.setText("Salir");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem3);
+
+        MenuComisionVen.add(jMenu3);
 
         PComision.setText("Procesos Comisiones");
         PComision.addMenuListener(new javax.swing.event.MenuListener() {
@@ -169,14 +183,14 @@ public class frmComisionesVentas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(175, 175, 175)
                 .addComponent(ComisionesEscritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(225, Short.MAX_VALUE))
+                .addContainerGap(305, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(123, 123, 123)
                 .addComponent(ComisionesEscritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addContainerGap(157, Short.MAX_VALUE))
         );
 
         pack();
@@ -251,6 +265,29 @@ public class frmComisionesVentas extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        int respuesta = JOptionPane.showConfirmDialog(
+                this,
+                "¿Desea cerrar sesión?",
+                "Cerrar sesión",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Sesión de comisines de ventas finalizada correctamente"
+            );
+
+            frmLogin login = new frmLogin();
+
+            login.setVisible(true);
+
+            this.dispose();
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -302,7 +339,9 @@ public class frmComisionesVentas extends javax.swing.JFrame {
     private javax.swing.JMenuItem frmReportes;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     // End of variables declaration//GEN-END:variables
 }
