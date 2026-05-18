@@ -1,15 +1,11 @@
 //Karina Alejandra Arriaza Ortiz 9959-24-14190
+//Documentación
 package Vista.Bancos;
 
 import Controlador.Bancos.clsCatTipoTransaccion;
 import Modelo.Bancos.CatTipoTransaccionDAO;
 import java.io.File;
 import java.sql.Connection;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
 
 public class frmCatTipoTransaccion extends javax.swing.JInternalFrame {
 
@@ -213,214 +209,382 @@ public class frmCatTipoTransaccion extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+// Verifica que el campo ID no esté vacío
 if (txtid.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Seleccione un tipo de transacción de la tabla o ingrese un ID.",
-            "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
 
-    int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
-        "¿Está seguro de que desea eliminar este tipo de transacción?",
-        "Confirmar eliminación", javax.swing.JOptionPane.YES_NO_OPTION);
-    if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+    // Muestra un mensaje de advertencia
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Seleccione un tipo de transacción de la tabla o ingrese un ID.",
+        "Atención",
+        javax.swing.JOptionPane.WARNING_MESSAGE);
 
-    try {
-        int id = Integer.parseInt(txtid.getText().trim());
-        dao.delete(id);
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Tipo de transacción eliminado correctamente.",
-            "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        frmBitacoraBancaria.registrarBitacora(
-    "DELETE",
-    "CatTipoTransaccion",
-    Integer.parseInt(txtid.getText().trim()),
-    "Nombre: " + jTextField1.getText().trim(),
-    null,
-    "Tipo de transacción eliminado"
-);
-        cargarTabla();
-        limpiarCampos();
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "El ID debe ser un número válido.",
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al eliminar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
+    return;
+}
+
+// Solicita confirmación antes de eliminar el registro
+int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+    "¿Está seguro de que desea eliminar este tipo de transacción?",
+    "Confirmar eliminación",
+    javax.swing.JOptionPane.YES_NO_OPTION);
+
+// Si el usuario selecciona "No", se cancela la operación
+if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+
+try {
+
+    // Convierte el ID ingresado a número entero
+    int id = Integer.parseInt(txtid.getText().trim());
+
+    // Elimina el registro de la base de datos
+    dao.delete(id);
+
+    // Muestra un mensaje de éxito
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Tipo de transacción eliminado correctamente.",
+        "Éxito",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    // Registra la eliminación en la bitácora
+    frmBitacoraBancaria.registrarBitacora(
+        "DELETE",
+        "CatTipoTransaccion",
+        Integer.parseInt(txtid.getText().trim()),
+        "Nombre: " + jTextField1.getText().trim(),
+        null,
+        "Tipo de transacción eliminado"
+    );
+
+    // Recarga la tabla con los datos actualizados
+    cargarTabla();
+
+    // Limpia los campos del formulario
+    limpiarCampos();
+
+} catch (NumberFormatException ex) {
+
+    // Muestra un mensaje si el ID no es válido
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "El ID debe ser un número válido.",
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al eliminar: " + e.getMessage(),
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+// Verifica que el campo ID no esté vacío
 if (txtid.getText().trim().isEmpty()) {
+
+    // Muestra un mensaje de advertencia
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Ingrese un ID para buscar.",
+        "Atención",
+        javax.swing.JOptionPane.WARNING_MESSAGE);
+
+    return;
+}
+
+try {
+
+    // Convierte el ID ingresado a número entero
+    int id = Integer.parseInt(txtid.getText().trim());
+
+    // Busca el tipo de transacción en la base de datos
+    clsCatTipoTransaccion tt = dao.query(id);
+
+    // Verifica si se encontró el registro
+    if (tt != null) {
+
+        // Muestra el nombre del tipo de transacción
+        jTextField1.setText(tt.getTTnombretipo());
+
+        // Muestra la descripción del tipo de transacción
+        txtid.setText(tt.getTTdescripcion());
+
+        // Registra la consulta en la bitácora
+        frmBitacoraBancaria.registrarBitacora(
+            "SELECT",
+            "CatTipoTransaccion",
+            Integer.parseInt(txtid.getText().trim()),
+            null,
+            null,
+            "Consulta de tipo de transacción por ID"
+        );
+
+    } else {
+
+        // Muestra un mensaje si no se encontró el registro
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Ingrese un ID para buscar.",
-            "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
+            "No se encontró un tipo de transacción con ID: " + id,
+            "Sin resultados",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // Limpia los campos del formulario
+        limpiarCampos();
     }
 
-    try {
-        int id = Integer.parseInt(txtid.getText().trim());
-        clsCatTipoTransaccion tt = dao.query(id);
+} catch (NumberFormatException ex) {
 
-        if (tt != null) {
-            jTextField1.setText(tt.getTTnombretipo());
-            txtid.setText(tt.getTTdescripcion());
-            frmBitacoraBancaria.registrarBitacora(
-    "SELECT",
-    "CatTipoTransaccion",
-    Integer.parseInt(txtid.getText().trim()),
-    null,
-    null,
-    "Consulta de tipo de transacción por ID"
-);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "No se encontró un tipo de transacción con ID: " + id,
-                "Sin resultados", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            limpiarCampos();
-        }
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "El ID debe ser un número válido.",
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al buscar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
+    // Muestra un mensaje si el ID no es válido
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "El ID debe ser un número válido.",
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error en la búsqueda
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al buscar: " + e.getMessage(),
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+// Declara la conexión a la base de datos
 Connection conn = null;
-    try {
-        conn = Modelo.Conexion.getConnection();
-        
-        // Ruta corregida — faltaba el separador entre getAbsolutePath() y src
-        String ruta = new java.io.File("").getAbsolutePath() 
-                    + "\\src\\main\\java\\Reportes\\Bancos\\CatTT.jrxml";
-        
-        System.out.println("Buscando reporte en: " + ruta); // Para verificar en consola
-        
-        java.io.File archivo = new java.io.File(ruta);
-        if (!archivo.exists()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "No se encontró el archivo del reporte en:\n" + ruta,
-                "Archivo no encontrado", javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        java.util.Map<String, Object> parametros = new java.util.HashMap<>();
-        
-        net.sf.jasperreports.engine.JasperReport reporte =
-            net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
-        
-        net.sf.jasperreports.engine.JasperPrint print =
-            net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
-        
-        net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
-        net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
-        
-        javax.swing.JFrame frame = new javax.swing.JFrame("Reporte de Tipo Transacción");
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        frame.add(viewer);
-        frame.setVisible(true);
-        
-    } catch (Exception e) {
-        e.printStackTrace();
+
+try {
+
+    // Obtiene la conexión con la base de datos
+    conn = Modelo.Conexion.getConnection();
+
+    // Define la ruta donde se encuentra el archivo .jrxml
+    String ruta = new java.io.File("").getAbsolutePath()
+        + "\\src\\main\\java\\Reportes\\Bancos\\CatTT.jrxml";
+
+    // Muestra la ruta en consola para verificarla
+    System.out.println("Buscando reporte en: " + ruta);
+
+    // Verifica si el archivo del reporte existe
+    java.io.File archivo = new java.io.File(ruta);
+
+    if (!archivo.exists()) {
+
+        // Muestra un mensaje si el archivo no se encuentra
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al generar el reporte:\n" + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } finally {
-        if (conn != null) {
-            try { conn.close(); } catch (Exception ex) { ex.printStackTrace(); }
+            "No se encontró el archivo del reporte en:\n" + ruta,
+            "Archivo no encontrado",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+
+        return;
+    }
+
+    // Crea un mapa para enviar parámetros al reporte
+    java.util.Map<String, Object> parametros =
+        new java.util.HashMap<>();
+
+    // Compila el archivo .jrxml
+    net.sf.jasperreports.engine.JasperReport reporte =
+        net.sf.jasperreports.engine.JasperCompileManager
+            .compileReport(ruta);
+
+    // Llena el reporte con los datos de la base de datos
+    net.sf.jasperreports.engine.JasperPrint print =
+        net.sf.jasperreports.engine.JasperFillManager
+            .fillReport(reporte, parametros, conn);
+
+    // Exporta el reporte a un archivo PDF
+    net.sf.jasperreports.engine.JasperExportManager
+        .exportReportToPdfFile(print, "reporte.pdf");
+
+    // Crea un visor para mostrar el reporte
+    net.sf.jasperreports.swing.JRViewer viewer =
+        new net.sf.jasperreports.swing.JRViewer(print);
+
+    // Crea una ventana para visualizar el reporte
+    javax.swing.JFrame frame =
+        new javax.swing.JFrame("Reporte de Tipo Transacción");
+
+    frame.setSize(800, 600);
+    frame.setLocationRelativeTo(null);
+
+    // Define que la ventana solo se cierre a sí misma
+    frame.setDefaultCloseOperation(
+        javax.swing.JFrame.DISPOSE_ON_CLOSE);
+
+    // Agrega el visor del reporte a la ventana
+    frame.add(viewer);
+
+    // Hace visible la ventana
+    frame.setVisible(true);
+
+} catch (Exception e) {
+
+    // Muestra el error en consola
+    e.printStackTrace();
+
+    // Muestra un mensaje de error al usuario
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al generar el reporte:\n" + e.getMessage(),
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} finally {
+
+    // Cierra la conexión a la base de datos
+    if (conn != null) {
+        try {
+            conn.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-    }        // TODO add your handling code here:
+    }
+}        // TODO add your handling code here:
     }//GEN-LAST:event_btnReporteActionPerformed
 
     private void btnAyudaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAyudaActionPerformed
-        try {
-            String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
+// Inicia un bloque try-catch para manejar posibles errores
+try {
 
-            File archivo = new File(ruta);
+    // Define la ruta donde se encuentra el archivo de ayuda
+    String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
 
-            if (archivo.exists()) {
-                Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
-            } else {
-                System.out.println("La ayuda no fue encontrada");
-            }
+    // Crea un objeto File para verificar el archivo
+    File archivo = new File(ruta);
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }        // TODO add your handling code here:
+    // Verifica si el archivo existe
+    if (archivo.exists()) {
+
+        // Ejecuta el archivo de ayuda usando hh.exe
+        Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
+
+    } else {
+
+        // Muestra un mensaje en consola si no se encuentra la ayuda
+        System.out.println("La ayuda no fue encontrada");
+    }
+
+} catch (Exception ex) {
+
+    // Muestra el error en consola si ocurre una excepción
+    ex.printStackTrace();
+}       // TODO add your handling code here:
     }//GEN-LAST:event_btnAyudaActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+// Verifica que todos los campos estén completos
 if (!camposCompletos()) return;
 
-    try {
-        clsCatTipoTransaccion tt = getTipoTransaccionDeFormulario();
-        dao.insert(tt);
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Tipo de transacción registrado correctamente.",
-            "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        frmBitacoraBancaria.registrarBitacora(
-    "INSERT",
-    "CatTipoTransaccion",
-    null,
-    null,
-    "Nombre: " + jTextField1.getText().trim() +
-    " | Descripción: " + jTextField3.getText().trim(),
-    "Tipo de transacción registrado"
-);
-        cargarTabla();
-        limpiarCampos();
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al agregar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
+try {
+
+    // Obtiene los datos ingresados en el formulario
+    clsCatTipoTransaccion tt =
+        getTipoTransaccionDeFormulario();
+
+    // Inserta el nuevo tipo de transacción en la base de datos
+    dao.insert(tt);
+
+    // Muestra un mensaje de éxito
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Tipo de transacción registrado correctamente.",
+        "Éxito",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    // Registra la inserción en la bitácora
+    frmBitacoraBancaria.registrarBitacora(
+        "INSERT",
+        "CatTipoTransaccion",
+        null,
+        null,
+        "Nombre: " + jTextField1.getText().trim() +
+        " | Descripción: " +
+        jTextField3.getText().trim(),
+        "Tipo de transacción registrado"
+    );
+
+    // Recarga la tabla con los nuevos datos
+    cargarTabla();
+
+    // Limpia los campos del formulario
+    limpiarCampos();
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al agregar: " + e.getMessage(),
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
-    if (txtid.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Seleccione un tipo de transacción de la tabla para actualizar.",
-            "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (!camposCompletos()) return;
+    // Verifica que se haya seleccionado un registro para actualizar
+if (txtid.getText().trim().isEmpty()) {
 
-    try {
-        clsCatTipoTransaccion tt = getTipoTransaccionDeFormulario();
-        tt.setTTid(Integer.parseInt(txtid.getText().trim()));
-        dao.update(tt);
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Tipo de transacción actualizado correctamente.",
-            "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        frmBitacoraBancaria.registrarBitacora(
-    "UPDATE",
-    "CatTipoTransaccion",
-    Integer.parseInt(txtid.getText().trim()),
-    null,
-    "Nombre: " + jTextField1.getText().trim() +
-    " | Descripción: " + jTextField3.getText().trim(),
-    "Tipo de transacción actualizado"
-);
-        cargarTabla();
-        limpiarCampos();
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "El ID debe ser un número válido.",
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al actualizar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
+    // Muestra un mensaje de advertencia
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Seleccione un tipo de transacción de la tabla para actualizar.",
+        "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
+
+    return;
+}
+
+// Verifica que todos los campos estén completos
+if (!camposCompletos()) return;
+
+try {
+
+    // Obtiene los datos ingresados en el formulario
+    clsCatTipoTransaccion tt =
+        getTipoTransaccionDeFormulario();
+
+    // Asigna el ID del registro que se actualizará
+    tt.setTTid(
+        Integer.parseInt(txtid.getText().trim()));
+
+    // Actualiza el registro en la base de datos
+    dao.update(tt);
+
+    // Muestra un mensaje de éxito
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Tipo de transacción actualizado correctamente.",
+        "Éxito",
+        javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    // Registra la actualización en la bitácora
+    frmBitacoraBancaria.registrarBitacora(
+        "UPDATE",
+        "CatTipoTransaccion",
+        Integer.parseInt(txtid.getText().trim()),
+        null,
+        "Nombre: " + jTextField1.getText().trim() +
+        " | Descripción: " +
+        jTextField3.getText().trim(),
+        "Tipo de transacción actualizado"
+    );
+
+    // Recarga la tabla con los datos actualizados
+    cargarTabla();
+
+    // Limpia los campos del formulario
+    limpiarCampos();
+
+} catch (NumberFormatException ex) {
+
+    // Muestra un mensaje si el ID no es válido
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "El ID debe ser un número válido.",
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al actualizar: " + e.getMessage(),
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnActualizarActionPerformed
 // ── Llena la tabla con todos los tipos de transacción ────────────────────
 private void cargarTabla() {

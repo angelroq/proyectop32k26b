@@ -1,16 +1,11 @@
 //Karina Alejandra Arriaza Ortiz 9959-24-14190
+//Documentación
 package Vista.Bancos;
 
 import Controlador.Bancos.clsCatEstadoConciliacion;
 import Modelo.Bancos.CatEstadoConciliacionDAO;
 import java.io.File;
 import java.sql.Connection;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;
-
 
 public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
 
@@ -200,208 +195,367 @@ public class frmCatEstadoConciliacion extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+// Verifica que el campo ID no esté vacío
 if (txtid.getText().trim().isEmpty()) {
+
+    // Muestra un mensaje de advertencia
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Ingrese un ID para buscar.",
+        "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
+
+    return;
+}
+
+try {
+
+    // Convierte el ID ingresado a número entero
+    int id = Integer.parseInt(txtid.getText().trim());
+
+    // Busca el estado de conciliación en la base de datos
+    clsCatEstadoConciliacion cates = dao.query(id);
+
+    // Verifica si se encontró el registro
+    if (cates != null) {
+
+        // Muestra el nombre del estado en el campo de texto
+        jTextField1.setText(
+            cates.getCatesnombreestado());
+
+        // Registra la consulta en la bitácora
+        frmBitacoraBancaria.registrarBitacora(
+            "SELECT",
+            "CatEstadoConciliacion",
+            Integer.parseInt(txtid.getText().trim()),
+            null,
+            null,
+            "Consulta de estado de conciliación por ID"
+        );
+
+    } else {
+
+        // Muestra un mensaje si no se encontró el registro
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Ingrese un ID para buscar.",
-            "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
+            "No se encontró un estado de conciliación con ID: " + id,
+            "Sin resultados",
+            javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+        // Limpia los campos del formulario
+        limpiarCampos();
     }
-    try {
-        int id = Integer.parseInt(txtid.getText().trim());
-        clsCatEstadoConciliacion cates = dao.query(id);
-        if (cates != null) {
-            jTextField1.setText(cates.getCatesnombreestado());
-            frmBitacoraBancaria.registrarBitacora(
-    "SELECT",
-    "CatEstadoConciliacion",
-    Integer.parseInt(txtid.getText().trim()),
-    null,
-    null,
-    "Consulta de estado de conciliación por ID"
-);
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "No se encontró un estado de conciliación con ID: " + id,
-                "Sin resultados", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-            limpiarCampos();
-        }
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "El ID debe ser un número válido.",
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al buscar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
+
+} catch (NumberFormatException ex) {
+
+    // Muestra un mensaje si el ID no es válido
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "El ID debe ser un número válido.",
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error en la búsqueda
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al buscar: " + e.getMessage(),
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+}
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteActionPerformed
+// Declara la conexión a la base de datos
 Connection conn = null;
-    try {
-        conn = Modelo.Conexion.getConnection();
-        
-        // Ruta corregida — faltaba el separador entre getAbsolutePath() y src
-        String ruta = new java.io.File("").getAbsolutePath() 
-                    + "\\src\\main\\java\\Reportes\\Bancos\\CatEC.jrxml";
-        
-        System.out.println("Buscando reporte en: " + ruta); // Para verificar en consola
-        
-        java.io.File archivo = new java.io.File(ruta);
-        if (!archivo.exists()) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                "No se encontró el archivo del reporte en:\n" + ruta,
-                "Archivo no encontrado", javax.swing.JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        
-        java.util.Map<String, Object> parametros = new java.util.HashMap<>();
-        
-        net.sf.jasperreports.engine.JasperReport reporte =
-            net.sf.jasperreports.engine.JasperCompileManager.compileReport(ruta);
-        
-        net.sf.jasperreports.engine.JasperPrint print =
-            net.sf.jasperreports.engine.JasperFillManager.fillReport(reporte, parametros, conn);
-        
-        net.sf.jasperreports.engine.JasperExportManager.exportReportToPdfFile(print,"reporte.pdf");
-        net.sf.jasperreports.swing.JRViewer viewer = new net.sf.jasperreports.swing.JRViewer(print);
-        
-        javax.swing.JFrame frame = new javax.swing.JFrame("Reporte de Estado Conciliacion");
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(javax.swing.JFrame.DISPOSE_ON_CLOSE);
-        frame.add(viewer);
-        frame.setVisible(true);
-        
-    } catch (Exception e) {
-        e.printStackTrace();
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al generar el reporte:\n" + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } finally {
-        if (conn != null) {
-            try { conn.close(); } catch (Exception ex) { ex.printStackTrace(); }
-        }
-    }
-    }//GEN-LAST:event_btnReporteActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-if (txtid.getText().trim().isEmpty()) {
+try {
+
+    // Obtiene la conexión con la base de datos
+    conn = Modelo.Conexion.getConnection();
+
+    // Define la ruta donde se encuentra el archivo .jrxml
+    String ruta = new java.io.File("").getAbsolutePath()
+        + "\\src\\main\\java\\Reportes\\Bancos\\CatEC.jrxml";
+
+    // Muestra la ruta en consola para verificarla
+    System.out.println("Buscando reporte en: " + ruta);
+
+    // Verifica si el archivo del reporte existe
+    java.io.File archivo = new java.io.File(ruta);
+
+    if (!archivo.exists()) {
+
+        // Muestra un mensaje si el archivo no se encuentra
         javax.swing.JOptionPane.showMessageDialog(this,
-            "Seleccione un estado de conciliación de la tabla o ingrese un ID.",
-            "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
+            "No se encontró el archivo del reporte en:\n" + ruta,
+            "Archivo no encontrado",
+            javax.swing.JOptionPane.ERROR_MESSAGE);
+
         return;
     }
-    int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
-        "¿Está seguro de que desea eliminar este estado de conciliación?",
-        "Confirmar eliminación", javax.swing.JOptionPane.YES_NO_OPTION);
-    if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
 
-    try {
-        int id = Integer.parseInt(txtid.getText().trim());
-        dao.delete(id);
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Estado de conciliación eliminado correctamente.",
-            "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        frmBitacoraBancaria.registrarBitacora(
-    "DELETE",
-    "CatEstadoConciliacion",
-    Integer.parseInt(txtid.getText().trim()),
-    "Nombre Estado: " + jTextField1.getText().trim(),
-    null,
-    "Estado de conciliación eliminado"
-);
-        cargarTabla();
-        limpiarCampos();
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "El ID debe ser un número válido.",
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al eliminar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    // Crea un mapa para enviar parámetros al reporte
+    java.util.Map<String, Object> parametros =
+        new java.util.HashMap<>();
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-if (!camposCompletos()) return;
+    // Compila el archivo .jrxml
+    net.sf.jasperreports.engine.JasperReport reporte =
+        net.sf.jasperreports.engine.JasperCompileManager
+            .compileReport(ruta);
 
-    try {
-        clsCatEstadoConciliacion cates = getEstadoConciliacionDeFormulario();
-        dao.insert(cates);
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Estado de conciliación registrado correctamente.",
-            "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        frmBitacoraBancaria.registrarBitacora(
-    "INSERT",
-    "CatEstadoConciliacion",
-    null,
-    null,
-    "Nombre Estado: " + jTextField1.getText().trim(),
-    "Estado de conciliación registrado"
-);
-        cargarTabla();
-        limpiarCampos();
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al agregar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgregarActionPerformed
+    // Llena el reporte con los datos de la base de datos
+    net.sf.jasperreports.engine.JasperPrint print =
+        net.sf.jasperreports.engine.JasperFillManager
+            .fillReport(reporte, parametros, conn);
 
-    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
- if (txtid.getText().trim().isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Seleccione un estado de conciliación de la tabla para actualizar.",
-            "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    if (!camposCompletos()) return;
+    // Exporta el reporte a un archivo PDF
+    net.sf.jasperreports.engine.JasperExportManager
+        .exportReportToPdfFile(print, "reporte.pdf");
 
-    try {
-        clsCatEstadoConciliacion cates = getEstadoConciliacionDeFormulario();
-        cates.setCatesid(Integer.parseInt(txtid.getText().trim()));
-        dao.update(cates);
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Estado de conciliación actualizado correctamente.",
-            "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-        frmBitacoraBancaria.registrarBitacora(
-    "UPDATE",
-    "CatEstadoConciliacion",
-    Integer.parseInt(txtid.getText().trim()),
-    null,
-    "Nombre Estado: " + jTextField1.getText().trim(),
-    "Estado de conciliación actualizado"
-);
-        cargarTabla();
-        limpiarCampos();
-    } catch (NumberFormatException ex) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "El ID debe ser un número válido.",
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    } catch (Exception e) {
-        javax.swing.JOptionPane.showMessageDialog(this,
-            "Error al actualizar: " + e.getMessage(),
-            "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_btnActualizarActionPerformed
+    // Crea un visor para mostrar el reporte
+    net.sf.jasperreports.swing.JRViewer viewer =
+        new net.sf.jasperreports.swing.JRViewer(print);
 
-    private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
+    // Crea una ventana para visualizar el reporte
+    javax.swing.JFrame frame =
+        new javax.swing.JFrame("Reporte de Estado Conciliacion");
+
+    frame.setSize(800, 600);
+    frame.setLocationRelativeTo(null);
+
+    // Define que la ventana solo se cierre a sí misma
+    frame.setDefaultCloseOperation(
+        javax.swing.JFrame.DISPOSE_ON_CLOSE);
+
+    // Agrega el visor del reporte a la ventana
+    frame.add(viewer);
+
+    // Hace visible la ventana
+    frame.setVisible(true);
+
+} catch (Exception e) {
+
+    // Muestra el error en consola
+    e.printStackTrace();
+
+    // Muestra un mensaje de error al usuario
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al generar el reporte:\n" + e.getMessage(),
+        "Error",
+        javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} finally {
+
+    // Cierra la conexión a la base de datos
+    if (conn != null) {
         try {
-            String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
-
-            File archivo = new File(ruta);
-
-            if (archivo.exists()) {
-                Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
-            } else {
-                System.out.println("La ayuda no fue encontrada");
-            }
-
+            conn.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+}
+    }//GEN-LAST:event_btnReporteActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+// Verifica que el campo ID no esté vacío
+if (txtid.getText().trim().isEmpty()) {
+
+    // Muestra un mensaje de advertencia
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Seleccione un estado de conciliación de la tabla o ingrese un ID.",
+        "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
+    return;
+}
+
+// Solicita confirmación antes de eliminar el registro
+int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+    "¿Está seguro de que desea eliminar este estado de conciliación?",
+    "Confirmar eliminación",
+    javax.swing.JOptionPane.YES_NO_OPTION);
+
+// Si el usuario selecciona "No", se cancela la operación
+if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
+
+try {
+
+    // Convierte el ID ingresado a número entero
+    int id = Integer.parseInt(txtid.getText().trim());
+
+    // Elimina el registro de la base de datos
+    dao.delete(id);
+
+    // Muestra un mensaje de éxito
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Estado de conciliación eliminado correctamente.",
+        "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    // Registra la eliminación en la bitácora
+    frmBitacoraBancaria.registrarBitacora(
+        "DELETE",
+        "CatEstadoConciliacion",
+        Integer.parseInt(txtid.getText().trim()),
+        "Nombre Estado: " +
+        jTextField1.getText().trim(),
+        null,
+        "Estado de conciliación eliminado"
+    );
+
+    // Recarga la tabla con los datos actualizados
+    cargarTabla();
+
+    // Limpia los campos del formulario
+    limpiarCampos();
+
+} catch (NumberFormatException ex) {
+
+    // Muestra un mensaje si el ID no es válido
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "El ID debe ser un número válido.",
+        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al eliminar: " + e.getMessage(),
+        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+}
+    }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+// Verifica que todos los campos estén completos
+if (!camposCompletos()) return;
+
+try {
+
+    // Obtiene los datos ingresados en el formulario
+    clsCatEstadoConciliacion cates =
+        getEstadoConciliacionDeFormulario();
+
+    // Inserta el nuevo estado de conciliación en la base de datos
+    dao.insert(cates);
+
+    // Muestra un mensaje de éxito
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Estado de conciliación registrado correctamente.",
+        "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    // Registra la inserción en la bitácora
+    frmBitacoraBancaria.registrarBitacora(
+        "INSERT",
+        "CatEstadoConciliacion",
+        null,
+        null,
+        "Nombre Estado: " +
+        jTextField1.getText().trim(),
+        "Estado de conciliación registrado"
+    );
+
+    // Recarga la tabla con los nuevos datos
+    cargarTabla();
+
+    // Limpia los campos del formulario
+    limpiarCampos();
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al agregar: " + e.getMessage(),
+        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+}        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+// Verifica que se haya seleccionado un registro para actualizar
+if (txtid.getText().trim().isEmpty()) {
+
+    // Muestra un mensaje de advertencia
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Seleccione un estado de conciliación de la tabla para actualizar.",
+        "Atención", javax.swing.JOptionPane.WARNING_MESSAGE);
+    return;
+}
+
+// Verifica que todos los campos estén completos
+if (!camposCompletos()) return;
+
+try {
+
+    // Obtiene los datos ingresados en el formulario
+    clsCatEstadoConciliacion cates =
+        getEstadoConciliacionDeFormulario();
+
+    // Asigna el ID del registro que se actualizará
+    cates.setCatesid(
+        Integer.parseInt(txtid.getText().trim()));
+
+    // Actualiza el registro en la base de datos
+    dao.update(cates);
+
+    // Muestra un mensaje de éxito
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Estado de conciliación actualizado correctamente.",
+        "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+
+    // Registra la actualización en la bitácora
+    frmBitacoraBancaria.registrarBitacora(
+        "UPDATE",
+        "CatEstadoConciliacion",
+        Integer.parseInt(txtid.getText().trim()),
+        null,
+        "Nombre Estado: " +
+        jTextField1.getText().trim(),
+        "Estado de conciliación actualizado"
+    );
+
+    // Recarga la tabla con los datos actualizados
+    cargarTabla();
+
+    // Limpia los campos del formulario
+    limpiarCampos();
+
+} catch (NumberFormatException ex) {
+
+    // Muestra un mensaje si el ID no es válido
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "El ID debe ser un número válido.",
+        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+
+} catch (Exception e) {
+
+    // Muestra un mensaje si ocurre un error
+    javax.swing.JOptionPane.showMessageDialog(this,
+        "Error al actualizar: " + e.getMessage(),
+        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+}
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnBuscar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscar1ActionPerformed
+// Inicia un bloque try-catch para manejar posibles errores
+try {
+
+    // Define la ruta donde se encuentra el archivo de ayuda
+    String ruta = "src\\main\\java\\Ayudas\\Bancos\\Ayuda Bancos.chm";
+
+    // Crea un objeto File para verificar el archivo
+    File archivo = new File(ruta);
+
+    // Verifica si el archivo existe
+    if (archivo.exists()) {
+
+        // Ejecuta el archivo de ayuda usando hh.exe
+        Runtime.getRuntime().exec("hh.exe \"" + ruta + "\"");
+
+    } else {
+
+        // Muestra un mensaje en consola si no se encuentra la ayuda
+        System.out.println("La ayuda no fue encontrada");
+    }
+
+} catch (Exception ex) {
+
+    // Muestra el error en consola si ocurre una excepción
+    ex.printStackTrace();
+}
     }//GEN-LAST:event_btnBuscar1ActionPerformed
 // ── Llena la tabla con todos los estados de conciliación ────────────────────
 private void cargarTabla() {
