@@ -493,11 +493,11 @@ if (!puedeEliminar()) {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
 
         try {
-    if ((new File("\"C:\\Users\\50240\\Documents\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Compras\\AyudaComprasHelp.chm\"")).exists()) {
+    if ((new File("AyudaComprasHelp.chm")).exists()) {
    
         Process p = Runtime
             .getRuntime()
-            .exec("rundll32 url.dll,FileProtocolHandler \"C:\\Users\\50240\\Documents\\proyectop32k26b\\proyectop32k26b\\src\\main\\java\\Ayudas\\Compras\\AyudaComprasHelp.chm\"");
+            .exec("AyudaComprasHelp.chm");
         p.waitFor();
         
     } else {
