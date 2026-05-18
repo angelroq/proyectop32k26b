@@ -81,6 +81,8 @@ public class frmComisionesVentas extends javax.swing.JFrame {
         BitacoraCV = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        Reporte = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -174,6 +176,18 @@ public class frmComisionesVentas extends javax.swing.JFrame {
 
         MenuComisionVen.add(jMenu2);
 
+        jMenu3.setText("Reportes");
+
+        Reporte.setText("Reportes");
+        Reporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReporteActionPerformed(evt);
+            }
+        });
+        jMenu3.add(Reporte);
+
+        MenuComisionVen.add(jMenu3);
+
         setJMenuBar(MenuComisionVen);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,6 +197,7 @@ public class frmComisionesVentas extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(175, 175, 175)
                 .addComponent(ComisionesEscritorio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(328, Short.MAX_VALUE))
                 .addContainerGap(305, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -265,6 +280,18 @@ public class frmComisionesVentas extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void ReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReporteActionPerformed
+        System.out.println("entre a reportes");
+        // Se corrige el tipo y el constructor a minúsculas idénticas al archivo
+        frmreportescomisiones ventana = new frmreportescomisiones();
+        ComisionesEscritorio.add(ventana);
+
+        Dimension desktopSize = ComisionesEscritorio.getSize();
+        Dimension FrameSize = ventana.getSize();
+
+        ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_ReporteActionPerformed
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         int respuesta = JOptionPane.showConfirmDialog(
                 this,
@@ -336,6 +363,7 @@ public class frmComisionesVentas extends javax.swing.JFrame {
     private javax.swing.JDesktopPane ComisionesEscritorio;
     private javax.swing.JMenuBar MenuComisionVen;
     private javax.swing.JMenu PComision;
+    private javax.swing.JMenuItem Reporte;
     private javax.swing.JMenuItem frmReportes;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
