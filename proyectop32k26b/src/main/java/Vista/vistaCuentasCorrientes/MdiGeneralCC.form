@@ -66,10 +66,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuMantenimientoAcreActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem9">
+            <MenuItem class="javax.swing.JMenuItem" name="mnuMantenimientoFacAcre">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registro factura Acreedor"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuMantenimientoFacAcreActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

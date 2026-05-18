@@ -11,6 +11,7 @@ import Modelo.PermisosDAO;
 
 package Vista.vistaCuentasCorrientes;
 
+import Vista.vistaCuentasCorrientes.FrmFacturaCompraAcreedor;
 import Controlador.clsUsuarioConectado;
 import Modelo.PermisosDAO;
 import Vista.frmMantenimientoBitacora;
@@ -75,7 +76,7 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         mnuSalirSistema = new javax.swing.JCheckBoxMenuItem();
         mnuAcreedores = new javax.swing.JMenu();
         mnuMantenimientoAcre = new javax.swing.JMenuItem();
-        jMenuItem9 = new javax.swing.JMenuItem();
+        mnuMantenimientoFacAcre = new javax.swing.JMenuItem();
         mnuGestionCobros = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -140,8 +141,13 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         });
         mnuAcreedores.add(mnuMantenimientoAcre);
 
-        jMenuItem9.setText("Registro factura Acreedor");
-        mnuAcreedores.add(jMenuItem9);
+        mnuMantenimientoFacAcre.setText("Registro factura Acreedor");
+        mnuMantenimientoFacAcre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuMantenimientoFacAcreActionPerformed(evt);
+            }
+        });
+        mnuAcreedores.add(mnuMantenimientoFacAcre);
 
         mnuGeneral.add(mnuAcreedores);
 
@@ -320,6 +326,17 @@ public class MdiGeneralCC extends javax.swing.JFrame {
         ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height) / 2);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void mnuMantenimientoFacAcreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMantenimientoFacAcreActionPerformed
+        // TODO add your handling code here:
+        System.out.println("entre a Registro factura Acreedor");
+        FrmFacturaCompraAcreedor ventana = new FrmFacturaCompraAcreedor();
+        jDesktopPane1.add(ventana);
+        Dimension desktopSize = jDesktopPane1.getSize();
+        Dimension FrameSize = ventana.getSize();
+        ventana.setLocation((desktopSize.width - FrameSize.width) / 2, (desktopSize.height - FrameSize.height)/ 2);
+        ventana.setVisible(true);  
+    }//GEN-LAST:event_mnuMantenimientoFacAcreActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -384,7 +401,6 @@ public class MdiGeneralCC extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JMenu mnuAcreedores;
     private javax.swing.JMenu mnuArchivo;
     private javax.swing.JMenu mnuAyudas;
@@ -393,6 +409,7 @@ public class MdiGeneralCC extends javax.swing.JFrame {
     private javax.swing.JMenu mnuGestionCobros;
     private javax.swing.JMenu mnuGestionPagos;
     private javax.swing.JMenuItem mnuMantenimientoAcre;
+    private javax.swing.JMenuItem mnuMantenimientoFacAcre;
     private javax.swing.JCheckBoxMenuItem mnuSalirSistema;
     // End of variables declaration//GEN-END:variables
 }
