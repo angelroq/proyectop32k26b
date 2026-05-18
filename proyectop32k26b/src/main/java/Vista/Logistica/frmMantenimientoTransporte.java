@@ -7,7 +7,7 @@
 //Marco. Hernandez 9959-24-6291 24-04-2026  1. Creacion frmMantenimientoTransporte, implementaciones basicas
                               //09-05-2026  2. Implementacion de funcionalidad de botones
                               //13-05-2023  4. Implementacion CRUD
-                              //14-05-2026  5. Implementacion con bitacora 
+                              //14-05-2026  5. Implementacion con metodo de bitacora 
                               //15-05-2026  6. Mantenimiento general
 
 package Vista.Logistica;
@@ -17,6 +17,7 @@ import Modelo.PermisosDAO;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 import Controlador.Logistica.clsTransportistas;
+import Modelo.BitacoraDAO;
 import Modelo.Logistica.TransportistasDAO;
 import java.io.File;
 import javax.swing.JOptionPane;
@@ -129,7 +130,7 @@ private DefaultTableModel modeloTransportes;
         jLabel3.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         jLabel3.setText("Transportistas");
         getContentPane().add(jLabel3);
-        jLabel3.setBounds(264, 23, 160, 25);
+        jLabel3.setBounds(310, 20, 160, 25);
 
         cboxTipoBusqueda.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         cboxTipoBusqueda.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Trasnsporte", "ID Empleado", "Tipo de Vehiculo" }));
@@ -139,7 +140,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(cboxTipoBusqueda);
-        cboxTipoBusqueda.setBounds(10, 30, 143, 30);
+        cboxTipoBusqueda.setBounds(10, 30, 139, 26);
 
         txtBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtBuscar.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +149,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(txtBuscar);
-        txtBuscar.setBounds(10, 70, 110, 30);
+        txtBuscar.setBounds(10, 70, 110, 26);
 
         btnBuscar.setBackground(new java.awt.Color(255, 227, 250));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -159,7 +160,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnBuscar);
-        btnBuscar.setBounds(130, 70, 76, 31);
+        btnBuscar.setBounds(130, 70, 72, 27);
 
         label15.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         label15.setText("Tipo Vehiculo");
@@ -197,7 +198,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnAyuda);
-        btnAyuda.setBounds(600, 220, 76, 27);
+        btnAyuda.setBounds(600, 220, 72, 23);
 
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -206,7 +207,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnEliminar);
-        btnEliminar.setBounds(340, 200, 90, 27);
+        btnEliminar.setBounds(340, 200, 90, 23);
 
         btnRegistrar.setText("Registrar");
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
@@ -215,7 +216,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnRegistrar);
-        btnRegistrar.setBounds(340, 140, 90, 27);
+        btnRegistrar.setBounds(340, 140, 90, 23);
 
         btnModificar.setText("Modificar");
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
@@ -224,7 +225,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnModificar);
-        btnModificar.setBounds(340, 170, 90, 27);
+        btnModificar.setBounds(340, 170, 90, 23);
 
         btnReportes.setText("Reportes");
         btnReportes.addActionListener(new java.awt.event.ActionListener() {
@@ -233,7 +234,7 @@ private DefaultTableModel modeloTransportes;
             }
         });
         getContentPane().add(btnReportes);
-        btnReportes.setBounds(520, 220, 80, 27);
+        btnReportes.setBounds(520, 220, 76, 23);
 
         label16.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
         label16.setText("ID Transporte");
@@ -317,40 +318,94 @@ private DefaultTableModel modeloTransportes;
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-     String filtro = txtBuscar.getText().trim();
-    
-    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>((DefaultTableModel) tablaTransporte.getModel());
-    tablaTransporte.setRowSorter(sorter);
+String filtro = txtBuscar.getText().trim();
 
-    if (filtro.length() == 0) {
-        sorter.setRowFilter(null);
+TableRowSorter<DefaultTableModel> sorter =
+        new TableRowSorter<>(
+                (DefaultTableModel) tablaTransporte.getModel()
+        );
+
+tablaTransporte.setRowSorter(sorter);
+
+if (filtro.length() == 0) {
+
+    sorter.setRowFilter(null);
+
+} else {
+
+    int seleccion = cboxTipoBusqueda.getSelectedIndex();
+    int indiceColumna = 0;
+
+    if (seleccion == 0) {
+
+        indiceColumna = 0;
+
+    } else if (seleccion == 1) {
+
+        indiceColumna = 1;
+
+    } else if (seleccion == 2) {
+
+        indiceColumna = 2;
+
     } else {
 
-        int seleccion = cboxTipoBusqueda.getSelectedIndex();
-        int indiceColumna = 0;
-        
-        if (seleccion == 0) {     
-            indiceColumna = 0;
-        } else if (seleccion == 1) { 
-            indiceColumna = 1;
-        } else if (seleccion == 2) { 
-            indiceColumna = 2;
-        } else {
-            indiceColumna = 0;
+        indiceColumna = 0;
+    }
+
+    try {
+
+        sorter.setRowFilter(
+                RowFilter.regexFilter(
+                        "(?i)" + filtro,
+                        indiceColumna
+                )
+        );
+
+        if (tablaTransporte.getRowCount() == 0) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "No se encontraron resultados."
+            );
         }
 
+        // ================= BITACORA =================
+
         try {
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + filtro, indiceColumna));
-            if (tablaTransporte.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(this, "No se encontraron resultados.");
-            }
-        } catch (Exception e) {
-            System.err.println("Error en el filtro: " + e.getMessage());
+
+            int idUsuario =
+                    clsUsuarioConectado.getUsuId();
+
+            int aplCodigo = 2000;
+
+            BitacoraDAO bitacoraDAO =
+                    new BitacoraDAO();
+
+            bitacoraDAO.insert(
+                    idUsuario,
+                    aplCodigo,
+                    "Consulta transportista ID " + filtro
+            );
+
+        } catch (Exception ex) {
+
+            System.out.println(
+                    "Error bitácora consulta: "
+                    + ex.getMessage()
+            );
         }
+
+        // ============================================
+
+    } catch (Exception e) {
+
+        System.err.println(
+                "Error en el filtro: "
+                + e.getMessage()
+        );
     }
-        //Registro de la accion en bitacora
-        //     BitacoraDAO bitacoraDAO = new BitacoraDAO();
-        //    bitacoraDAO.insert(idUsuario, Aplcodigo, "CONSULTA");
+}
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
@@ -440,71 +495,115 @@ int filaVisual = tablaTransporte.getSelectedRow();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+if (txtIdEmpleado.getText().trim().isEmpty() || 
+    txtTipoVehiculo.getText().trim().isEmpty()) {
 
-    if (txtIdEmpleado.getText().trim().isEmpty() || txtTipoVehiculo.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Complete los campos obligatorios (ID Empleado y Tipo Vehículo).");
-        return;
+    JOptionPane.showMessageDialog(this,
+        "Complete los campos obligatorios (ID Empleado y Tipo Vehículo).");
+    return;
+}
+
+try {
+
+    Controlador.Logistica.clsTransportistas transportista =
+            new Controlador.Logistica.clsTransportistas();
+
+    transportista.setEmpcodigo(
+            Integer.parseInt(txtIdEmpleado.getText().trim()));
+
+    transportista.setTrantipovehiculo(
+            txtTipoVehiculo.getText().trim());
+
+    Modelo.Logistica.TransportistasDAO dao =
+            new Modelo.Logistica.TransportistasDAO();
+
+    if (dao.insertar(transportista)) {
+
+        JOptionPane.showMessageDialog(this,
+                "Transportista registrado con éxito.");
+
+        actualizarTabla();
+
+        btnLimpiarActionPerformed(null);
+
+    } else {
+
+        JOptionPane.showMessageDialog(this,
+                "No se pudo registrar el transportista.");
     }
 
-    try {
-        Controlador.Logistica.clsTransportistas transportista = new Controlador.Logistica.clsTransportistas();
-        transportista.setEmpcodigo(Integer.parseInt(txtIdEmpleado.getText().trim()));
-        transportista.setTrantipovehiculo(txtTipoVehiculo.getText().trim());
+} catch (NumberFormatException e) {
 
-        Modelo.Logistica.TransportistasDAO dao = new Modelo.Logistica.TransportistasDAO();
-        if (dao.insertar(transportista)) {
-            JOptionPane.showMessageDialog(this, "Transportista registrado con éxito.");
-            actualizarTabla(); 
-            btnLimpiarActionPerformed(null); 
-        }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "El ID de empleado debe ser un número entero válido.");
-    }
+    JOptionPane.showMessageDialog(this,
+            "El ID de empleado debe ser un número entero válido.");
+}
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+if (txtIdtransporte.getText().trim().isEmpty()) {
 
-    if (txtIdtransporte.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Debe seleccionar un registro dando doble clic en la tabla para modificar.");
+    JOptionPane.showMessageDialog(this,
+        "Debe seleccionar un registro dando doble clic en la tabla para modificar.");
+
+    return;
+}
+
+try {
+
+    int idTransportista =
+            Integer.parseInt(txtIdtransporte.getText().trim());
+
+    String nuevoVehiculo =
+            txtTipoVehiculo.getText().trim();
+
+    String empIdStr =
+            txtIdEmpleado.getText().trim();
+
+    if (nuevoVehiculo.isEmpty() || empIdStr.isEmpty()) {
+
+        JOptionPane.showMessageDialog(this,
+            "Los campos no pueden estar vacíos para modificar.");
+
         return;
     }
 
-    try {
-        int idTransportista = Integer.parseInt(txtIdtransporte.getText().trim());
-        String nuevoVehiculo = txtTipoVehiculo.getText().trim();
-        String empIdStr = txtIdEmpleado.getText().trim();
+    Controlador.Logistica.clsTransportistas obj =
+            new Controlador.Logistica.clsTransportistas();
 
-        if (nuevoVehiculo.isEmpty() || empIdStr.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Los campos no pueden estar vacíos para modificar.");
-            return;
-        }
+    obj.setTranid(idTransportista);
 
-        Controlador.Logistica.clsTransportistas obj = new Controlador.Logistica.clsTransportistas();
-        obj.setTranid(idTransportista); 
-        obj.setTrantipovehiculo(nuevoVehiculo);
-        obj.setEmpcodigo(Integer.parseInt(empIdStr));
-        Modelo.Logistica.TransportistasDAO dao = new Modelo.Logistica.TransportistasDAO();
+    obj.setTrantipovehiculo(nuevoVehiculo);
 
-        if (dao.actualizar(obj)) {
-            for (int i = 0; i < modeloTransportes.getRowCount(); i++) {
-                if (modeloTransportes.getValueAt(i, 0).toString().equals(String.valueOf(idTransportista))) {
-                    modeloTransportes.setValueAt(obj.getEmpcodigo(), i, 1); 
-                    modeloTransportes.setValueAt(nuevoVehiculo, i, 2);
-                    break;
-                }
-            }
+    obj.setEmpcodigo(Integer.parseInt(empIdStr));
 
-            JOptionPane.showMessageDialog(this, "Registro actualizado exitosamente.");
-            btnLimpiarActionPerformed(null); 
-        } else {
-            JOptionPane.showMessageDialog(this, "Error: El DAO no pudo actualizar en la base de datos.");
-        }
+    Modelo.Logistica.TransportistasDAO dao =
+            new Modelo.Logistica.TransportistasDAO();
 
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Error: El ID de empleado debe ser un valor numérico válido.");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(this, "Error inesperado: " + e.getMessage());
+    if (dao.actualizar(obj)) {
+
+        actualizarTabla();
+
+        JOptionPane.showMessageDialog(this,
+                "Registro actualizado exitosamente.");
+
+        btnLimpiarActionPerformed(null);
+
+    } else {
+
+        JOptionPane.showMessageDialog(this,
+                "Error: No se pudo actualizar en la base de datos.");
     }
+
+} catch (NumberFormatException e) {
+
+    JOptionPane.showMessageDialog(this,
+            "El ID de empleado debe ser numérico.");
+
+} catch (Exception e) {
+
+    JOptionPane.showMessageDialog(this,
+            "Error inesperado: " + e.getMessage());
+}
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
